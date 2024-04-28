@@ -1,0 +1,41 @@
+name: Push to Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
+  push-to-deploy:
+    needs: build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: deploy
+      - name: Configure github-actions git user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: Clean current deployment
+        run: git rm -rf docs
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: docs
+      - name: Re-add the main folder
+        run: |
+          git add docs
+          git commit -m "update"
+      - name: Push to deploy branch
+        run: |
+          git push origin
+
