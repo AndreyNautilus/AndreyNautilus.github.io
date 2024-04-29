@@ -10,6 +10,8 @@ concurrency: ${{ github.workflow }}
 jobs:
   build:
     uses: ./.github/workflows/build.yaml
+    with:
+      artifact-name: docs
 
   push-to-deploy:
     needs: build
@@ -29,7 +31,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: docs
+          name: ${{ needs.build.outputs.artifact-name }}
           path: docs
       - name: Re-add the main folder
         run: |
@@ -38,4 +40,3 @@ jobs:
       - name: Push to deploy branch
         run: |
           git push origin
-

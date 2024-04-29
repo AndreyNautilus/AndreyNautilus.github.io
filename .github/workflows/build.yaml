@@ -3,6 +3,16 @@ name: Build
 on:
   pull_request:
   workflow_call:
+    inputs:
+      artifact-name:
+        description: Name of the artifact where the built website should be uploaded
+        required: false
+        type: string
+        default: ''
+    outputs:
+      artifact-name:
+        description: Name of the artifact where the built website is uploaded
+        value: ${{ inputs.artifact-name }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,8 +32,9 @@ jobs:
       - name: Build
         run: hugo
       - name: Upload artifact
+        if: inputs.artifact-name != ''
         uses: actions/upload-artifact@v4
         with:
-          name: docs
+          name: ${{ inputs.artifact-name }}
           path: docs
           retention-days: 1
