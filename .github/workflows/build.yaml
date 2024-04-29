@@ -13,6 +13,10 @@ on:
       artifact-name:
         description: Name of the artifact where the built website is uploaded
         value: ${{ inputs.artifact-name }}
+      commit:
+        description: Short SHA of the commit of the sources
+        value: ${{ jobs.build.outputs.commit }}
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,6 +25,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      commit: ${{ steps.commit.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +37,10 @@ jobs:
           hugo-version: '0.125.4'
       - name: Build
         run: hugo
+      - name: Output commit info
+        id: commit
+        run: |
+          echo "short_sha=${git rev-parse --short HEAD}" >> "$GITHUB_OUTPUT"
       - name: Upload artifact
         if: inputs.artifact-name != ''
         uses: actions/upload-artifact@v4
