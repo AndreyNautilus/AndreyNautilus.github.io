@@ -33,10 +33,13 @@ jobs:
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: docs
-      - name: Re-add the main folder
+      - name: Re-add and commit the main folder
+        id: commit
+        continue-on-error: true  # may fail if there's nothing to commit
         run: |
           git add docs
-          git commit -m "update"
+          git commit -m "update" -m "${{ needs.build.outputs.commit }}"
       - name: Push to deploy branch
+        if: steps.commit.outcome == 'success'
         run: |
           git push origin
