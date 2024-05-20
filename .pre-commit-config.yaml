@@ -1,7 +1,6 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
-  # basic code hygiene
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
@@ -20,9 +19,8 @@ repos:
     hooks:
       - id: yamllint
 
-  # format MD files
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.17  # Use the ref you want to point at
+    rev: 0.7.17
     hooks:
       - id: mdformat
         # Optionally add plugins
@@ -30,7 +28,6 @@ repos:
           - mdformat-gfm
           - mdformat-frontmatter
 
-  # check links from MD files
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.12.1
     hooks:
