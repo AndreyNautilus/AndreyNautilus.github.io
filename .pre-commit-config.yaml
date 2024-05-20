@@ -23,6 +23,10 @@ repos:
     hooks:
       - id: markdown-link-check
 
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+
   - repo: local
     hooks:
       - id: enumerate-posts
