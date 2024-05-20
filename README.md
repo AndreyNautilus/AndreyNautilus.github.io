@@ -1,5 +1,6 @@
 # Personal website
 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![pages-build-deployment](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=deploy)](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment)
 [![Static Badge](https://img.shields.io/badge/url-andreynautilus.github.io-blue)](https://andreynautilus.github.io/)
 
@@ -13,3 +14,8 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 `hugo server --buildDrafts` - run the server (including _draft_ content)
 
 `hugo new content posts/my-post.md` - create a new post
+
+## Local environment
+
+- python 3.X
+- `pre-commit install` to enable pre-commit hooks locally

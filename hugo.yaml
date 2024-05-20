@@ -20,7 +20,7 @@ minify:
   minifyOutput: true
 
 params:
-  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  env: production  # to enable google analytics, opengraph, twitter-cards and schema.
   title: Andrey Nautilus blog
   description: Andrey Nautilus blog
   keywords: [Blog, Portfolio, PaperMod]
@@ -62,7 +62,7 @@ params:
 
   # profile-mode
   profileMode:
-    enabled: false # needs to be explicitly set
+    enabled: false  # needs to be explicitly set
     # title: ExampleSite
     # subtitle: "This is subtitle"
     # imageUrl: "<img location>"
@@ -95,9 +95,9 @@ params:
   #     SiteVerificationTag: "XYZabc"
 
   cover:
-    hidden: true # hide everywhere but not in structured data
-    hiddenInList: true # hide on list pages and home
-    hiddenInSingle: true # hide on single page
+    hidden: true  # hide everywhere but not in structured data
+    hiddenInList: true  # hide on list pages and home
+    hiddenInSingle: true  # hide on single page
 
   # editPost:
   #   URL: "https://github.com/<path_to_repo>/content"
@@ -113,7 +113,7 @@ params:
     distance: 1000
     threshold: 0.4
     minMatchCharLength: 0
-    limit: 10 # refer: https://www.fusejs.io/api/methods.html#search
+    limit: 10  # refer: https://www.fusejs.io/api/methods.html#search
     keys: ["title", "permalink", "summary", "content"]
 # menu:
 #   main:
@@ -125,7 +125,8 @@ params:
 #       name: tags
 #       url: /tags/
 #       weight: 20
-# Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
+
+# https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
   highlight:

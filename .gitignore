@@ -1,2 +1,4 @@
+.venv
+
 .hugo_build.lock
 docs
