@@ -1,5 +1,6 @@
 ---
 title: git push --force vs --force-with-lease
+summary: Prefer 'git push --force-with-lease' over 'git push --force'
 description: Prefer 'git push --force-with-lease' over 'git push --force'
 date: 2024-05-16T20:36:19+02:00
 tags: [git]
