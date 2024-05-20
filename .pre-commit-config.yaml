@@ -36,7 +36,7 @@ repos:
   - repo: local
     hooks:
       - id: enumerate-posts
-        name: Verify post files
+        name: Verify Posts files
         entry: python -B ./scripts/post-enumerating/main.py content/posts
         language: python
         additional_dependencies:
