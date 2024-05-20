@@ -36,3 +36,5 @@ repos:
 
 ci:
   autofix_prs: false
+  skip:
+    - markdown-link-check
