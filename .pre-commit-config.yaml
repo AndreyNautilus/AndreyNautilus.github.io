@@ -9,14 +9,14 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
 
-  # - repo: https://github.com/executablebooks/mdformat
-  #   rev: 0.7.17  # Use the ref you want to point at
-  #   hooks:
-  #     - id: mdformat
-  #       # Optionally add plugins
-  #       additional_dependencies:
-  #       - mdformat-gfm
-  #       - mdformat-black
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17  # Use the ref you want to point at
+    hooks:
+      - id: mdformat
+        # Optionally add plugins
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-frontmatter
 
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.12.1
