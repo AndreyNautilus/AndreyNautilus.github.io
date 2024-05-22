@@ -6,8 +6,15 @@
     <description>Recent content in Git on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.125.4</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 16 May 2024 20:36:19 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 22 May 2024 20:24:48 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>git with multiple users</title>
+      <link>https://andreynautilus.github.io/posts/02-git-multiple-users/</link>
+      <pubDate>Wed, 22 May 2024 20:24:48 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/02-git-multiple-users/</guid>
+      <description>&amp;#39;includeIf&amp;#39; in gitconfig; and ssh client configuration</description>
+    </item>
     <item>
       <title>git push --force vs --force-with-lease</title>
       <link>https://andreynautilus.github.io/posts/01-git-force-vs-force-with-lease/</link>
