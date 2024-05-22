@@ -7,7 +7,6 @@ theme: PaperMod
 cleanDestinationDir: true
 publishDir: docs
 
-
 enableRobotsTXT: false  # disable search engines scans for now
 buildDrafts: false
 buildFuture: false
@@ -18,6 +17,11 @@ buildExpired: false
 minify:
   disableXML: true
   minifyOutput: true
+
+outputs:
+  home:
+    - html
+    - json
 
 params:
   env: production  # to enable google analytics, opengraph, twitter-cards and schema.
@@ -99,11 +103,6 @@ params:
     hiddenInList: true  # hide on list pages and home
     hiddenInSingle: true  # hide on single page
 
-  # editPost:
-  #   URL: "https://github.com/<path_to_repo>/content"
-  #   Text: "Suggest Changes" # edit text
-  #   appendFilePath: true # to append file path to Edit link
-
   # for search
   # https://fusejs.io/api/options.html
   fuseOpts:
@@ -118,13 +117,14 @@ params:
 
 menu:
   main:
-    # - identifier: tags
-    #   name: tags
-    #   url: /tags/
-    #   weight: 20
-    - identifier: src
-      name: src
+    - name: tags
       weight: 1
+      url: tags/
+    - name: search
+      weight: 5
+      url: search/
+    - name: src
+      weight: 10
       url: https://github.com/AndreyNautilus/AndreyNautilus.github.io
 
 # https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
