@@ -1,12 +1,12 @@
 ---
 title: git with multiple users
 summary: Configure multiple git users on the same workstation  # will be shown on a post card on the main page
-description: "'includeIf' in gitconfig and ssh client configuration"
+description: "'includeIf' in gitconfig; and ssh client configuration"
 date: 2024-05-22T20:24:48+02:00
 tags: [git]
 ---
 
-## Multiple users for git
+## Multiple users
 
 Quite often we need to have multiple git users on the same workstation. For example:
 
@@ -20,7 +20,7 @@ A simple solution would be to use repository-local (`git config --local`) config
 but this means _repeating it over and over again for every cloned repository_.
 This is not an engineers way.
 
-## gitconfig per directory
+## Configure git per directory
 
 Git stores global configuration in `~/.gitconfig` [file](https://git-scm.com/docs/git-config#_configuration_file).
 It's a text file which supports [conditional includes](https://git-scm.com/docs/git-config#_conditional_includes) via `includeIf` directive.
@@ -28,7 +28,7 @@ We're interested in `gitdir` condition, which includes the file if the current r
 (`.git` folder of the current repository) is in the specified directory.
 
 So, we can nicely isolate all work-related repositories in `~/work` directory and all personal repositories in `~/peronal` directory.
-For example, the main `~/.gitconfig` file looks like:
+For example, the main `~/.gitconfig` file may look like:
 
 ```ini
 [user]
@@ -42,7 +42,7 @@ For example, the main `~/.gitconfig` file looks like:
     path = ~/.gitconfig-personal
 ```
 
-while `~/.gitconfig-work` enables gpg signing configuration for work account:
+while `~/.gitconfig-work` enables commit signing for work account:
 
 ```ini
 [user]
@@ -131,7 +131,7 @@ Some references:
 
 ## Commit signing
 
-Some platforms may require commit signing. I use a gpg key for that.
+Some platforms may require commit signing. I use gpg key for that.
 [GitHub documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
 explains how to set it up. We can also configure git to sign our commits by default:
 
