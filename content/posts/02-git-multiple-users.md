@@ -127,7 +127,8 @@ Some references:
 
 - https://stackoverflow.com/questions/67593657/setting-up-multiple-ssh-key-access-to-github
 - https://gist.github.com/alejandro-martin/aabe88cf15871121e076f66b65306610
-- https://gist.github.com/oanhnn/80a89405ab9023894df7
+- using `core.sshCommand` [config option](https://git-scm.com/docs/git-config#Documentation/git-config.txt-coresshCommand)
+  (or `GIT_SSH_COMMAND` environment variable) it's [possible](https://stackoverflow.com/questions/78419810/using-git-ssh-command-to-switch-ssh-key-based-on-current-working-directory) to distinguish ssh keys based on current folder;
 
 ## Commit signing
 
