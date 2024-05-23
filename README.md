@@ -1,9 +1,9 @@
 # Personal website
 
 [![Push to Deploy](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/push-to-deploy.yaml/badge.svg)](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/push-to-deploy.yaml)
+[![pages-build-deployment](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=deploy)](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment)
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-[![pages-build-deployment](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=deploy)](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment)
 [![Static Badge](https://img.shields.io/badge/url-andreynautilus.github.io-blue)](https://andreynautilus.github.io/)
 
 Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod theme](https://github.com/adityatelange/hugo-PaperMod) (as submodule).
