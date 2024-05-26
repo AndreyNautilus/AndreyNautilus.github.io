@@ -29,6 +29,12 @@ repos:
           - mdformat-gfm
           - mdformat-frontmatter
 
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+      - id: codespell
+        name: Common misspellings
+
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.12.1
     hooks:

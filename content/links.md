@@ -1,5 +1,5 @@
 ---
-title: Collection on useful links
+title: Collection of useful links
 description: Links to tools, articles, manuals, videos etc.
 ShowReadingTime: false
 ---
