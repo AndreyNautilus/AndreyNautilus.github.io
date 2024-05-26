@@ -1,0 +1,12 @@
+{
+    "replacementPatterns": [
+        {
+            "pattern": "\\.\\./links",
+            "replacement": "links.md"
+        },
+        {
+            "pattern": "\\.\\./(?<post_link>posts/.*)",
+            "replacement": "$<post_link>.md"
+        }
+    ]
+}
