@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true  # may fail if there's nothing to commit
         run: |
           git add docs
-          git commit -m "update" -m "${{ needs.build.outputs.commit }}"
+          git commit -m "update ${{ needs.build.outputs.commit }}"
       - name: Push to deploy branch
         if: steps.commit.outcome == 'success'
         run: |
