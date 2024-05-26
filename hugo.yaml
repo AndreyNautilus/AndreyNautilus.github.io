@@ -117,8 +117,11 @@ params:
 
 menu:
   main:
-    - name: tags
+    - name: links
       weight: 1
+      url: links/
+    - name: tags
+      weight: 2
       url: tags/
     - name: search
       weight: 5
