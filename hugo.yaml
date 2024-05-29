@@ -3,6 +3,8 @@ title: Andrey Nautilus blog
 paginate: 5
 theme: PaperMod
 
+titleCaseStyle: none  # do not capitalize titles
+
 # Configure for publishing on GitHub Pages
 cleanDestinationDir: true
 publishDir: docs
