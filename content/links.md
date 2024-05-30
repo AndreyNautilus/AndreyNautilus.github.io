@@ -8,3 +8,4 @@ ShowReadingTime: false
 - https://github.com/refined-github/refined-github - browser extansion to greatly enrich GitHub UI
 - ["My 3 Rules for Documenting Code" article](https://dev.to/wraith/my-3-rules-for-documenting-code-2f54)
   ([post](../posts/03-documenting-code))
+- https://professor-l.github.io/mazes/ - overview of Maze generation algorithms
