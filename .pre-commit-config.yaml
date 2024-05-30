@@ -30,13 +30,13 @@ repos:
           - mdformat-frontmatter
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.4
+    rev: v2.3.0
     hooks:
       - id: codespell
         name: Common misspellings
 
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.12.1
+    rev: v3.12.2
     hooks:
       - id: markdown-link-check
         args: ['--config', '.markdown-link-check.json']
