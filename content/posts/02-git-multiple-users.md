@@ -27,7 +27,7 @@ It's a text file which supports [conditional includes](https://git-scm.com/docs/
 We're interested in `gitdir` condition, which includes the file if the current repository
 (`.git` folder of the current repository) is in the specified directory.
 
-So, we can nicely isolate all work-related repositories in `~/work` directory and all personal repositories in `~/peronal` directory.
+So, we can nicely isolate all work-related repositories in `~/work` directory and all personal repositories in `~/personal` directory.
 For example, the main `~/.gitconfig` file may look like:
 
 ```ini
