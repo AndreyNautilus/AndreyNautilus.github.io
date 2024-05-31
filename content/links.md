@@ -17,5 +17,5 @@ ShowReadingTime: false
 - [Overview of Maze generation algorithms](https://professor-l.github.io/mazes/)
 - https://www.boristhebrave.com/ - blog about procedural generation:
   [diablo 1 dungeon generation](https://www.boristhebrave.com/2019/07/14/dungeon-generation-in-diablo-1/),
-  [unexpored dungeon generation](https://www.boristhebrave.com/2021/04/10/dungeon-generation-in-unexplored/),
+  [unexplored dungeon generation](https://www.boristhebrave.com/2021/04/10/dungeon-generation-in-unexplored/),
   etc.
