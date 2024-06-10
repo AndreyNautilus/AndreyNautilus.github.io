@@ -9,6 +9,7 @@ ShowReadingTime: false
 - https://regex101.com/ - online RegEx tester/debugger
 - https://crontab.guru/ - cron explainer
 - https://github.com/refined-github/refined-github - browser extension to greatly enrich GitHub UI
+- https://ohshitgit.com/ - git cheatsheet for "shit happened" cases
 
 ## Other
 
