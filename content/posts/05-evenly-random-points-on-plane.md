@@ -33,6 +33,7 @@ algorithms to build such distribution (with great examples and visualizations).
 ## Bridson’s algorithm for Poisson disk sampling
 
 Summary of [this page](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm).
+Bridson's algorithm allows us to generate random points with Poisson disk distribution.
 
 Formal problem description: generate tightly packed random points maintaining minimal distance between them.
 
@@ -63,3 +64,4 @@ Side notes:
 - complexity is `O(N)`;
 - easy to implement;
 - the cluster of points grows _naturally_ from the starting point to all directions;
+- easily extensible to 3D (and more dimensional) space;
