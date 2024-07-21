@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>points on Andrey Nautilus blog</title>
+    <link>https://andreynautilus.github.io/tags/points/</link>
+    <description>Recent content in points on Andrey Nautilus blog</description>
+    <generator>Hugo -- 0.125.4</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 21 Jul 2024 20:16:16 +0200</lastBuildDate>
+    <atom:link href="https://andreynautilus.github.io/tags/points/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Evenly distributed random points</title>
+      <link>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</link>
+      <pubDate>Sun, 21 Jul 2024 20:16:16 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</guid>
+      <description>Bridson’s Algorithm to build Poisson disk distribution of points</description>
+    </item>
+  </channel>
+</rss>
