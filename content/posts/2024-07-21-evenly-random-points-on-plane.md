@@ -4,6 +4,8 @@ summary: Bridson’s Algorithm to build Poisson disk distribution of points  # w
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-07-21T20:16:16+02:00'
 tags: [procedural generation, points]
+aliases:
+  - 05-evenly-random-points-on-plane
 ---
 
 ## "Random" points on a plane

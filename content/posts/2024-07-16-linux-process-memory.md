@@ -1,10 +1,12 @@
 ---
-title: 'Linux process memory: RSS, PSS, USS'
-summary: RSS, PSS, USS, etc. of linux processes    # will be shown on a post card on the main page
+title: 'Linux process memory: RSS, PSS, USS, VSS'
+summary: RSS, PSS, USS, VSS, etc. of linux processes    # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-07-16T00:54:08+02:00'
 
 tags: [linux]
+aliases:
+  - 04-linux-process-memory
 ---
 
 Linux has multiple values that represent the amount of memory associated with a process:
