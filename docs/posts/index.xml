@@ -10,37 +10,37 @@
     <atom:link href="https://andreynautilus.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Evenly distributed random points</title>
-      <link>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</link>
+      <link>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</link>
       <pubDate>Sun, 21 Jul 2024 20:16:16 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</guid>
+      <guid>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</guid>
       <description>Bridson’s Algorithm to build Poisson disk distribution of points</description>
     </item>
     <item>
-      <title>Linux process memory: RSS, PSS, USS</title>
-      <link>https://andreynautilus.github.io/posts/04-linux-process-memory/</link>
+      <title>Linux process memory: RSS, PSS, USS, VSS</title>
+      <link>https://andreynautilus.github.io/posts/2024-07-16-linux-process-memory/</link>
       <pubDate>Tue, 16 Jul 2024 00:54:08 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/04-linux-process-memory/</guid>
-      <description>RSS, PSS, USS, etc. of linux processes</description>
+      <guid>https://andreynautilus.github.io/posts/2024-07-16-linux-process-memory/</guid>
+      <description>RSS, PSS, USS, VSS, etc. of linux processes</description>
     </item>
     <item>
       <title>Documenting code</title>
-      <link>https://andreynautilus.github.io/posts/03-documenting-code/</link>
+      <link>https://andreynautilus.github.io/posts/2024-05-26-documenting-code/</link>
       <pubDate>Sun, 26 May 2024 19:05:29 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/03-documenting-code/</guid>
+      <guid>https://andreynautilus.github.io/posts/2024-05-26-documenting-code/</guid>
       <description>names = what, code = how, comments = why</description>
     </item>
     <item>
       <title>git with multiple users</title>
-      <link>https://andreynautilus.github.io/posts/02-git-multiple-users/</link>
+      <link>https://andreynautilus.github.io/posts/2024-05-22-git-multiple-users/</link>
       <pubDate>Wed, 22 May 2024 20:24:48 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/02-git-multiple-users/</guid>
+      <guid>https://andreynautilus.github.io/posts/2024-05-22-git-multiple-users/</guid>
       <description>&amp;#39;includeIf&amp;#39; in gitconfig; and ssh client configuration</description>
     </item>
     <item>
       <title>git push --force vs --force-with-lease</title>
-      <link>https://andreynautilus.github.io/posts/01-git-force-vs-force-with-lease/</link>
+      <link>https://andreynautilus.github.io/posts/2024-05-16-git-force-vs-force-with-lease/</link>
       <pubDate>Thu, 16 May 2024 20:36:19 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/01-git-force-vs-force-with-lease/</guid>
+      <guid>https://andreynautilus.github.io/posts/2024-05-16-git-force-vs-force-with-lease/</guid>
       <description>Prefer &amp;#39;git push --force-with-lease&amp;#39; over &amp;#39;git push --force&amp;#39;</description>
     </item>
   </channel>

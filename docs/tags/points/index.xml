@@ -10,9 +10,9 @@
     <atom:link href="https://andreynautilus.github.io/tags/points/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Evenly distributed random points</title>
-      <link>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</link>
+      <link>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</link>
       <pubDate>Sun, 21 Jul 2024 20:16:16 +0200</pubDate>
-      <guid>https://andreynautilus.github.io/posts/05-evenly-random-points-on-plane/</guid>
+      <guid>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</guid>
       <description>Bridson’s Algorithm to build Poisson disk distribution of points</description>
     </item>
   </channel>
