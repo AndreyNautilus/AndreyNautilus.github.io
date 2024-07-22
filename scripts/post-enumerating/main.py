@@ -62,14 +62,14 @@ def main():
         else:
             expected_drafts.append(f)
 
-    not_posts = [f for f in expected_posts if is_draft(f)]
+    not_posts = [f.name for f in expected_posts if is_draft(f)]
     not_drafts = [f.name for f in expected_drafts if not is_draft(f)]
     if not_posts or not_drafts:
         msg_lines = []
         if not_posts:
-            msg_lines.append(f"Posts '{str(not_posts)}' are marked as draft in front matter")
+            msg_lines.append(f"Posts '{not_posts}' are marked as draft in front matter")
         if not_drafts:
-            msg_lines.append(f"Drafts '{str(not_drafts)}' are not marked as draft in front matter")
+            msg_lines.append(f"Drafts '{not_drafts}' are not marked as draft in front matter")
 
         raise RuntimeError('\n'.join(msg_lines))
 
@@ -79,6 +79,6 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except Exception as e:
+    except RuntimeError as e:
         print(f"Error: {e}")
         sys.exit(1)
