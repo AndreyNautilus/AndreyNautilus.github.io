@@ -4,6 +4,8 @@ summary: Configure multiple git users on the same workstation  # will be shown o
 description: "'includeIf' in gitconfig; and ssh client configuration"
 date: 2024-05-22T20:24:48+02:00
 tags: [git, gitconfig, ssh, gpg]
+aliases:
+  - 02-git-multiple-users
 ---
 
 ## Multiple users

@@ -5,6 +5,8 @@ summary: RSS, PSS, USS, etc. of linux processes    # will be shown on a post car
 date: '2024-07-16T00:54:08+02:00'
 
 tags: [linux]
+aliases:
+  - 04-linux-process-memory
 ---
 
 Linux has multiple values that represent the amount of memory associated with a process:

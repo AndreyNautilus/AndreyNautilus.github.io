@@ -48,28 +48,30 @@ def main():
 
     md_files = [p for p in root.iterdir() if str(p).endswith(".md")]
 
-    # allowed filenames:
-    #   1-ab_cd.md
-    #   042-title_with-subtitle.md
-    allowed_filename_regex = re.compile(r"[0-9]+-([a-z0-9]+[-_])+[a-z0-9]+\.md")
-    invalid_files = [f for f in md_files if not allowed_filename_regex.fullmatch(f.name)]
-    if invalid_files:
-        raise RuntimeError(f"Filenames don't match allowed regex: '{invalid_files}'")
+    # filenames pattern:
+    #   YYYY-MM-DD-title_with-sub-titles.md
+    #
+    # files following the pattern must NOT be Draft.
+    # files NOT following the pattern must be Draft.
+    post_filename_regex = re.compile(r"2024-[0-9]{2}-[0-9]{2}[-_]([a-z0-9]+[-_]?)+.md")
+    expected_posts = []
+    expected_drafts = []
+    for f in md_files:
+        if post_filename_regex.fullmatch(f.name):
+            expected_posts.append(f)
+        else:
+            expected_drafts.append(f)
 
-    # drafts start with '0-', '00-', '000-' etc.
-    draft_filename_regex = re.compile(r"0+-.*")
-    drafts = [f for f in md_files if draft_filename_regex.fullmatch(f.name)]
-    not_drafts = [f for f in drafts if not is_draft(f)]
-    if not_drafts:
-        raise RuntimeError(f"Drafts '{not_drafts}' are not marked as draft in front matter")
+    not_posts = [f for f in expected_posts if is_draft(f)]
+    not_drafts = [f.name for f in expected_drafts if not is_draft(f)]
+    if not_posts or not_drafts:
+        msg_lines = []
+        if not_posts:
+            msg_lines.append(f"Posts '{str(not_posts)}' are marked as draft in front matter")
+        if not_drafts:
+            msg_lines.append(f"Drafts '{str(not_drafts)}' are not marked as draft in front matter")
 
-    posts = [f for f in md_files if f not in drafts]
-    not_posts = [f for f in posts if is_draft(f)]
-    if not_posts:
-        raise RuntimeError(f"Posts '{not_posts}' are marked as draft")
-
-    # TODO:
-    # - verify size of number prefix
+        raise RuntimeError('\n'.join(msg_lines))
 
     print("OK")
 

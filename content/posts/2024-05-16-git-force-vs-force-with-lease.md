@@ -4,6 +4,8 @@ summary: Prefer 'git push --force-with-lease' over 'git push --force'
 description: Prefer 'git push --force-with-lease' over 'git push --force'
 date: 2024-05-16T20:36:19+02:00
 tags: [git]
+aliases:
+  - 01-git-force-vs-force-with-lease
 ---
 
 ## Why do we need to force-push?

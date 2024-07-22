@@ -5,6 +5,8 @@ summary: names = what, code = how, comments = why    # will be shown on a post c
 date: '2024-05-26T19:05:29+02:00'
 
 tags: [documentation, links]
+aliases:
+  - 03-documenting-code
 ---
 
 Summary of ["My 3 Rules for Documenting Code" article](https://dev.to/wraith/my-3-rules-for-documenting-code-2f54).
