@@ -1,6 +1,6 @@
 ---
-title: 'Linux process memory: RSS, PSS, USS, VSS'
-summary: RSS, PSS, USS, VSS, etc. of linux processes    # will be shown on a post card on the main page
+title: 'Linux process memory: RSS, VSZ, etc'
+summary: RSS, VSZ, PSS, USS explained  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-07-16T00:54:08+02:00'
 
@@ -19,7 +19,8 @@ Linux has multiple values that represent the amount of memory associated with a 
   PSS values of all processes shows _total system usage_.
 - **USS** or **Unique Set Size** - memory unique to the process. When the process is killed, this
   amount will be returned to the system.
-- **VSS** or **Virtual Set Size** or **VSZ** - total accessible address space of a process.
+- **VSS** or **Virtual Set Size** or **VSZ** - total accessible address space of a process including
+  swapped memory and allocated, but not yet used.
 
 ## Examples
 
@@ -36,8 +37,6 @@ Linux has multiple values that represent the amount of memory associated with a 
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 andrey     650  0.0  0.0   2892   932 pts/0    S+   Jul20   0:00 sh
 ```
-
-`procrank` [tool](https://github.com/cglmcu/procrank) can show PSS and USS values.
 
 ## Links
 
