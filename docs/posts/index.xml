@@ -16,11 +16,11 @@
       <description>Bridson’s Algorithm to build Poisson disk distribution of points</description>
     </item>
     <item>
-      <title>Linux process memory: RSS, PSS, USS, VSS</title>
+      <title>Linux process memory: RSS, VSZ, etc</title>
       <link>https://andreynautilus.github.io/posts/2024-07-16-linux-process-memory/</link>
       <pubDate>Tue, 16 Jul 2024 00:54:08 +0200</pubDate>
       <guid>https://andreynautilus.github.io/posts/2024-07-16-linux-process-memory/</guid>
-      <description>RSS, PSS, USS, VSS, etc. of linux processes</description>
+      <description>RSS, VSZ, PSS, USS explained</description>
     </item>
     <item>
       <title>Documenting code</title>
