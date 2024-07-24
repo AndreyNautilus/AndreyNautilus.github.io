@@ -1,0 +1,38 @@
+<p class="points_uniform_distribution"/>
+<script type="text/javascript">
+
+const svgns = 'http://www.w3.org/2000/svg'
+
+const width = 500;
+const height = 300;
+
+const container = document.querySelector('.points_uniform_distribution');
+const svg = document.createElementNS(svgns, 'svg');
+
+svg.setAttribute('width', '100%');
+svg.setAttribute('height', height);
+svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+const numPoints = 1000;
+const points = generatePointsByUniformDistribution(width, height, numPoints);
+
+for (p of points) {
+  var circle = document.createElementNS(svgns, 'circle');
+  circle.setAttribute('cx', p[0]);
+  circle.setAttribute('cy', p[1]);
+  circle.setAttribute('r', 2);
+  circle.setAttribute('style', 'fill: var(--primary)');
+  svg.appendChild(circle);
+}
+
+container.appendChild(svg);
+
+function generatePointsByUniformDistribution(width, height, amount) {
+  var result = [];
+  for (var i = 0; i < amount; i++) {
+    result.push([Math.random() * width, Math.random() * height]);
+  }
+  return result;
+}
+
+</script>

@@ -3,7 +3,7 @@ title: Evenly distributed random points
 summary: Bridson’s Algorithm to build Poisson disk distribution of points  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-07-21T20:16:16+02:00'
-tags: [procedural generation, points]
+tags: [procedural generation]
 aliases:
   - 05-evenly-random-points-on-plane
 ---
@@ -20,6 +20,8 @@ Possible use-cases:
 The simplest approach - to use uniformly distributed points with `(random(), random())` - doesn't work,
 because there will be areas with high density of points and areas with no points at all.
 Such distribution doesn't look _natural_.
+
+{{< random_points_uniform_distribution >}}
 
 Various types of grids with gaps can give even distribution, but the picture will not look _random_.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
