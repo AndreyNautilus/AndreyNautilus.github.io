@@ -24,14 +24,14 @@ Linux has multiple values that represent the amount of memory associated with a 
 
 ## Examples
 
-`top` command shows **VSS** (as VIRT) and **RSS** (as RES):
+`top` [command](https://man7.org/linux/man-pages/man1/top.1.html) shows **VSS** (as VIRT) and **RSS** (as RES):
 
 ```
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
   650 andrey    20   0    2892    932    840 S   0.0   0.0   0:00.00 sh
 ```
 
-`ps -ux` shows **VSS** (as VSZ) and **RSS**:
+`ps -ux` [shows](https://man7.org/linux/man-pages/man1/ps.1.html) **VSS** (as VSZ) and **RSS**:
 
 ```
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
