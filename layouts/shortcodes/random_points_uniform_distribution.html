@@ -1,22 +1,24 @@
-<p class="points_uniform_distribution"/>
-<script type="text/javascript">
+{{ $seed := "random_points_uniform_distribution" }}
+{{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+<p class="{{ $containerName }}"/>
+<script type="module">
 
 const svgns = 'http://www.w3.org/2000/svg'
 
-const width = 500;
-const height = 300;
+const width = {{ if (.Get "width") }}{{ .Get "width" }}{{ else }}500{{end}};
+const height = {{ if (.Get "height") }}{{ .Get "height" }}{{ else }}300{{end}};
 
-const container = document.querySelector('.points_uniform_distribution');
+const container = document.querySelector('.{{ $containerName }}');
 const svg = document.createElementNS(svgns, 'svg');
 
 svg.setAttribute('width', '100%');
 svg.setAttribute('height', height);
 svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
-const numPoints = 1000;
+const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
 const points = generatePointsByUniformDistribution(width, height, numPoints);
 
-for (p of points) {
+for (var p of points) {
   var circle = document.createElementNS(svgns, 'circle');
   circle.setAttribute('cx', p[0]);
   circle.setAttribute('cy', p[1]);

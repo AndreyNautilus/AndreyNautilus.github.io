@@ -30,6 +30,8 @@ doesn't look _natural_ either.
 A solution to this problem is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
 points are placed randomly, but not too close and not too far away from each other.
 
+{{< random_points_poisson_disk_distribution >}}
+
 [This article](https://bost.ocks.org/mike/algorithms/) compares randomly placed points with
 Poisson disk distribution, and shows "best candidate" and [Bridson’s](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
 algorithms to build such distribution (with great examples and visualizations).
@@ -69,3 +71,7 @@ Side notes:
 - easy to implement;
 - the cluster of points grows _naturally_ from the starting point to all directions;
 - easily extensible to 3D (and more dimensional) space;
+
+## Links
+
+- https://www.jasondavies.com/poisson-disc/
