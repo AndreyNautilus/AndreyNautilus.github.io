@@ -28,67 +28,78 @@ for (var p of points) {
 container.appendChild(svg);
 
 
-// Based on https://www.jasondavies.com/poisson-disc/
 function generatePointsByPoissonDiskDistribution(width, height, radius) {
-  const k = 30;  // maximum number of samples before rejection
+  const k = 30;  // maximum number of candidates before rejecting an active point
 
   const cellSize = radius * Math.SQRT1_2;
   const gridWidth = Math.ceil(width / cellSize);
   const gridHeight = Math.ceil(height / cellSize);
+  var grid = new Array(gridWidth * gridHeight);
+  grid.fill(undefined);
 
   const radiusSq = radius * radius;
-  const R = 3 * radiusSq;  // what is it ?
 
-  var grid = new Array(gridWidth * gridHeight);
-  var queue = [];
-  var queueSize = 0;
-  var sampleSize = 0;
+  var activePoints = [];
 
-  var result = []
+  var result = [];
 
   // generate the first point
-  result.push(addPoint(Math.random() * width, Math.random() * height));
+  result.push(addPointXY(Math.random() * width, Math.random() * height));
 
-  // Pick a random existing sample and remove it from the queue.
-  while (queueSize) {
-    var i = Math.random() * queueSize | 0,
-        s = queue[i];
+  // pick a random point from Active Points
+  while (activePoints.length > 0) {
+    const activePointIndex = Math.random() * activePoints.length | 0;
+    const activePoint = activePoints[activePointIndex];
 
-    // Make a new candidate between [radius, 2 * radius] from the existing sample.
-    for (var j = 0; j < k; ++j) {
-      var a = 2 * Math.PI * Math.random(),
-          r = Math.sqrt(Math.random() * R + radiusSq),
-          x = s[0] + r * Math.cos(a),
-          y = s[1] + r * Math.sin(a);
+    // generate candidates between [radius, 2 * radius] from the chosen active point
+    var pointAdded = false;
+    for (var i = 0; i < k; ++i) {
+      const p = generatePointInAnnulus(activePoint);
 
-      // Reject candidates that are outside the allowed extent,
-      // or closer than 2 * radius to any existing sample.
-      if (0 <= x && x < width && 0 <= y && y < height && isFarFromOthers(x, y))
-        result.push(addPoint(x, y));
+      // pick the first acceptable candidate
+      if (isPointWithinBorders(p) && isFarFromOthers(p)) {
+        result.push(addPoint(p));
+        pointAdded = true;
+        break;
+      }
     }
 
-    queue[i] = queue[--queueSize];
-    queue.length = queueSize;
+    // remove the point from Active Points if no new points were added
+    if (!pointAdded) {
+      activePoints.splice(activePointIndex, 1);
+    }
   }
 
   return result;
 
-  function isFarFromOthers(x, y) {
-    var i = x / cellSize | 0,
-        j = y / cellSize | 0,
-        i0 = Math.max(i - 2, 0),
-        j0 = Math.max(j - 2, 0),
-        i1 = Math.min(i + 3, gridWidth),
-        j1 = Math.min(j + 3, gridHeight);
+  // generate a random point in [radius, 2 * radius] annulus from the center
+  function generatePointInAnnulus(center) {
+    const angle = 2 * Math.PI * Math.random();
+    const distance = Math.sqrt(Math.random() * 3 * radiusSq + radiusSq);
 
-    for (j = j0; j < j1; ++j) {
-      var o = j * gridWidth;
-      for (i = i0; i < i1; ++i) {
-        if (s = grid[o + i]) {
-          var s,
-              dx = s[0] - x,
-              dy = s[1] - y;
-          if (dx * dx + dy * dy < radiusSq) return false;
+    const x = center[0] + distance * Math.cos(angle);
+    const y = center[1] + distance * Math.sin(angle);
+    return [x, y]
+  }
+
+  function isPointWithinBorders(p) {
+    return (0 <= p[0] && p[0] < width && 0 <= p[1] && p[1] < height);
+  }
+
+  function isFarFromOthers(p) {
+    const cell = gridCellByPoint(p);
+
+    const colMin = Math.max(cell[0] - 2, 0);
+    const colMax = Math.min(cell[0] + 3, gridWidth);
+
+    const rawMin = Math.max(cell[1] - 2, 0);
+    const rawMax = Math.min(cell[1] + 3, gridHeight);
+
+    for (var j = rawMin; j < rawMax; ++j) {
+      for (var i = colMin; i < colMax; ++i) {
+        const gridPoint = grid[gridIndexByCell([i, j])];
+        if (gridPoint != undefined && distanceSq(gridPoint, p) < radiusSq) {
+          return false;
         }
       }
     }
@@ -96,13 +107,35 @@ function generatePointsByPoissonDiskDistribution(width, height, radius) {
     return true;
   }
 
-  function addPoint(x, y) {
-    var s = [x, y];
-    queue.push(s);
-    grid[gridWidth * (y / cellSize | 0) + (x / cellSize | 0)] = s;
-    ++sampleSize;
-    ++queueSize;
-    return s;
+  function distanceSq(p1, p2) {
+    const dx = p2[0] - p1[0];
+    const dy = p2[1] - p1[1];
+    return dx * dx + dy * dy;
+  }
+
+  function gridCellByPoint(p) {
+    return [
+      p[0] / cellSize | 0,
+      p[1] / cellSize | 0];
+  }
+
+  function gridIndexByPoint(p) {
+    const cell = gridCellByPoint(p);
+    return gridIndexByCell(cell);
+  }
+
+  function gridIndexByCell(c) {
+    return gridWidth * c[1] + c[0];
+  }
+
+  function addPointXY(x, y) {
+    return addPoint([x, y]);
+  }
+
+  function addPoint(p) {
+    activePoints.push(p);
+    grid[gridIndexByPoint(p)] = p;
+    return p;
   }
 }
 
