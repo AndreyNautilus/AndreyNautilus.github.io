@@ -1,13 +1,13 @@
 {{ $seed := "random_points_uniform_distribution" }}
 {{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $width := 500 }}
-
+{{ $height := 300 }}
 <p>
   <svg
     id="{{ $containerName }}"
     width="100%"
-    height="300"
-    viewBox="0 0 {{ $width }} 300"
+    height="{{ $height }}"
+    viewBox="0 0 {{ $width }} {{ $height }}"
     >
   </svg>
 </p>
@@ -16,7 +16,7 @@
 const svgns = 'http://www.w3.org/2000/svg';
 
 const width = {{ $width }};
-const height = 300;
+const height = {{ $height }};
 
 var svg = document.getElementById('{{ $containerName }}');
 

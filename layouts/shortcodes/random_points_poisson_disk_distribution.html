@@ -1,17 +1,24 @@
-<p class="random_points_poisson_disk_distribution"/>
+{{ $seed := "random_points_uniform_distribution" }}
+{{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $width := 500 }}
+{{ $height := 300 }}
+<p>
+  <svg
+    id="{{ $containerName }}"
+    width="100%"
+    height="{{ $height }}"
+    viewBox="0 0 {{ $width }} {{ $height }}"
+    >
+  </svg>
+</p>
 <script type="module">
 
-const svgns = 'http://www.w3.org/2000/svg'
+const svgns = 'http://www.w3.org/2000/svg';
 
-const width = 500;
-const height = 300;
+const width = {{ $width }};
+const height = {{ $height }};
 
-const container = document.querySelector('.random_points_poisson_disk_distribution');
-const svg = document.createElementNS(svgns, 'svg');
-
-svg.setAttribute('width', '100%');
-svg.setAttribute('height', height);
-svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+var svg = document.getElementById('{{ $containerName }}');
 
 const radius = 10;
 const points = generatePointsByPoissonDiskDistribution(width, height, radius);
@@ -24,9 +31,6 @@ for (var p of points) {
   circle.setAttribute('style', 'fill: var(--primary)');
   svg.appendChild(circle);
 }
-
-container.appendChild(svg);
-
 
 function generatePointsByPoissonDiskDistribution(width, height, radius) {
   const k = 30;  // maximum number of candidates before rejecting an active point
