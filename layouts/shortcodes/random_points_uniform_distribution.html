@@ -1,21 +1,26 @@
 {{ $seed := "random_points_uniform_distribution" }}
 {{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-<p class="{{ $containerName }}"/>
+{{ $width := 500 }}
+
+<p>
+  <svg
+    id="{{ $containerName }}"
+    width="100%"
+    height="300"
+    viewBox="0 0 {{ $width }} 300"
+    >
+  </svg>
+</p>
 <script type="module">
 
-const svgns = 'http://www.w3.org/2000/svg'
+const svgns = 'http://www.w3.org/2000/svg';
 
-const width = {{ if (.Get "width") }}{{ .Get "width" }}{{ else }}500{{end}};
-const height = {{ if (.Get "height") }}{{ .Get "height" }}{{ else }}300{{end}};
+const width = {{ $width }};
+const height = 300;
 
-const container = document.querySelector('.{{ $containerName }}');
-const svg = document.createElementNS(svgns, 'svg');
+var svg = document.getElementById('{{ $containerName }}');
 
-svg.setAttribute('width', '100%');
-svg.setAttribute('height', height);
-svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-
-const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
+const numPoints =  {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
 const points = generatePointsByUniformDistribution(width, height, numPoints);
 
 for (var p of points) {
@@ -26,8 +31,6 @@ for (var p of points) {
   circle.setAttribute('style', 'fill: var(--primary)');
   svg.appendChild(circle);
 }
-
-container.appendChild(svg);
 
 function generatePointsByUniformDistribution(width, height, amount) {
   var result = [];
