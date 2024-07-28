@@ -71,6 +71,8 @@ Side notes:
 - easy to implement;
 - the cluster of points grows _naturally_ from the starting point to all directions;
 - easily extensible to 3D (and more dimensional) space;
+- the number of points is not known until the generation process is complete (it's "generate _some_
+  points with specific condition" rather than "generate N points");
 
 ## Links
 
