@@ -3,7 +3,7 @@ title: Evenly distributed random points
 summary: Bridson’s Algorithm to build Poisson disk distribution of points  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-07-21T20:16:16+02:00'
-tags: [procedural generation, points]
+tags: [procedural generation]
 aliases:
   - 05-evenly-random-points-on-plane
 ---
@@ -21,12 +21,16 @@ The simplest approach - to use uniformly distributed points with `(random(), ran
 because there will be areas with high density of points and areas with no points at all.
 Such distribution doesn't look _natural_.
 
+{{< random_points_uniform_distribution numPoints=1000 >}}
+
 Various types of grids with gaps can give even distribution, but the picture will not look _random_.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
 doesn't look _natural_ either.
 
 A solution to this problem is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
 points are placed randomly, but not too close and not too far away from each other.
+
+{{< random_points_poisson_disk_distribution radius=10 >}}
 
 [This article](https://bost.ocks.org/mike/algorithms/) compares randomly placed points with
 Poisson disk distribution, and shows "best candidate" and [Bridson’s](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
@@ -67,3 +71,9 @@ Side notes:
 - easy to implement;
 - the cluster of points grows _naturally_ from the starting point to all directions;
 - easily extensible to 3D (and more dimensional) space;
+- the number of points is not known until the generation process is complete (it's "generate _some_
+  points with specific condition" rather than "generate N points");
+
+## Links
+
+- https://www.jasondavies.com/poisson-disc/

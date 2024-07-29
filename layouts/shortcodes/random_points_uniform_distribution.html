@@ -1,0 +1,52 @@
+{{ $seed := "random_points_uniform_distribution" }}
+{{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $width := 500 }}
+{{ $height := 300 }}
+<p>
+  <svg
+    id="{{ $containerName }}"
+    width="100%"
+    height="{{ $height }}"
+    viewBox="0 0 {{ $width }} {{ $height }}"
+    >
+    <!-- points -->
+  </svg>
+  <p
+    id="{{ $captionName }}"
+    style="text-align: center;">
+    N points<!-- caption with amount of points -->
+  </p>
+</p>
+<script type="module">
+
+const svgns = 'http://www.w3.org/2000/svg';
+
+const width = {{ $width }};
+const height = {{ $height }};
+
+let svg = document.getElementById('{{ $containerName }}');
+
+const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
+const points = generatePointsByUniformDistribution(width, height, numPoints);
+
+document.getElementById('{{ $captionName }}').innerText = `${numPoints} points`;
+
+for (let p of points) {
+  let circle = document.createElementNS(svgns, 'circle');
+  circle.setAttribute('cx', p[0]);
+  circle.setAttribute('cy', p[1]);
+  circle.setAttribute('r', 2);
+  circle.setAttribute('style', 'fill: var(--primary)');
+  svg.appendChild(circle);
+}
+
+function generatePointsByUniformDistribution(width, height, amount) {
+  let result = [];
+  for (let i = 0; i < amount; i++) {
+    result.push([Math.random() * width, Math.random() * height]);
+  }
+  return result;
+}
+
+</script>

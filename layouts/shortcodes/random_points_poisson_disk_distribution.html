@@ -1,0 +1,157 @@
+{{ $seed := "random_points_uniform_distribution" }}
+{{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $width := 500 }}
+{{ $height := 300 }}
+<p>
+  <svg
+    id="{{ $containerName }}"
+    width="100%"
+    height="{{ $height }}"
+    viewBox="0 0 {{ $width }} {{ $height }}"
+    >
+    <!-- points -->
+  </svg>
+  <p
+    id="{{ $captionName }}"
+    style="text-align: center;">
+    Caption
+  </p>
+</p>
+<script type="module">
+
+const svgns = 'http://www.w3.org/2000/svg';
+
+const width = {{ $width }};
+const height = {{ $height }};
+
+let svg = document.getElementById('{{ $containerName }}');
+
+const radius = {{ if (.Get "radius") }}{{ .Get "radius" }}{{ else }}10{{end}};
+const points = generatePointsByPoissonDiskDistribution(width, height, radius);
+
+document.getElementById('{{ $captionName }}').innerText = `${points.length} points`;
+
+for (let p of points) {
+  let circle = document.createElementNS(svgns, 'circle');
+  circle.setAttribute('cx', p[0]);
+  circle.setAttribute('cy', p[1]);
+  circle.setAttribute('r', 2);
+  circle.setAttribute('style', 'fill: var(--primary)');
+  svg.appendChild(circle);
+}
+
+// Inspired by https://gist.github.com/mbostock/19168c663618b7f07158
+function generatePointsByPoissonDiskDistribution(width, height, radius) {
+  const k = 30;  // maximum number of candidates before rejecting an active point
+
+  const cellSize = radius * Math.SQRT1_2;
+  const gridWidth = Math.ceil(width / cellSize);
+  const gridHeight = Math.ceil(height / cellSize);
+  let grid = new Array(gridWidth * gridHeight);
+  grid.fill(undefined);
+
+  const radiusSq = radius * radius;
+
+  let activePoints = [];
+
+  let result = [];
+
+  // generate the first point
+  result.push(addPointXY(Math.random() * width, Math.random() * height));
+
+  // pick a random point from Active Points
+  while (activePoints.length > 0) {
+    const activePointIndex = Math.random() * activePoints.length | 0;
+    const activePoint = activePoints[activePointIndex];
+
+    // generate candidates between [radius, 2 * radius] from the chosen active point
+    let pointAdded = false;
+    for (let i = 0; i < k; ++i) {
+      const p = generatePointInAnnulus(activePoint);
+
+      // pick the first acceptable candidate
+      if (isPointWithinBorders(p) && isFarFromOthers(p)) {
+        result.push(addPoint(p));
+        pointAdded = true;
+        break;
+      }
+    }
+
+    // remove the point from Active Points if no new points were added
+    if (!pointAdded) {
+      activePoints.splice(activePointIndex, 1);
+    }
+  }
+
+  return result;
+
+  // generate a random point in [radius, 2 * radius] annulus from the center
+  function generatePointInAnnulus(center) {
+    const angle = 2 * Math.PI * Math.random();
+    const distance = Math.sqrt(Math.random() * 3 * radiusSq + radiusSq);
+
+    const x = center[0] + distance * Math.cos(angle);
+    const y = center[1] + distance * Math.sin(angle);
+    return [x, y]
+  }
+
+  function isPointWithinBorders(p) {
+    return (0 <= p[0] && p[0] < width && 0 <= p[1] && p[1] < height);
+  }
+
+  function isFarFromOthers(p) {
+    const cell = gridCellByPoint(p);
+
+    const colMin = Math.max(cell[0] - 2, 0);
+    const colMax = Math.min(cell[0] + 3, gridWidth);
+
+    const rawMin = Math.max(cell[1] - 2, 0);
+    const rawMax = Math.min(cell[1] + 3, gridHeight);
+
+    for (let j = rawMin; j < rawMax; ++j) {
+      for (let i = colMin; i < colMax; ++i) {
+        const gridPoint = grid[gridIndexByCell([i, j])];
+        if (gridPoint != undefined && distanceSq(gridPoint, p) < radiusSq) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  function distanceSq(p1, p2) {
+    const dx = p2[0] - p1[0];
+    const dy = p2[1] - p1[1];
+    return dx * dx + dy * dy;
+  }
+
+  function gridCellByPoint(p) {
+    return [
+      p[0] / cellSize | 0,
+      p[1] / cellSize | 0];
+  }
+
+  function gridIndexByPoint(p) {
+    const cell = gridCellByPoint(p);
+    return gridIndexByCell(cell);
+  }
+
+  function gridIndexByCell(c) {
+    return gridWidth * c[1] + c[0];
+  }
+
+  function addPointXY(x, y) {
+    return addPoint([x, y]);
+  }
+
+  function addPoint(p) {
+    activePoints.push(p);
+    grid[gridIndexByPoint(p)] = p;
+    return p;
+  }
+}
+
+
+</script>
