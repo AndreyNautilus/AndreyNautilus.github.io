@@ -6,8 +6,15 @@
     <description>Recent content in procedural generation on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.125.4</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 21 Jul 2024 20:16:16 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jul 2024 18:54:08 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/tags/procedural-generation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Random point in circle with uniform distribution</title>
+      <link>https://andreynautilus.github.io/posts/2024-07-29-random-point-in-circle/</link>
+      <pubDate>Mon, 29 Jul 2024 18:54:08 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2024-07-29-random-point-in-circle/</guid>
+      <description>angle = random(); distance = R * sqrt(random())</description>
+    </item>
     <item>
       <title>Evenly distributed random points</title>
       <link>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</link>
