@@ -1,13 +1,13 @@
 {{ $seed := "random_points_uniform_distribution" }}
 {{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $width := 500 }}
-{{ $height := 300 }}
+{{ $width := 700 }}
+{{ $height := 400 }}
 <p>
   <svg
     id="{{ $containerName }}"
     width="100%"
-    height="{{ $height }}"
+    height="100%"
     viewBox="0 0 {{ $width }} {{ $height }}"
     >
     <!-- points -->
@@ -15,7 +15,7 @@
   <p
     id="{{ $captionName }}"
     style="text-align: center;">
-    N points<!-- caption with amount of points -->
+    Caption
   </p>
 </p>
 <script type="module">
