@@ -19,6 +19,7 @@ ShowReadingTime: false
   etc.
 - [Overview of Maze generation algorithms](https://professor-l.github.io/mazes/)
 - [Poisson disk sampling](https://bost.ocks.org/mike/algorithms/) and [Bridson’s algorithm](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm) - ([post](../posts/2024-07-21-evenly-random-points-on-plane))
+- [Random point in a circle with uniform distribution](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/) - ([post](../posts/2024-07-29-random-point-in-circle))
 
 ## Other
 
