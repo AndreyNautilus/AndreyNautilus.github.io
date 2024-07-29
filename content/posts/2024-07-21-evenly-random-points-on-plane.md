@@ -21,7 +21,7 @@ The simplest approach - to use uniformly distributed points with `(random(), ran
 because there will be areas with high density of points and areas with no points at all.
 Such distribution doesn't look _natural_.
 
-{{< random_points_uniform_distribution numPoints=1000 >}}
+{{< random_points_uniform_distribution numPoints=1700 >}}
 
 Various types of grids with gaps can give even distribution, but the picture will not look _random_.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This

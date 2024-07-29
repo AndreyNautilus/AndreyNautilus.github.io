@@ -13,6 +13,9 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 
 `hugo server` - run the server
 
+`hugo server --bind=0.0.0.0 --baseURL=http://AAA.BBB.CCC.DDD:1313` - run the server and expose to local network
+(where `AAA.BBB.CCC.DDD` is your local IP address)
+
 `hugo server --buildDrafts` - run the server (including _draft_ content)
 
 `hugo new content posts/my-post.md` - create a new post
