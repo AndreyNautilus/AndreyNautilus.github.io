@@ -4,8 +4,11 @@ title: Modern Git Commands
 date: 2024-05-05T21:08:13+02:00
 draft: true  # draft mode by default
 
-# tags: ["git"]
+tags: [git]
 ---
+
+- non-trivial useful commands
+- mapping from old commands to modern commands
 
 | Old command             | Modern command        | description    |
 | ----------------------- | --------------------- | -------------- |
