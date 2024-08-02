@@ -3,19 +3,19 @@
 Possible use-cases:</p><ul><li>generate trees in a forest in a game world;</li><li>generate points for <a href=https://en.wikipedia.org/wiki/Voronoi_diagram>Voronoi diagram</a>
 (with areas of similar size);</li></ul><p>The simplest approach - to use uniformly distributed points with <code>(random(), random())</code> - doesn&rsquo;t work,
 because there will be areas with high density of points and areas with no points at all.
-Such distribution doesn&rsquo;t look <em>natural</em>.</p><p><svg id="a906aa326820c40b93b65227321f83fad" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c3a27c6236902251df08a0fb43b8239a6 style=text-align:center>Caption</p></p><script type=module>
+Such distribution doesn&rsquo;t look <em>natural</em>.</p><p><svg id="aa18026896f56c3b27034ab322d90fa23" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c223b43ca1a896b0962ad533f0826f207 style=text-align:center>Caption</p></p><script type=module>
 
 const svgns = 'http://www.w3.org/2000/svg';
 
 const width =  700 ;
 const height =  400 ;
 
-let svg = document.getElementById('a906aa326820c40b93b65227321f83fad');
+let svg = document.getElementById('aa18026896f56c3b27034ab322d90fa23');
 
 const numPoints =  1700 ;
 const points = generatePointsByUniformDistribution(width, height, numPoints);
 
-document.getElementById('c3a27c6236902251df08a0fb43b8239a6').innerText = `${numPoints} points`;
+document.getElementById('c223b43ca1a896b0962ad533f0826f207').innerText = `${numPoints} points`;
 
 for (let p of points) {
   let circle = document.createElementNS(svgns, 'circle');
@@ -37,19 +37,19 @@ function generatePointsByUniformDistribution(width, height, amount) {
 </script><p>Various types of grids with gaps can give even distribution, but the picture will not look <em>random</em>.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
 doesn&rsquo;t look <em>natural</em> either.</p><p>A solution to this problem is <a href=https://en.wikipedia.org/wiki/Supersampling#Poisson_disk>Poisson disk sampling (or Poisson disk distribution)</a>:
-points are placed randomly, but not too close and not too far away from each other.</p><p><svg id="a6a2c8a799f235f1d0332b004b268a263" width="100%" height="100%" viewBox="0 0 700 400"/><p id=cb035cf2b6974a82633a13f8ad2229006 style=text-align:center>Caption</p></p><script type=module>
+points are placed randomly, but not too close and not too far away from each other.</p><p><svg id="af8f06128aa32db963426ab3729c02530" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c060d22fab242876ba3c383f6215903a9 style=text-align:center>Caption</p></p><script type=module>
 
 const svgns = 'http://www.w3.org/2000/svg';
 
 const width =  700 ;
 const height =  400 ;
 
-let svg = document.getElementById('a6a2c8a799f235f1d0332b004b268a263');
+let svg = document.getElementById('af8f06128aa32db963426ab3729c02530');
 
 const radius =  10 ;
 const points = generatePointsByPoissonDiskDistribution(width, height, radius);
 
-document.getElementById('cb035cf2b6974a82633a13f8ad2229006').innerText = `${points.length} points`;
+document.getElementById('c060d22fab242876ba3c383f6215903a9').innerText = `${points.length} points`;
 
 for (let p of points) {
   let circle = document.createElementNS(svgns, 'circle');
