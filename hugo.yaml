@@ -1,6 +1,6 @@
 baseURL: "https://andreynautilus.github.io/"
 title: Andrey Nautilus blog
-paginate: 5
+paginate: 10
 theme: PaperMod
 
 titleCaseStyle: none  # do not capitalize titles

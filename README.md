@@ -11,10 +11,11 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 
 ## Local commands
 
-`hugo server` - run the server
+`hugo server` - run the server on localhost
 
-`hugo server --bind=0.0.0.0 --baseURL=http://AAA.BBB.CCC.DDD:1313` - run the server and expose to local network
-(where `AAA.BBB.CCC.DDD` is your local IP address)
+`hugo server --bind=0.0.0.0 --baseURL=http://AAA.BBB.CCC.DDD:1313` - run the server and expose it to local network
+(where `AAA.BBB.CCC.DDD` is your local IP address). To get local IP address: `ipconfig` (on Windows),
+find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Address.
 
 `hugo server --buildDrafts` - run the server (including _draft_ content)
 
@@ -24,3 +25,8 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 
 - python 3.X
 - `pre-commit install` to enable pre-commit hooks locally
+
+## Windows terminal
+
+- `Shift + Alt + '-'` split window horizontally
+- `Shift + Alt + '+'` split window vertically

@@ -4,7 +4,7 @@ summary: names = what, code = how, comments = why    # will be shown on a post c
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2024-05-26T19:05:29+02:00'
 
-tags: [documentation, links]
+tags: [documentation]
 aliases:
   - 03-documenting-code
 ---
