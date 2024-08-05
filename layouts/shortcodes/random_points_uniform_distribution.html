@@ -1,11 +1,11 @@
 {{ $seed := "random_points_uniform_distribution" }}
-{{ $containerName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
+{{ $svgName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $width := 700 }}
 {{ $height := 400 }}
 <p>
   <svg
-    id="{{ $containerName }}"
+    id="{{ $svgName }}"
     width="100%"
     height="100%"
     viewBox="0 0 {{ $width }} {{ $height }}"
@@ -25,7 +25,7 @@ const svgns = 'http://www.w3.org/2000/svg';
 const width = {{ $width }};
 const height = {{ $height }};
 
-let svg = document.getElementById('{{ $containerName }}');
+let svg = document.getElementById('{{ $svgName }}');
 
 const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
 const points = generatePointsByUniformDistribution(width, height, numPoints);
