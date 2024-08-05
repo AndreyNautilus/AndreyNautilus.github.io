@@ -30,7 +30,8 @@ repos:
           - mdformat-frontmatter
         exclude: |
             (?x)^(
-                content/posts/2024-07-21-evenly-random-points-on-plane.md
+                content/posts/2024-07-21-evenly-random-points-on-plane.md|
+                content/posts/2024-07-29-random-points-in-circle.md
             )$
 
   - repo: https://github.com/codespell-project/codespell
