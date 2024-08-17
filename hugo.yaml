@@ -9,7 +9,7 @@ titleCaseStyle: none  # do not capitalize titles
 cleanDestinationDir: true
 publishDir: docs
 
-enableRobotsTXT: false  # disable search engines scans for now
+enableRobotsTXT: true
 buildDrafts: false
 buildFuture: false
 buildExpired: false
