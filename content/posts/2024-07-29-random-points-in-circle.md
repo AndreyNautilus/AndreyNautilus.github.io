@@ -11,8 +11,8 @@ aliases:
 
 We need to generate a random point in a circle with uniform distribution.
 
-A naive approach with picking a random angle and a random distance doesn't have uniform distribution -
-there are more points close to center and fewer points at the radius.
+A naive approach with polar coordinates by picking a random angle and a random distance
+doesn't give uniform distribution - there are more points close to center and fewer points at the radius.
 [This article](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/)
 has explanation and visualization.
 
@@ -53,5 +53,5 @@ y = random()
 give uniformly distributed points. And `x * x + y * y <= R * R` provides an easy test for
 point being inside the circle.
 
-Obvious drawback - undefined number of attempts, but with uniformly distributed points in a box the average
+Obvious drawback - undefined number of attempts, but with uniformly distributed points the average
 amount of attempt should not be greater than 2 (on average we need `4 / PI` attempts).
