@@ -3,18 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://andreynautilus.github.io/</loc>
-    <lastmod>2024-07-29T18:54:08+02:00</lastmod>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/git/</loc>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/gitconfig/</loc>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/gitignore/</loc>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/2024-12-24-gitignore-global/</loc>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/</loc>
-    <lastmod>2024-07-29T18:54:08+02:00</lastmod>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/</loc>
+    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/procedural-generation/</loc>
     <lastmod>2024-07-29T18:54:08+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2024-07-29-random-points-in-circle/</loc>
-    <lastmod>2024-07-29T18:54:08+02:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/</loc>
     <lastmod>2024-07-29T18:54:08+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2024-07-21-evenly-random-points-on-plane/</loc>
@@ -32,13 +44,7 @@
     <loc>https://andreynautilus.github.io/posts/2024-05-26-documenting-code/</loc>
     <lastmod>2024-05-26T19:05:29+02:00</lastmod>
   </url><url>
-    <loc>https://andreynautilus.github.io/tags/git/</loc>
-    <lastmod>2024-05-22T20:24:48+02:00</lastmod>
-  </url><url>
     <loc>https://andreynautilus.github.io/posts/2024-05-22-git-multiple-users/</loc>
-    <lastmod>2024-05-22T20:24:48+02:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/gitconfig/</loc>
     <lastmod>2024-05-22T20:24:48+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/gpg/</loc>
