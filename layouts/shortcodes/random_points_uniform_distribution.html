@@ -25,20 +25,27 @@ const svgns = 'http://www.w3.org/2000/svg';
 const width = {{ $width }};
 const height = {{ $height }};
 
-let svg = document.getElementById('{{ $svgName }}');
-
 const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
-const points = generatePointsByUniformDistribution(width, height, numPoints);
-
 document.getElementById('{{ $captionName }}').innerText = `${numPoints} points`;
 
-for (let p of points) {
-  let circle = document.createElementNS(svgns, 'circle');
-  circle.setAttribute('cx', p[0]);
-  circle.setAttribute('cy', p[1]);
-  circle.setAttribute('r', 2);
-  circle.setAttribute('style', 'fill: var(--primary)');
-  svg.appendChild(circle);
+function renderSVG_UniformDistribution() {
+  let svg = document.getElementById('{{ $svgName }}');
+
+  // clear existing points
+  while (svg.firstChild) {
+    svg.removeChild(svg.firstChild);
+  }
+
+  const points = generatePointsByUniformDistribution(width, height, numPoints);
+
+  for (let p of points) {
+    let circle = document.createElementNS(svgns, 'circle');
+    circle.setAttribute('cx', p[0]);
+    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 2);
+    circle.setAttribute('style', 'fill: var(--primary)');
+    svg.appendChild(circle);
+  }
 }
 
 function generatePointsByUniformDistribution(width, height, amount) {
@@ -48,5 +55,9 @@ function generatePointsByUniformDistribution(width, height, amount) {
   }
   return result;
 }
+
+document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_UniformDistribution);
+
+renderSVG_UniformDistribution();
 
 </script>

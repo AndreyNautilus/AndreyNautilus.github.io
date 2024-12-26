@@ -25,20 +25,27 @@ const svgns = 'http://www.w3.org/2000/svg';
 const width = {{ $width }};
 const height = {{ $height }};
 
-let svg = document.getElementById('{{ $svgName }}');
-
 const radius = {{ if (.Get "radius") }}{{ .Get "radius" }}{{ else }}10{{end}};
-const points = generatePointsByPoissonDiskDistribution(width, height, radius);
 
-document.getElementById('{{ $captionName }}').innerText = `${points.length} points`;
+function renderSVG_PoissonDiskDistribution() {
+  let svg = document.getElementById('{{ $svgName }}');
 
-for (let p of points) {
-  let circle = document.createElementNS(svgns, 'circle');
-  circle.setAttribute('cx', p[0]);
-  circle.setAttribute('cy', p[1]);
-  circle.setAttribute('r', 2);
-  circle.setAttribute('style', 'fill: var(--primary)');
-  svg.appendChild(circle);
+  // clear existing points
+  while (svg.firstChild) {
+    svg.removeChild(svg.firstChild);
+  }
+
+  const points = generatePointsByPoissonDiskDistribution(width, height, radius);
+  document.getElementById('{{ $captionName }}').innerText = `${points.length} points`;
+
+  for (let p of points) {
+    let circle = document.createElementNS(svgns, 'circle');
+    circle.setAttribute('cx', p[0]);
+    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 2);
+    circle.setAttribute('style', 'fill: var(--primary)');
+    svg.appendChild(circle);
+  }
 }
 
 // Inspired by https://gist.github.com/mbostock/19168c663618b7f07158
@@ -153,5 +160,8 @@ function generatePointsByPoissonDiskDistribution(width, height, radius) {
   }
 }
 
+document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_PoissonDiskDistribution);
+
+renderSVG_PoissonDiskDistribution()
 
 </script>
