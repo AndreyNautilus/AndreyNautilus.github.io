@@ -1,4 +1,4 @@
-{{ $seed := "random_points_uniform_distribution" }}
+{{ $seed := "random_points_in_circle" }}
 {{ $svgName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
 {{ $width := 620 }}
@@ -21,47 +21,50 @@
 <script type="module">
 
 const svgns = 'http://www.w3.org/2000/svg';
-
-let svg = document.getElementById('{{ $svgName }}');
-
 const numPoints = 250;
 
-const points = generatePointsSimple(100, 100, 100, numPoints);
-for (let p of points) {
-  let circle = document.createElementNS(svgns, 'circle');
-  circle.setAttribute('cx', p[0]);
-  circle.setAttribute('cy', p[1]);
-  circle.setAttribute('r', 2);
-  circle.setAttribute('style', 'fill: var(--primary)');
-  svg.appendChild(circle);
+function renderSVG_RandomPointsInCircle() {
+  let svg = document.getElementById('{{ $svgName }}');
+
+  // clear existing points
+  while (svg.firstChild) {
+    svg.removeChild(svg.firstChild);
+  }
+
+  const points = generatePointsSimple(100, 100, 100, numPoints);
+  for (let p of points) {
+    let circle = document.createElementNS(svgns, 'circle');
+    circle.setAttribute('cx', p[0]);
+    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 2);
+    circle.setAttribute('style', 'fill: var(--primary)');
+    svg.appendChild(circle);
+  }
+
+  const points2 = generatePointsCorrectFormula(310, 100, 100, numPoints);
+  for (let p of points2) {
+    let circle = document.createElementNS(svgns, 'circle');
+    circle.setAttribute('cx', p[0]);
+    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 2);
+    circle.setAttribute('style', 'fill: var(--primary)');
+    svg.appendChild(circle);
+  }
+
+  const [attempts, points3] = generatePointsMonteCarlo(520, 100, 100, numPoints);
+  for (let p of points3) {
+    let circle = document.createElementNS(svgns, 'circle');
+    circle.setAttribute('cx', p[0]);
+    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('r', 2);
+    circle.setAttribute('style', 'fill: var(--primary)');
+    svg.appendChild(circle);
+  }
+
+  let caption = document.getElementById('{{ $captionName }}');
+  let text = `${numPoints} points, left to right: naive approach, correct formula, Monte Carlo (${attempts} attempts)`;
+  caption.innerText = text;
 }
-
-const points2 = generatePointsCorrectFormula(310, 100, 100, numPoints);
-for (let p of points2) {
-  let circle = document.createElementNS(svgns, 'circle');
-  circle.setAttribute('cx', p[0]);
-  circle.setAttribute('cy', p[1]);
-  circle.setAttribute('r', 2);
-  circle.setAttribute('style', 'fill: var(--primary)');
-  svg.appendChild(circle);
-}
-
-const [attempts, points3] = generatePointsMonteCarlo(520, 100, 100, numPoints);
-for (let p of points3) {
-  let circle = document.createElementNS(svgns, 'circle');
-  circle.setAttribute('cx', p[0]);
-  circle.setAttribute('cy', p[1]);
-  circle.setAttribute('r', 2);
-  circle.setAttribute('style', 'fill: var(--primary)');
-  svg.appendChild(circle);
-}
-
-let caption = document.getElementById('{{ $captionName }}');
-let text = caption.innerText;
-text = text.replace("NNN", `${numPoints}`);
-text = text.replace("XXX", `${attempts}`);
-caption.innerText = text;
-
 
 function generatePointsSimple(centerX, centerY, radius, amount) {
   let result = [];
@@ -109,4 +112,9 @@ function generatePointsMonteCarlo(centerX, centerY, radius, amount) {
   }
   return [attempts, result];
 }
+
+document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_RandomPointsInCircle);
+
+renderSVG_RandomPointsInCircle()
+
 </script>
