@@ -3,7 +3,7 @@
 Possible use-cases:</p><ul><li>generate trees in a forest in a game world;</li><li>generate points for <a href=https://en.wikipedia.org/wiki/Voronoi_diagram>Voronoi diagram</a>
 (with areas of similar size);</li></ul><p>The simplest approach - to use uniformly distributed points with <code>(random(), random())</code> - doesn&rsquo;t work,
 because there will be areas with high density of points and areas with no points at all.
-Such distribution doesn&rsquo;t look <em>natural</em>.</p><p><svg id="a622285403c630dab2baa3387691ff209" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c1a0c326a342383282af59620bf96d7b0 style=text-align:center>Caption</p></p><script type=module>
+Such distribution doesn&rsquo;t look <em>natural</em>.</p><p><svg id="a0720af232a860f63a9cd8422b159336b" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c0c9134306aaa92b3f82236b752d68f02 style=text-align:center>Caption</p></p><script type=module>
 
 const svgns = 'http://www.w3.org/2000/svg';
 
@@ -11,10 +11,10 @@ const width =  700 ;
 const height =  400 ;
 
 const numPoints =  1700 ;
-document.getElementById('c1a0c326a342383282af59620bf96d7b0').innerText = `${numPoints} points`;
+document.getElementById('c0c9134306aaa92b3f82236b752d68f02').innerText = `${numPoints} points`;
 
 function renderSVG_UniformDistribution() {
-  let svg = document.getElementById('a622285403c630dab2baa3387691ff209');
+  let svg = document.getElementById('a0720af232a860f63a9cd8422b159336b');
 
   
   while (svg.firstChild) {
@@ -41,14 +41,14 @@ function generatePointsByUniformDistribution(width, height, amount) {
   return result;
 }
 
-document.getElementById('a622285403c630dab2baa3387691ff209').addEventListener('click', renderSVG_UniformDistribution);
+document.getElementById('a0720af232a860f63a9cd8422b159336b').addEventListener('click', renderSVG_UniformDistribution);
 
 renderSVG_UniformDistribution();
 
 </script><p>Various types of grids with gaps can give even distribution, but the picture will not look <em>random</em>.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
 doesn&rsquo;t look <em>natural</em> either.</p><p>A solution to this problem is <a href=https://en.wikipedia.org/wiki/Supersampling#Poisson_disk>Poisson disk sampling (or Poisson disk distribution)</a>:
-points are placed randomly, but not too close and not too far away from each other.</p><p><svg id="a362b2b2a900a628f09d3f287453a361c" width="100%" height="100%" viewBox="0 0 700 400"/><p id=cc8066b782a246a09f32522d10a39bf33 style=text-align:center>Caption</p></p><script type=module>
+points are placed randomly, but not too close and not too far away from each other.</p><p><svg id="a34d6378fb139c6ba039a2086222f05a2" width="100%" height="100%" viewBox="0 0 700 400"/><p id=c266af3daa193232f9502720c638b0b84 style=text-align:center>Caption</p></p><script type=module>
 
 const svgns = 'http://www.w3.org/2000/svg';
 
@@ -58,7 +58,7 @@ const height =  400 ;
 const radius =  10 ;
 
 function renderSVG_PoissonDiskDistribution() {
-  let svg = document.getElementById('a362b2b2a900a628f09d3f287453a361c');
+  let svg = document.getElementById('a34d6378fb139c6ba039a2086222f05a2');
 
   
   while (svg.firstChild) {
@@ -66,7 +66,7 @@ function renderSVG_PoissonDiskDistribution() {
   }
 
   const points = generatePointsByPoissonDiskDistribution(width, height, radius);
-  document.getElementById('cc8066b782a246a09f32522d10a39bf33').innerText = `${points.length} points`;
+  document.getElementById('c266af3daa193232f9502720c638b0b84').innerText = `${points.length} points`;
 
   for (let p of points) {
     let circle = document.createElementNS(svgns, 'circle');
@@ -190,7 +190,7 @@ function generatePointsByPoissonDiskDistribution(width, height, radius) {
   }
 }
 
-document.getElementById('a362b2b2a900a628f09d3f287453a361c').addEventListener('click', renderSVG_PoissonDiskDistribution);
+document.getElementById('a34d6378fb139c6ba039a2086222f05a2').addEventListener('click', renderSVG_PoissonDiskDistribution);
 
 renderSVG_PoissonDiskDistribution()
 

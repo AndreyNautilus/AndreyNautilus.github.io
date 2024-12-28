@@ -6,8 +6,15 @@
     <description>Recent content in posts on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.125.4</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 24 Dec 2024 19:02:34 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 28 Dec 2024 16:00:11 +0100</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Unspecified behaviour in std::unordered_set and MacOS SDK</title>
+      <link>https://andreynautilus.github.io/posts/2024-12-28-unordered-set-xcode/</link>
+      <pubDate>Sat, 28 Dec 2024 16:00:11 +0100</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2024-12-28-unordered-set-xcode/</guid>
+      <description>Never assume unspecified behaviour in C&#43;&#43;</description>
+    </item>
     <item>
       <title>Global .gitignore</title>
       <link>https://andreynautilus.github.io/posts/2024-12-24-gitignore-global/</link>
