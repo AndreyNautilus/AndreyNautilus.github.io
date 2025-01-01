@@ -24,7 +24,8 @@ find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Addre
 
 ## Local environment
 
-- python 3.X
+- hugo (see `hugo_version.txt` for the version)
+- python 3.9+
 - `pre-commit install` to enable pre-commit hooks locally
 
 ## Windows terminal
