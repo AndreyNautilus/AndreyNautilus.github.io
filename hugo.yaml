@@ -42,7 +42,7 @@ params:
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
   ShowWordCount: false  # word count is useless, "reading time" is enough
-  ShowRssButtonInSectionTermList: true
+  ShowRssButtonInSectionTermList: false  # no RSS feeds for now
   UseHugoToc: true
   disableSpecial1stPost: false
   disableScrollToTop: false
