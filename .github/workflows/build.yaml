@@ -31,10 +31,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Read hugo version
+        id: settings
+        run: |
+          HUGO_VERSION=$(cat hugo_version.txt)
+          echo "hugo-version=$HUGO_VERSION" >> "$GITHUB_OUTPUT"
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.125.4'
+          hugo-version: ${{ steps.settings.outputs.hugo-version }}
       - name: Build
         run: hugo
       - name: Output commit info
