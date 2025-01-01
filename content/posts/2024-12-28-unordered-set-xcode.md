@@ -126,17 +126,27 @@ and this proves that **the original assumption was wrong**.
 ## Conclusion
 
 Never assume an unspecified behaviour, even if everything seems reasonable and _some_ experiments prove the assumption.
-Any change to the setup may break your assumption and thus break the program.
+The assumption itself may be wrong and any change to the setup may break it and thus break the program.
 
-### History behind it
+### The history behind the story
 
 There was a collection defined as
 
 ```cpp
-std::vector<std::unordered_set<int>> unique_ids;
+struct Collection {
+  std::unordered_set<std::vector<int>> unique_ids;
+}
 ```
 
-This collection was copied multiple times and everything worked fine. Until XCode got updated from 15.0.1 to 15.3.
-This changed the internal behaviour of `std::vector` and elements got copied 1 time less,
-so `unordered_set`s got copied even amount of times, which changed the resulting order of elements and caused the program to fail.
-Luckily there was a unittest which started to fail and allowed to debug and find this bug.
+This collection used _deep copy_ in copy-constructor, so every time the object is copied,
+the underlying `unordered_set` is also copied (which caused the vectors to be re-ordered on MacOS).
+This collection also implemented an iterator interface (as vector iterator),
+and this object was used to construct a `vector` from `begin` and `end` iterators.
+
+Everything worked fine until XCode got updated from 15.0.1 to 15.3, which caused MacOS SDK to be updated
+from 14.0 to 14.4, which updated STL implementation. `std::vector` constructor started to copy input iterators less times,
+which caused the `Collection` object (as iterator) to be copied even (not odd) amount of times,
+so the `unordered_set` is copied even amount of times and its elements got re-ordered.
+That broke the construction of the resulting `vector`.
+
+Luckily there was a unittest that started to fail and allowed to debug and find this bug.
