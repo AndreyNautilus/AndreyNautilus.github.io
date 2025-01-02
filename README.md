@@ -4,8 +4,7 @@
 [![pages-build-deployment](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=deploy)](https://github.com/AndreyNautilus/AndreyNautilus.github.io/actions/workflows/pages/pages-build-deployment)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fandreynautilus.github.io%2F&label=andreynautilus.github.io)
-](https://andreynautilus.github.io/)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fandreynautilus.github.io%2F&label=andreynautilus.github.io)](https://andreynautilus.github.io/)
 [![Static Badge](https://img.shields.io/badge/%D0%AF%D0%BD%D0%B4%D0%B5%D0%BA%D1%81.%D0%9C%D0%B5%D1%82%D1%80%D0%B8%D0%BA%D0%B0-FFCC00)](https://metrika.yandex.ru/)
 [![Static Badge](https://img.shields.io/badge/Google_Analytics-757575?logo=googleanalytics)](https://analytics.google.com/)
 
