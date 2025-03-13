@@ -21,7 +21,7 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.21
+    rev: 0.7.22
     hooks:
       - id: mdformat
         # Optionally add plugins
@@ -35,13 +35,13 @@ repos:
             )$
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         name: Common misspellings
 
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.12.2
+    rev: v3.13.6
     hooks:
       - id: markdown-link-check
         args: ['--config', '.markdown-link-check.json']
