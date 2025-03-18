@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Drawing</title>
+    <script src="hex-grid.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:1px solid black;"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const cell_radius = 5;
+        const cell_diameter = 2 * cell_radius;
+
+        const colors = [
+            //"#c0392b",
+            "#e74c3c",
+            //"#9b59b6",
+            "#8e44ad",
+            "#2980b9",
+            //"#3498db",
+            "#1abc9c",
+            //"#16a085",
+            "#27ae60",
+            //"#2ecc71",
+            //"#f1c40f",
+            "#f39c12",
+            //"#e67e22",
+            "#d35400",
+        ]
+
+        // construct grid
+        const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+        const rows_count = Math.floor(canvas.height / cell_diameter);
+        console.log(`Size: ${cols_count} cols, ${rows_count} rows`)
+        let grid = new HexGrid(rows_count, cols_count);
+
+        // generate random map
+        generateMap(grid, colors.length);
+
+        // draw map
+        drawMap(grid, colors);
+
+        function drawMap(grid, colors) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+                for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+                    const x = cell_radius + cell_radius * (row_idx % 2) + col_idx * cell_diameter;
+                    const y = cell_radius + row_idx * cell_diameter;
+
+                    const color_idx = grid.cells[row_idx][col_idx];
+                    if (color_idx != undefined) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, cell_radius, 0, Math.PI * 2);
+                        ctx.fillStyle = colors[color_idx];
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
