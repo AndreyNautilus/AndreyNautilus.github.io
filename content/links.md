@@ -22,6 +22,7 @@ ShowReadingTime: false
 - [Random point in a circle with uniform distribution](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/) - ([post](../posts/2024-07-29-random-points-in-circle))
 - [Layer-Based Procedural Generation for Infinite Worlds](https://www.youtube.com/watch?v=GJWuVwZO98s) - youtube
 - [A simple procedural animation technique](https://www.youtube.com/watch?v=qlfh_rv6khY) - youtube
+- [Dungeon generation (more advanced random room placement)](https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm)
 
 ## Other
 
