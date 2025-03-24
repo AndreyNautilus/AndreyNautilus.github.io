@@ -16,7 +16,7 @@ repos:
       - id: check-hooks-apply
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.35.1
+    rev: v1.37.0
     hooks:
       - id: yamllint
 
@@ -41,7 +41,7 @@ repos:
         name: Common misspellings
 
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.13.6
+    rev: v3.13.7
     hooks:
       - id: markdown-link-check
         args: ['--config', '.markdown-link-check.json']
