@@ -4,6 +4,10 @@ title: Hexagonal grid for map generation
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2025-02-22T17:27:03+01:00'
 draft: true  # draft mode by default
-
 tags: [procgen]
 ---
+
+
+abc
+{{< load_js "hex-grid.js" >}}
+def
