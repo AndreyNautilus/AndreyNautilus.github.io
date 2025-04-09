@@ -9,5 +9,8 @@ tags: [procgen]
 
 
 abc
-{{< load_js "hex-grid.js" >}}
+{{< load_script "hex-grid.js" >}}
+
+{{< load_resource "gen-map.html" >}}
+
 def
