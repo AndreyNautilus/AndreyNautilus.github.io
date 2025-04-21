@@ -1,30 +1,25 @@
-{{ $seed := "random_points_in_circle" }}
-{{ $svgName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $width := 620 }}
-{{ $height := 200 }}
 <p>
   <svg
-    id="{{ $svgName }}"
+    id="random_points_in_circles"
     width="100%"
     height="100%"
-    viewBox="0 0 {{ $width }} {{ $height }}"
+    viewBox="0 0 620 200"
     >
     <!-- points -->
   </svg>
   <p
-    id="{{ $captionName }}"
+    id="random_points_in_circles_caption"
     style="text-align: center;">
     NNN points, left to right: naive approach, correct formula, Monte Carlo (XXX attempts)
   </p>
 </p>
 <script type="module">
 
-const svgns = 'http://www.w3.org/2000/svg';
-const numPoints = 250;
-
 function renderSVG_RandomPointsInCircle() {
-  let svg = document.getElementById('{{ $svgName }}');
+  const svgns = 'http://www.w3.org/2000/svg';
+  const numPoints = 250;
+
+  let svg = document.getElementById('random_points_in_circles');
 
   // clear existing points
   while (svg.firstChild) {
@@ -61,7 +56,7 @@ function renderSVG_RandomPointsInCircle() {
     svg.appendChild(circle);
   }
 
-  let caption = document.getElementById('{{ $captionName }}');
+  let caption = document.getElementById('random_points_in_circles_caption');
   let text = `${numPoints} points, left to right: naive approach, correct formula, Monte Carlo (${attempts} attempts)`;
   caption.innerText = text;
 }
@@ -113,7 +108,7 @@ function generatePointsMonteCarlo(centerX, centerY, radius, amount) {
   return [attempts, result];
 }
 
-document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_RandomPointsInCircle);
+document.getElementById('random_points_in_circles').addEventListener('click', renderSVG_RandomPointsInCircle);
 
 renderSVG_RandomPointsInCircle()
 
