@@ -89,8 +89,6 @@ function generateInitialPoints(grid, amount) {
 }
 
 function generateMap(grid, number_of_areas) {
-    console.log(`Generating map with ${number_of_areas} areas`);
-
     // generate starting points
     let areas = [];  // list of "list of points + color_index"
     const initialPoints = generateInitialPoints(grid, number_of_areas);
@@ -103,12 +101,9 @@ function generateMap(grid, number_of_areas) {
     let expandable_points_count = areas.reduce((acc, points) => acc + points.length, 0)
     let iter = 0;
     while (expandable_points_count > 0) {
-        console.log(areas.reduce((acc, points) => acc + `${points.length} `, `${++iter}[${expandable_points_count}]: `));
-
         // choose area
         const area_idx = randomInt(areas.length);
         let area = areas[area_idx];
-        console.log(`Area number ${area_idx}`);
 
         // pick point in the area to expand
         let point_idx = Math.floor(area.length * Math.random());
