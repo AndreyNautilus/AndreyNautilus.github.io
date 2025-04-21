@@ -1,9 +1,8 @@
 <p>
-<canvas id="canvas" width="500" height="500" style="border:1px solid black;"></canvas>
+<canvas id="canvas" width="700" height="500" style="border:1px solid black;"></canvas>
 <script>
 function generateAndRenderMap() {
     const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
 
     const cell_radius = 5;
     const cell_diameter = 2 * cell_radius;
@@ -29,14 +28,22 @@ function generateAndRenderMap() {
     // construct grid
     const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
     const rows_count = Math.floor(canvas.height / cell_diameter);
-    console.log(`Size: ${cols_count} cols, ${rows_count} rows`)
+    // console.log(`Size: ${cols_count} cols, ${rows_count} rows`)
     let grid = new HexGrid(rows_count, cols_count);
 
     // generate random map
     generateMap(grid, colors.length);
 
     // draw map
+    drawMap(canvas, grid, colors, cell_radius);
+}
+
+function drawMap(canvas, grid, colors, cell_radius) {
+    const cell_diameter = 2 * cell_radius;
+
+    const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
         for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
             const x = cell_radius + cell_radius * (row_idx % 2) + col_idx * cell_diameter;
