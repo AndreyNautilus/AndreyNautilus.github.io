@@ -1,34 +1,27 @@
-{{ $seed := "random_points_uniform_distribution" }}
-{{ $svgName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $width := 700 }}
-{{ $height := 400 }}
 <p>
   <svg
-    id="{{ $svgName }}"
+    id="poisson_disk_dist"
     width="100%"
     height="100%"
-    viewBox="0 0 {{ $width }} {{ $height }}"
+    viewBox="0 0 700 400"
     >
     <!-- points -->
   </svg>
   <p
-    id="{{ $captionName }}"
+    id="poisson_disk_dist_caption"
     style="text-align: center;">
     Caption
   </p>
 </p>
 <script type="module">
-
-const svgns = 'http://www.w3.org/2000/svg';
-
-const width = {{ $width }};
-const height = {{ $height }};
-
-const radius = {{ if (.Get "radius") }}{{ .Get "radius" }}{{ else }}10{{end}};
-
 function renderSVG_PoissonDiskDistribution() {
-  let svg = document.getElementById('{{ $svgName }}');
+  const svgns = 'http://www.w3.org/2000/svg';
+
+  let svg = document.getElementById('poisson_disk_dist');
+  const width = 700;
+  const height = 400;
+
+  const radius = 10;
 
   // clear existing points
   while (svg.firstChild) {
@@ -36,7 +29,7 @@ function renderSVG_PoissonDiskDistribution() {
   }
 
   const points = generatePointsByPoissonDiskDistribution(width, height, radius);
-  document.getElementById('{{ $captionName }}').innerText = `${points.length} points`;
+  document.getElementById('poisson_disk_dist_caption').innerText = `${points.length} points`;
 
   for (let p of points) {
     let circle = document.createElementNS(svgns, 'circle');
@@ -160,7 +153,7 @@ function generatePointsByPoissonDiskDistribution(width, height, radius) {
   }
 }
 
-document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_PoissonDiskDistribution);
+document.getElementById('poisson_disk_dist').addEventListener('click', renderSVG_PoissonDiskDistribution);
 
 renderSVG_PoissonDiskDistribution()
 

@@ -1,0 +1,12 @@
+{{- /*  Insert a file from page bundle as plain html block  */ -}}
+
+{{- with .Get 0 }}
+  {{- $resPattern := add "*" ($.Get 0) }}
+  {{- with $.Page.Resources.GetMatch $resPattern }}
+    {{- .Content }}
+  {{- else }}
+    {{- errorf "The %q shortcode was unable to find %s: see %s" $.Name ($.Get 0) $.Position }}
+  {{- end }}
+{{- else }}
+  {{- errorf "The %q shortcode requires an argument: see %s" $.Name $.Position }}
+{{- end }}

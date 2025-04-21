@@ -21,7 +21,7 @@ The simplest approach - to use uniformly distributed points with `(random(), ran
 because there will be areas with high density of points and areas with no points at all.
 Such distribution doesn't look _natural_.
 
-{{< random_points_uniform_distribution numPoints=1700 >}}
+{{< load_resource "uniform_distribution.html" >}}
 
 Various types of grids with gaps can give even distribution, but the picture will not look _random_.
 There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
@@ -30,7 +30,7 @@ doesn't look _natural_ either.
 A solution to this problem is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
 points are placed randomly, but not too close and not too far away from each other.
 
-{{< random_points_poisson_disk_distribution radius=10 >}}
+{{< load_resource "poisson_disk_distribution.html" >}}
 
 [This article](https://bost.ocks.org/mike/algorithms/) compares randomly placed points with
 Poisson disk distribution, and shows "best candidate" and [Bridson’s](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)

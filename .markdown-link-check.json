@@ -3,10 +3,11 @@
         {
             "pattern": "\\.\\./links",
             "replacement": "links.md"
-        },
+        }
+    ],
+    "ignorePatterns": [
         {
-            "pattern": "\\.\\./(?<post_link>posts/.*)",
-            "replacement": "$<post_link>.md"
+            "pattern": ".*/posts/.*"
         }
     ]
 }

@@ -16,7 +16,7 @@ doesn't give uniform distribution - there are more points close to center and fe
 [This article](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/)
 has explanation and visualization.
 
-{{< random_points_in_circle >}}
+{{< load_resource "random_points_in_circle.html" >}}
 
 ## Correct formula for polar coordinates
 

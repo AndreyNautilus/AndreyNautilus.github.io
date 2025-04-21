@@ -28,11 +28,6 @@ repos:
         additional_dependencies:
           - mdformat-gfm
           - mdformat-frontmatter
-        exclude: |
-            (?x)^(
-                content/posts/2024-07-21-evenly-random-points-on-plane.md|
-                content/posts/2024-07-29-random-points-in-circle.md
-            )$
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
@@ -41,10 +36,10 @@ repos:
         name: Common misspellings
 
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.13.6
+    rev: v3.13.7
     hooks:
       - id: markdown-link-check
-        args: ['--config', '.markdown-link-check.json']
+        args: ['--config', '.markdown-link-check.json', '-v']
 
   - repo: local
     hooks:

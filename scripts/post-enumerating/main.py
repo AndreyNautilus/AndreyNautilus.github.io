@@ -33,6 +33,20 @@ def is_draft(file):
     return draft_flag
 
 
+def partition(items, condition):
+    '''Partition an 'items' list into 2 lists based on 'condition':
+    - where condition is true,
+    - and where is false'''
+    part1 = []
+    part2 = []
+    for p in items:
+        if condition(p):
+            part1.append(p)
+        else:
+            part2.append(p)
+    return part1, part2
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("posts_folder")
@@ -43,8 +57,30 @@ def main():
         raise RuntimeError(f"'{args.posts_folder}' is not a valid directory")
 
     subdirs = [p for p in root.iterdir() if p.is_dir()]
-    if subdirs:
-        raise RuntimeError(f"Subdirectories are not allowed in '{root}', but found: '{subdirs}'")
+
+    page_bundles = [p for p in subdirs if (p / "index.md").exists()]
+
+    other_dirs = [p for p in subdirs if p not in page_bundles]
+    if other_dirs:
+        raise RuntimeError(f"Subdirectories (except for page bundles) are not allowed in '{root}', but found: '{other_dirs}'")
+
+    # folder names pattern:
+    #   YYYY-MM-DD-title_with-sub-titles/index.md
+    #
+    # files following the pattern must NOT be Draft.
+    # files NOT following the pattern must be Draft.
+    bundle_dir_regex = re.compile(r"202[45]-[0-9]{2}-[0-9]{2}[-_]([a-z0-9]+[-_]?)+")
+    expected_bundles, expected_bundle_drafts = partition(page_bundles, lambda p: bundle_dir_regex.fullmatch(p.name))
+
+    not_bundles = [d.name for d in expected_bundles if is_draft(d / "index.md")]
+    not_bundle_drafts = [d.name for d in expected_bundle_drafts if not is_draft(d / "index.md")]
+    if not_bundles or not_bundle_drafts:
+        msg_lines = []
+        if not_bundles:
+            msg_lines.append(f"Bundles '{not_bundles}' are marked as draft in front matter")
+        if not_bundle_drafts:
+            msg_lines.append(f"Drafts '{not_bundle_drafts}' are not marked as draft in front matter")
+        raise RuntimeError('\n'.join(msg_lines))
 
     md_files = [p for p in root.iterdir() if str(p).endswith(".md")]
 
@@ -53,14 +89,8 @@ def main():
     #
     # files following the pattern must NOT be Draft.
     # files NOT following the pattern must be Draft.
-    post_filename_regex = re.compile(r"2024-[0-9]{2}-[0-9]{2}[-_]([a-z0-9]+[-_]?)+.md")
-    expected_posts = []
-    expected_drafts = []
-    for f in md_files:
-        if post_filename_regex.fullmatch(f.name):
-            expected_posts.append(f)
-        else:
-            expected_drafts.append(f)
+    post_filename_regex = re.compile(r"202[45]-[0-9]{2}-[0-9]{2}[-_]([a-z0-9]+[-_]?)+.md")
+    expected_posts, expected_drafts = partition(md_files, lambda p: post_filename_regex.fullmatch(p.name))
 
     not_posts = [f.name for f in expected_posts if is_draft(f)]
     not_drafts = [f.name for f in expected_drafts if not is_draft(f)]

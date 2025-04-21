@@ -1,35 +1,29 @@
-{{ $seed := "random_points_uniform_distribution" }}
-{{ $svgName := add "a" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $captionName := add "c" (delimit (shuffle (split (md5 $seed) "" )) "") }}
-{{ $width := 700 }}
-{{ $height := 400 }}
 <p>
   <svg
-    id="{{ $svgName }}"
+    id="uniform_distribution"
     width="100%"
     height="100%"
-    viewBox="0 0 {{ $width }} {{ $height }}"
+    viewBox="0 0 700 400"
     >
     <!-- points -->
   </svg>
   <p
-    id="{{ $captionName }}"
+    id="uniform_distribution_caption"
     style="text-align: center;">
     Caption
   </p>
 </p>
 <script type="module">
 
-const svgns = 'http://www.w3.org/2000/svg';
-
-const width = {{ $width }};
-const height = {{ $height }};
-
-const numPoints = {{ if (.Get "numPoints") }}{{ .Get "numPoints" }}{{ else }}1000{{end}};
-document.getElementById('{{ $captionName }}').innerText = `${numPoints} points`;
+const numPoints = 1700;
+document.getElementById('uniform_distribution_caption').innerText = `${numPoints} points`;
 
 function renderSVG_UniformDistribution() {
-  let svg = document.getElementById('{{ $svgName }}');
+  const svgns = 'http://www.w3.org/2000/svg';
+  let svg = document.getElementById('uniform_distribution');
+
+  const width = 700;
+  const height = 400;
 
   // clear existing points
   while (svg.firstChild) {
@@ -56,7 +50,7 @@ function generatePointsByUniformDistribution(width, height, amount) {
   return result;
 }
 
-document.getElementById('{{ $svgName }}').addEventListener('click', renderSVG_UniformDistribution);
+document.getElementById('uniform_distribution').addEventListener('click', renderSVG_UniformDistribution);
 
 renderSVG_UniformDistribution();
 
