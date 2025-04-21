@@ -44,8 +44,8 @@ repos:
   - repo: local
     hooks:
       - id: enumerate-posts
-        name: Verify Posts files
-        entry: python -B ./scripts/post-enumerating/main.py content/posts
+        name: Verify posts/drafts
+        entry: python -m scripts.post-enumerating content/posts
         language: python
         additional_dependencies:
           - pyyaml==6.0.1
