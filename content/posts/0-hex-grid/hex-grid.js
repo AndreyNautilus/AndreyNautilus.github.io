@@ -71,17 +71,17 @@ class HexGrid {
 
     getCandidates(point) {
         let candidates = this.getNeighbors(point);
-        return candidates.filter((p) => grid.cell(p) == undefined);
+        return candidates.filter((p) => this.cell(p) == undefined);
     }
 };
 
-function generateInitialPoints(amount) {
+function generateInitialPoints(grid, amount) {
     let result = [];
     for (let i = 0; i < amount; ++i) {
-        let point = randomIntPoint(rows_count, cols_count);
+        let point = randomIntPoint(grid.rows_count, grid.cols_count);
         while (result.find((p) => point.equals(p)) != undefined) {
             // re-generate in case of duplicates
-            point = randomIntPoint(rows_count, cols_count);
+            point = randomIntPoint(grid.rows_count, grid.cols_count);
         }
         result.push(point);
     }
@@ -93,7 +93,7 @@ function generateMap(grid, number_of_areas) {
 
     // generate starting points
     let areas = [];  // list of "list of points + color_index"
-    const initialPoints = generateInitialPoints(number_of_areas);
+    const initialPoints = generateInitialPoints(grid, number_of_areas);
     initialPoints.forEach((p, idx) => {
         areas.push([[p, idx]]);
         grid.setCell(p, idx);
