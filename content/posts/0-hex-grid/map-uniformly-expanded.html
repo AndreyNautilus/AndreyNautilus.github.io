@@ -1,0 +1,103 @@
+<p>
+<canvas id="map-uniformly-expanded" width="700" height="500"></canvas>
+<script>
+function generateInitialPoints_uniform(grid, amount) {
+    // Generate distinct random points.
+    //   For every point generate a few candidates and pick the one
+    //   with the maximum distance to the already generated points.
+
+    const max_candidates = 10;
+
+    let result = [];
+    for (let i = 0; i < amount; ++i) {
+        if (result.length == 0) {
+            result.push(randomIntPoint(grid.rows_count, grid.cols_count));
+        } else {
+            let candidate = undefined;
+            let candidate_min_dist = 0;
+            for (let j = 0; j < max_candidates; ++j) {
+                const cand = randomIntPoint(grid.rows_count, grid.cols_count);
+                const min_dist = Math.min(...result.map((p) => distanceSq(cand, p)));
+                if (candidate == undefined || min_dist > candidate_min_dist) {
+                    candidate = cand;
+                    candidate_min_dist = min_dist;
+                }
+            }
+            result.push(candidate);
+        }
+    }
+    return result;
+}
+
+function generateMap_uniform_expand(grid, number_of_areas) {
+    // Uniformly expanded areas:
+    // - iterate over areas sequentially
+    // - exnad a point closest to the initial point of the area
+
+    // generate starting points
+    let areas = [];  // list of "list of points + color_index"
+    const initialPoints = generateInitialPoints_uniform(grid, number_of_areas);
+    initialPoints.forEach((p, idx) => {
+        areas.push([[p, idx]]);
+        grid.setCell(p, idx);
+    });
+
+    // apply flood fill equally on all areas
+    let expandable_points_count = areas.reduce((acc, points) => acc + points.length, 0)
+    let area_idx = 0;
+    while (expandable_points_count > 0) {
+        let area = areas[area_idx];
+        if (area.length > 0) {
+            // pick point in the area to expand
+            const [[point, color_idx], dist] = area.reduce((acc, [point, color_idx]) => {
+                const dist = distanceSq(point, initialPoints[area_idx]);
+                if (acc == undefined || dist < acc[1]) {
+                    return [[point, color_idx], dist];
+                }
+                return acc;
+            }, undefined);
+
+            let candidates = grid.getCandidates(point);
+            const cand = candidates[randomInt(candidates.length)];
+            area.push([cand, color_idx]);
+            grid.setCell(cand, color_idx);
+
+            // clean up points and areas
+            // TODO: very inefficient, but works
+            areas = areas
+                .map((area) => area.filter(([point, color_idx]) => grid.getCandidates(point).length > 0))
+                .filter((area) => area.length > 0);
+
+            expandable_points_count = areas.reduce((acc, points) => acc + points.length, 0);
+        }
+        area_idx = (area_idx + 1) % areas.length;
+    }
+
+    return initialPoints;
+}
+
+function generateAndRenderMap_uniform_expand() {
+    const canvas = document.getElementById("map-uniformly-expanded");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    // console.log(`Size: ${cols_count} cols, ${rows_count} rows`)
+    let grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    //const initialPoints = generateMap_random(grid, colors.length);
+    const initialPoints = generateMap_uniform_expand(grid, colors.length);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, colors, cell_radius);
+}
+
+document.getElementById("map-uniformly-expanded").addEventListener('click', generateAndRenderMap_uniform_expand);
+generateAndRenderMap_uniform_expand();
+
+</script>
+</p>
