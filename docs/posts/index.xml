@@ -6,8 +6,15 @@
     <description>Recent content in posts on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.125.4</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Dec 2024 16:00:11 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 24 Apr 2025 19:09:05 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mysterious signed operand</title>
+      <link>https://andreynautilus.github.io/posts/2025-04-24-mysterious-signed-operand/</link>
+      <pubDate>Thu, 24 Apr 2025 19:09:05 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2025-04-24-mysterious-signed-operand/</guid>
+      <description>Integral promotion in action</description>
+    </item>
     <item>
       <title>Unspecified behaviour in std::unordered_set and MacOS SDK</title>
       <link>https://andreynautilus.github.io/posts/2024-12-28-unordered-set-xcode/</link>
