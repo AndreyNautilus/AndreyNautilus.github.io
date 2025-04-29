@@ -1,0 +1,68 @@
+<div style="text-align: center;">
+<canvas id="map-voronoi" width="600" height="400"></canvas>
+<script>
+function generateInitialPoints_voronoi_random(grid, amount) {
+    // Generate random not-equal points
+
+    let result = [];
+    for (let i = 0; i < amount; ++i) {
+        let point = randomIntPoint(grid.rows_count, grid.cols_count);
+        while (result.find((p) => point.equals(p)) != undefined) {
+            // re-generate in case of duplicates
+            point = randomIntPoint(grid.rows_count, grid.cols_count);
+        }
+        result.push(point);
+    }
+    return result;
+}
+
+function generateMap_voronoi(grid, number_of_areas) {
+
+    // generate starting points
+    const initialPoints = generateInitialPoints_voronoi_random(grid, number_of_areas);
+
+    // apply Voronoi principle
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const dists = initialPoints.map((p) => distanceSq(p, { row: row_idx, col: col_idx }));
+            const [min_dist, idx] = dists.reduce((acc, dist, idx) => {
+                if (acc == undefined) {
+                    return [dist, idx];
+                }
+                const [acc_dist, acc_idx] = acc;
+                if (dist < acc_dist) {
+                    return [dist, idx];
+                }
+                return acc;
+            }, undefined);
+
+            grid.setCell({ row: row_idx, col: col_idx }, idx);
+        }
+    }
+
+    return initialPoints;
+}
+
+function generateAndRenderMap_voronoi() {
+    const canvas = document.getElementById("map-voronoi");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    let grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = generateMap_voronoi(grid, colors.length);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, colors, cell_radius);
+}
+
+document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
+generateAndRenderMap_voronoi();
+
+</script>
+</div>
