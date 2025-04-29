@@ -41,3 +41,5 @@ We can apply some restrictions to generation, for example:
 {{< load_resource "map-uniformly-expanded.html" >}}
 
 ## "Voronoi" principle on the grid
+
+{{< load_resource "map-voronoi.html" >}}
