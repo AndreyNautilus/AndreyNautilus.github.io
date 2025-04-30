@@ -1,91 +1,120 @@
-<p>
-  <svg
-    id="random_points_in_circles"
-    width="100%"
-    height="100%"
-    viewBox="0 0 620 200"
-    >
-    <!-- points -->
-  </svg>
-  <p
-    id="random_points_in_circles_caption"
-    style="text-align: center;">
-    NNN points, left to right: naive approach, correct formula, Monte Carlo (XXX attempts)
-  </p>
-</p>
+<style>
+  .svg-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px;
+  }
+
+  .svg-item {
+    text-align: center;
+  }
+
+  .svg-item svg {
+    width: 200px;
+    height: 200px;
+  }
+
+  .svg-item p {
+    font-size: 0.85em;
+  }
+</style>
+<div class="svg-row">
+  <div class="svg-item">
+    <svg id="random_points"></svg>
+    <p id="random_points_caption">caption 1</p>
+  </div>
+
+  <div class="svg-item">
+    <svg id="correct_formula_points"></svg>
+    <p id="correct_formula_caption">caption 2</p>
+  </div>
+
+  <div class="svg-item">
+    <svg id="monte_carlo_points"></svg>
+    <p id="monte_carlo_caption">caption 3</p>
+  </div>
+</div>
+
 <script type="module">
+const numPoints = 250;
 
-function renderSVG_RandomPointsInCircle() {
+function renderSVGPoints(svg, points) {
   const svgns = 'http://www.w3.org/2000/svg';
-  const numPoints = 250;
-
-  let svg = document.getElementById('random_points_in_circles');
 
   // clear existing points
   while (svg.firstChild) {
     svg.removeChild(svg.firstChild);
   }
 
-  const points = generatePointsSimple(100, 100, 100, numPoints);
-  for (let p of points) {
+  // render points
+  points.forEach(([x ,y]) => {
     let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
     circle.setAttribute('r', 2);
     circle.setAttribute('style', 'fill: var(--primary)');
     svg.appendChild(circle);
-  }
-
-  const points2 = generatePointsCorrectFormula(310, 100, 100, numPoints);
-  for (let p of points2) {
-    let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
-    circle.setAttribute('r', 2);
-    circle.setAttribute('style', 'fill: var(--primary)');
-    svg.appendChild(circle);
-  }
-
-  const [attempts, points3] = generatePointsMonteCarlo(520, 100, 100, numPoints);
-  for (let p of points3) {
-    let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
-    circle.setAttribute('r', 2);
-    circle.setAttribute('style', 'fill: var(--primary)');
-    svg.appendChild(circle);
-  }
-
-  let caption = document.getElementById('random_points_in_circles_caption');
-  let text = `${numPoints} points, left to right: naive approach, correct formula, Monte Carlo (${attempts} attempts)`;
-  caption.innerText = text;
+  });
 }
 
 function generatePointsSimple(centerX, centerY, radius, amount) {
   let result = [];
   for (let i = 0; i < amount; i++) {
-    let angle = 2 * Math.PI * Math.random();
-    let dist = radius * Math.random();
+    const angle = 2 * Math.PI * Math.random();
+    const dist = radius * Math.random();
 
-    let x = centerX + dist * Math.cos(angle);
-    let y = centerY + dist * Math.sin(angle);
+    const x = centerX + dist * Math.cos(angle);
+    const y = centerY + dist * Math.sin(angle);
     result.push([x, y]);
   }
   return result;
 }
+
+function renderSVG_RandomPoints() {
+  let svg = document.getElementById('random_points');
+
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const points = generatePointsSimple(centerX, centerY, radius, numPoints);
+  renderSVGPoints(svg, points);
+
+  let caption = document.getElementById('random_points_caption');
+  caption.innerText = `Naive approach: ${numPoints} points`;
+}
+
+document.getElementById('random_points').addEventListener('click', renderSVG_RandomPoints);
+renderSVG_RandomPoints()
 
 function generatePointsCorrectFormula(centerX, centerY, radius, amount) {
   let result = [];
   for (let i = 0; i < amount; i++) {
-    let angle = 2 * Math.PI * Math.random();
-    let dist = radius * Math.sqrt(Math.random());
+    const angle = 2 * Math.PI * Math.random();
+    const dist = radius * Math.sqrt(Math.random());
 
-    let x = centerX + dist * Math.cos(angle);
-    let y = centerY + dist * Math.sin(angle);
+    const x = centerX + dist * Math.cos(angle);
+    const y = centerY + dist * Math.sin(angle);
     result.push([x, y]);
   }
   return result;
 }
+
+function renderSVG_CorrectFormula() {
+  let svg = document.getElementById('correct_formula_points');
+
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const points = generatePointsCorrectFormula(centerX, centerY, radius, numPoints);
+  renderSVGPoints(svg, points);
+
+  let caption = document.getElementById('correct_formula_caption');
+  caption.innerText = `Correct formula: ${numPoints} points`;
+}
+
+document.getElementById('correct_formula_points').addEventListener('click', renderSVG_CorrectFormula);
+renderSVG_CorrectFormula();
 
 function generatePointsMonteCarlo(centerX, centerY, radius, amount) {
   const radiusSq = radius * radius;
@@ -108,8 +137,20 @@ function generatePointsMonteCarlo(centerX, centerY, radius, amount) {
   return [attempts, result];
 }
 
-document.getElementById('random_points_in_circles').addEventListener('click', renderSVG_RandomPointsInCircle);
+function renderSVG_MonteCarlo() {
+  let svg = document.getElementById('monte_carlo_points');
 
-renderSVG_RandomPointsInCircle()
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const [attempts, points] = generatePointsMonteCarlo(centerX, centerY, radius, numPoints);
+  renderSVGPoints(svg, points);
+
+  let caption = document.getElementById('monte_carlo_caption');
+  caption.innerText = `Monte-Carlo approach: ${numPoints} points (${attempts} attempts)`;
+}
+
+document.getElementById('monte_carlo_points').addEventListener('click', renderSVG_MonteCarlo);
+renderSVG_MonteCarlo();
 
 </script>
