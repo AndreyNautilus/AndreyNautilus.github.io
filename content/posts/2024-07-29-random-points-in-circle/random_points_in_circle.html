@@ -21,17 +21,17 @@
 </style>
 <div class="svg-row">
   <div class="svg-item">
-    <svg id="random_points" viewBox="0 0 200 200"></svg>
+    <svg id="random_points"></svg>
     <p id="random_points_caption">caption 1</p>
   </div>
 
   <div class="svg-item">
-    <svg id="correct_formula_points" viewBox="0 0 200 200"></svg>
+    <svg id="correct_formula_points"></svg>
     <p id="correct_formula_caption">caption 2</p>
   </div>
 
   <div class="svg-item">
-    <svg id="monte_carlo_points" viewBox="0 0 200 200"></svg>
+    <svg id="monte_carlo_points"></svg>
     <p id="monte_carlo_caption">caption 3</p>
   </div>
 </div>
@@ -48,10 +48,10 @@ function renderSVGPoints(svg, points) {
   }
 
   // render points
-  points.forEach((p) => {
+  points.forEach(([x ,y]) => {
     let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
     circle.setAttribute('r', 2);
     circle.setAttribute('style', 'fill: var(--primary)');
     svg.appendChild(circle);
@@ -74,11 +74,14 @@ function generatePointsSimple(centerX, centerY, radius, amount) {
 function renderSVG_RandomPoints() {
   let svg = document.getElementById('random_points');
 
-  const points = generatePointsSimple(100, 100, 100, numPoints);
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const points = generatePointsSimple(centerX, centerY, radius, numPoints);
   renderSVGPoints(svg, points);
 
   let caption = document.getElementById('random_points_caption');
-  caption.innerText = `${numPoints} points`;
+  caption.innerText = `Naive approach: ${numPoints} points`;
 }
 
 document.getElementById('random_points').addEventListener('click', renderSVG_RandomPoints);
@@ -100,11 +103,14 @@ function generatePointsCorrectFormula(centerX, centerY, radius, amount) {
 function renderSVG_CorrectFormula() {
   let svg = document.getElementById('correct_formula_points');
 
-  const points = generatePointsCorrectFormula(100, 100, 100, numPoints);
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const points = generatePointsCorrectFormula(centerX, centerY, radius, numPoints);
   renderSVGPoints(svg, points);
 
   let caption = document.getElementById('correct_formula_caption');
-  caption.innerText = `${numPoints} points`;
+  caption.innerText = `Correct formula: ${numPoints} points`;
 }
 
 document.getElementById('correct_formula_points').addEventListener('click', renderSVG_CorrectFormula);
@@ -134,11 +140,14 @@ function generatePointsMonteCarlo(centerX, centerY, radius, amount) {
 function renderSVG_MonteCarlo() {
   let svg = document.getElementById('monte_carlo_points');
 
-  const [attempts, points] = generatePointsMonteCarlo(100, 100, 100, numPoints);
+  const centerX = svg.clientWidth / 2;
+  const centerY = svg.clientHeight / 2;
+  const radius = svg.clientWidth / 2;
+  const [attempts, points] = generatePointsMonteCarlo(centerX, centerY, radius, numPoints);
   renderSVGPoints(svg, points);
 
   let caption = document.getElementById('monte_carlo_caption');
-  caption.innerText = `${numPoints} points (${attempts} attempts)`;
+  caption.innerText = `Monte-Carlo approach: ${numPoints} points (${attempts} attempts)`;
 }
 
 document.getElementById('monte_carlo_points').addEventListener('click', renderSVG_MonteCarlo);

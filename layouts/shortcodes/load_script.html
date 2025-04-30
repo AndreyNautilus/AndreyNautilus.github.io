@@ -3,7 +3,7 @@
 {{- with .Get 0 }}
   {{- $resPattern := add "*" ($.Get 0) }}
   {{- with $.Page.Resources.GetMatch $resPattern }}
-    <script src="{{ .RelPermalink }}"></script>
+    <script src="{{ .RelPermalink }}" type="module"></script>
   {{- else }}
     {{- errorf "The %q shortcode was unable to find %s: see %s" $.Name ($.Get 0) $.Position }}
   {{- end }}

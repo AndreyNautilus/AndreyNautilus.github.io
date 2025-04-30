@@ -1,9 +1,8 @@
 <div style="text-align: center;">
   <svg
     id="uniform_distribution"
-    width="100%"
-    height="100%"
-    viewBox="0 0 700 400"
+    width=700
+    height=400
     >
     <!-- points -->
   </svg>
@@ -22,20 +21,17 @@ function renderSVG_UniformDistribution() {
   const svgns = 'http://www.w3.org/2000/svg';
   let svg = document.getElementById('uniform_distribution');
 
-  const width = 700;
-  const height = 400;
-
   // clear existing points
   while (svg.firstChild) {
     svg.removeChild(svg.firstChild);
   }
 
-  const points = generatePointsByUniformDistribution(width, height, numPoints);
+  const points = generatePointsByUniformDistribution(svg.clientWidth, svg.clientHeight, numPoints);
 
-  for (let p of points) {
+  for (let [x, y] of points) {
     let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
     circle.setAttribute('r', 2);
     circle.setAttribute('style', 'fill: var(--primary)');
     svg.appendChild(circle);

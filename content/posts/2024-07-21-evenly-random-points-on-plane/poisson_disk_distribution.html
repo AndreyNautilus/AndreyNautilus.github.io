@@ -1,9 +1,8 @@
 <div style="text-align: center;">
   <svg
     id="poisson_disk_dist"
-    width="100%"
-    height="100%"
-    viewBox="0 0 700 400"
+    width=700
+    height=400
     >
     <!-- points -->
   </svg>
@@ -18,8 +17,6 @@ function renderSVG_PoissonDiskDistribution() {
   const svgns = 'http://www.w3.org/2000/svg';
 
   let svg = document.getElementById('poisson_disk_dist');
-  const width = 700;
-  const height = 400;
 
   const radius = 10;
 
@@ -28,13 +25,13 @@ function renderSVG_PoissonDiskDistribution() {
     svg.removeChild(svg.firstChild);
   }
 
-  const points = generatePointsByPoissonDiskDistribution(width, height, radius);
+  const points = generatePointsByPoissonDiskDistribution(svg.clientWidth, svg.clientHeight, radius);
   document.getElementById('poisson_disk_dist_caption').innerText = `${points.length} points`;
 
-  for (let p of points) {
+  for (let [x, y] of points) {
     let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', p[0]);
-    circle.setAttribute('cy', p[1]);
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
     circle.setAttribute('r', 2);
     circle.setAttribute('style', 'fill: var(--primary)');
     svg.appendChild(circle);
