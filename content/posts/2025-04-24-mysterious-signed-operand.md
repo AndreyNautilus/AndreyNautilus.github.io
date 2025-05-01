@@ -1,5 +1,5 @@
 ---
-title: Mysterious signed operand
+title: Mysterious signed operand in a C++ expression
 summary: Integral promotion in action
 date: 2025-04-24T19:09:05+02:00
 tags: [C++]
