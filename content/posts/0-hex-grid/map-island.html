@@ -1,22 +1,26 @@
 <div style="text-align: center;">
-<canvas id="map-fully-random" width="600" height="400"></canvas>
+<canvas id="map-island" width="600" height="400"></canvas>
 <script type="module">
+
 function generateInitialPoints_random(grid, amount) {
     // Generate random not-equal points
 
+    const initialWidth = Math.floor(grid.rows_count / 3);
+    const initialHeight = Math.floor(grid.cols_count / 3);
+
     let result = [];
     for (let i = 0; i < amount; ++i) {
-        let point = randomIntPoint(grid.rows_count, grid.cols_count);
+        let point = randomIntPoint(initialWidth, initialHeight);
         while (result.find((p) => point.equals(p)) != undefined) {
             // re-generate in case of duplicates
-            point = randomIntPoint(grid.rows_count, grid.cols_count);
+            point = randomIntPoint(initialWidth,initialHeight);
         }
         result.push(point);
     }
-    return result;
+    return result.map((p) => { return { row: p.row + initialWidth, col: p.col + initialHeight }; });
 }
 
-function generateMap_random(grid, number_of_areas) {
+function generateMap_island(grid, number_of_areas) {
     // Fully random generation:
     // - pick random area to expand
     // - expand it to random neighbor
@@ -25,13 +29,16 @@ function generateMap_random(grid, number_of_areas) {
     let areas = [];  // list of "list of points + color_index"
     const initialPoints = generateInitialPoints_random(grid, number_of_areas);
     initialPoints.forEach((p, idx) => {
-        areas.push([[p, idx]]);
-        grid.setCell(p, idx);
+        areas.push([[p, ColorGreenIdx]]);
+        grid.setCell(p, ColorGreenIdx);
     });
 
     // apply flood fill
+    let filled_cells = initialPoints.length;
+
+
     let expandable_points_count = areas.reduce((acc, points) => acc + points.length, 0)
-    while (expandable_points_count > 0) {
+    while (expandable_points_count > 0 && filled_cells < 0.3 * grid.rows_count * grid.cols_count) {
         // choose area
         const area_idx = randomInt(areas.length);
         let area = areas[area_idx];
@@ -43,6 +50,7 @@ function generateMap_random(grid, number_of_areas) {
         const cand = candidates[randomInt(candidates.length)];
         area.push([cand, color_idx]);
         grid.setCell(cand, color_idx);
+        filled_cells += 1;
 
         // clean up points and areas
         // TODO: very inefficient, but works
@@ -53,13 +61,22 @@ function generateMap_random(grid, number_of_areas) {
         expandable_points_count = areas.reduce((acc, points) => acc + points.length, 0);
     }
 
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const color_idx = grid.cells[row_idx][col_idx];
+            if (color_idx === undefined) {
+                grid.setCell({ row: row_idx, col: col_idx }, ColorBlueIdx);
+            }
+        }
+    }
+
     return initialPoints;
 }
 
-function generateAndRenderMap_fully_random() {
-    const canvas = document.getElementById("map-fully-random");
+function generateAndRenderMap_island() {
+    const canvas = document.getElementById("map-island");
 
-    const cell_radius = 5;
+    const cell_radius = 15;
     const cell_diameter = 2 * cell_radius;
 
     // construct grid
@@ -68,14 +85,15 @@ function generateAndRenderMap_fully_random() {
     let grid = new HexGrid(rows_count, cols_count);
 
     // generate random map
-    const initialPoints = generateMap_random(grid, colors.length);
+    const amount_of_initial_points = 2;
+    const initialPoints = generateMap_island(grid, amount_of_initial_points);
 
     // draw map
     renderGrid(canvas, grid, initialPoints, colors, cell_radius);
 }
 
-document.getElementById("map-fully-random").addEventListener('click', generateAndRenderMap_fully_random);
-generateAndRenderMap_fully_random();
+document.getElementById("map-island").addEventListener('click', generateAndRenderMap_island);
+generateAndRenderMap_island();
 
 </script>
 </div>

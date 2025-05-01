@@ -1,21 +1,34 @@
 // https://htmlcolorcodes.com/ - Color chart - 5th line from the bottom
+const ColorDarkRose = "#c0392b";  // dark rose
+const ColorPurple = "#8e44ad";  // purple
+const ColorBlue = "#2980b9";  // blue
+const ColorLightGreen = "#1abc9c";  // light green
+const ColorGreen = "#27ae60";  // green
+const ColorOrange = "#f39c12";  // orange
+const ColorGrey = "#7f8c8d";  // grey
+
 const colors = [
-    "#c0392b",  // dark rose
+    ColorDarkRose,
     //"#e74c3c",
     //"#9b59b6",
-    "#8e44ad",  // purple
-    "#2980b9",  // blue
+    ColorPurple,
+    ColorBlue,
     //"#3498db",
-    "#1abc9c",  // light green
+    ColorLightGreen,
     //"#16a085",
-    "#27ae60",  // green
+    ColorGreen,
     //"#2ecc71",
     //"#f1c40f",
-    "#f39c12",  // orange
+    ColorOrange,
     //"#e67e22",
     //"#d35400",  // dark orange
-    "#7f8c8d",  // grey
+    ColorGrey,
 ]
+
+const ColorPurpleIdx = colors.indexOf(ColorPurple);
+const ColorBlueIdx = colors.indexOf(ColorBlue);
+const ColorGreenIdx = colors.indexOf(ColorGreen);
+const ColorGreyIdx = colors.indexOf(ColorGrey);
 
 function renderGrid(canvas, grid, initialPoints, colors, cell_radius) {
     const cell_diameter = 2 * cell_radius;
@@ -38,13 +51,16 @@ function renderGrid(canvas, grid, initialPoints, colors, cell_radius) {
         }
     }
 
-    initialPoints.forEach((p, idx) => {
+    initialPoints.forEach(p => {
         const x = cell_radius + cell_radius * (p.row % 2) + p.col * cell_diameter;
         const y = cell_radius + p.row * cell_diameter;
 
         ctx.beginPath();
         ctx.arc(x, y, cell_radius, 0, Math.PI * 2);
         ctx.fillStyle = "#ff0000";  // red
+        // ctx.strokeStyle = "#ff0000";  // black
         ctx.fill();
+        // ctx.stroke();
+
     });
 }
