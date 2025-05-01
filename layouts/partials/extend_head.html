@@ -27,3 +27,20 @@
 
   gtag('config', 'G-S584PB390B');
 </script>
+<!-- /Google tag (gtag.js) -->
+
+<!-- Add custom JS scripts -->
+<!-- Inspired by https://discourse.gohugo.io/t/how-to-load-some-selected-js-scripts-on-selected-pages-only/33665 -->
+{{- $scripts := $.Params.scripts -}}
+{{- if $scripts -}}
+  {{- range $scripts -}}
+    <!-- <script src="{{ . | absURL }}"></script> -->
+    {{- $resPattern := add "*" (.) }}
+    {{- with $.Page.Resources.GetMatch $resPattern }}
+      <script src="{{ .RelPermalink }}"></script>
+    {{- else }}
+      {{- errorf "Failed to find %s" (.) }}
+    {{- end }}
+  {{- end -}}
+{{- end -}}
+<!-- /Add custom JS scripts -->

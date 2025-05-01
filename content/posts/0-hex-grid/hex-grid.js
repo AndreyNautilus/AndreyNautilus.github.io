@@ -35,6 +35,14 @@ class HexGrid {
         }
     }
 
+    fill(value) {
+        for (let row_idx = 0; row_idx < this.rows_count; ++row_idx) {
+            for (let col_idx = 0; col_idx < this.cols_count; ++col_idx) {
+                this.cells[row_idx][col_idx] = value;
+            }
+        }
+    }
+
     cell(point) {
         return this.cells[point.row][point.col];
     }

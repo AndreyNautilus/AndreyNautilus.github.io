@@ -1,7 +1,7 @@
 <div style="text-align: center;">
-<canvas id="map-voronoi" width="600" height="400"></canvas>
+<canvas id="map-voronoi-mnhttn" width="600" height="400"></canvas>
 <script type="module">
-function generateInitialPoints_random(grid, amount) {
+function generateInitialPoints_voronoi_random(grid, amount) {
     // Generate random not-equal points
 
     let result = [];
@@ -17,18 +17,18 @@ function generateInitialPoints_random(grid, amount) {
 }
 
 function distanceManhattan(p1, p2) {
-    return (p1.row - p2.row) + (p1.col - p2.col);
+    return Math.abs(p1.row - p2.row) + Math.abs(p1.col - p2.col);
 }
 
 function generateMap_voronoi(grid, number_of_areas) {
 
     // generate starting points
-    const initialPoints = generateInitialPoints_random(grid, number_of_areas);
+    const initialPoints = generateInitialPoints_voronoi_random(grid, number_of_areas);
 
     // apply Voronoi principle
     for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
         for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
-            const dists = initialPoints.map((p) => distanceSq(p, { row: row_idx, col: col_idx }));
+            const dists = initialPoints.map((p) => distanceManhattan(p, { row: row_idx, col: col_idx }));
             const [min_dist, idx] = dists.reduce((acc, dist, idx) => {
                 if (acc == undefined) {
                     return [dist, idx];
@@ -48,7 +48,7 @@ function generateMap_voronoi(grid, number_of_areas) {
 }
 
 function generateAndRenderMap_voronoi() {
-    const canvas = document.getElementById("map-voronoi");
+    const canvas = document.getElementById("map-voronoi-mnhttn");
 
     const cell_radius = 5;
     const cell_diameter = 2 * cell_radius;
@@ -65,7 +65,7 @@ function generateAndRenderMap_voronoi() {
     renderGrid(canvas, grid, initialPoints, colors, cell_radius);
 }
 
-document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
+document.getElementById("map-voronoi-mnhttn").addEventListener('click', generateAndRenderMap_voronoi);
 generateAndRenderMap_voronoi();
 
 </script>
