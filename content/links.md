@@ -30,3 +30,4 @@ ShowReadingTime: false
   ([post](../posts/2024-05-26-documenting-code))
 - [Linux process memory: RSS, PSS, USS explained](https://stackoverflow.com/questions/22372960/is-this-explanation-about-vss-rss-pss-uss-accurate) ([post](../posts/2024-07-16-linux-process-memory))
 - [Soma on dev.to](https://dev.to/somadevtoo) - collection of 101 articles about System Design
+- [SQL Murder Mystery](https://mystery.knightlab.com/) - gamified SQL exercise. Use SQL queries to relate the clues and solve the puzzle.
