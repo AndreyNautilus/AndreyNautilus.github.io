@@ -17,6 +17,8 @@ generate a map based on that grid.
 
 Hexagonal grids give smooth look, so they're suitable for natural-look objects. Let's explore them.
 
+[Overview of hex grids](https://www.redblobgames.com/grids/hexagons/): orientation, coordinates, etc.
+
 ## Map with areas
 
 Fully random areas:
