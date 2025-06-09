@@ -1,0 +1,500 @@
+<div style="text-align: center;">
+<canvas id="noise" width="700" height="400"></canvas>
+<canvas id="map-world" width="700" height="400"></canvas>
+<script type="module">
+
+const NoiseScale = 0.008;
+
+const KindWater = 0;
+const KindLand = 1;
+const KindCoast = 2;
+const KindMountain = 3;
+
+const WaterLevel = 0.45;
+const MountainLevel = 0.7;
+
+const SideNE = 0;
+const SideE = 1;
+const SideSE = 2;
+const SideSW = 3;
+const SideW = 4;
+const SideNW = 5;
+
+const NodeN = 0;
+const NodeNE = 1;
+const NodeSE = 2;
+const NodeS = 3;
+const NodeSW = 4;
+const NodeNW = 5;
+
+function pnoise2(x, y, numOctaves = 3) {
+    // Returns a 2D Perlin noise value from 0 to 1
+    let result = 0.0;
+	let amplitude = 1.0;
+	let frequency = 1.0;
+
+	for (let octave = 0; octave < numOctaves; octave++) {
+		const n = amplitude * noise.perlin2(x * frequency, y * frequency);
+		result += n;
+
+		amplitude *= 0.5;
+		frequency *= 2.0;
+	}
+
+    result = (result + 1) / 2; // normalize to [0, 1]
+	return result;
+}
+
+function perlin_noise_vis() {
+    const canvas = document.getElementById('noise');
+    var ctx = canvas.getContext('2d');
+
+    var image = ctx.createImageData(canvas.width, canvas.height);
+    var data = image.data;
+
+    for (var x = 0; x < canvas.width; x++) {
+        for (var y = 0; y < canvas.height; y++) {
+            var value = pnoise2(x * NoiseScale, y * NoiseScale);
+            value *= 255;
+
+            var cell = (x + y * canvas.width) * 4;
+            data[cell] = data[cell + 1] = data[cell + 2] = value;
+            data[cell + 3] = 255; // alpha.
+        }
+    }
+
+    ctx.putImageData(image, 0, 0);
+}
+
+function generateHeightMap(grid, cell_radius) {
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const { x, y } = hexToCoords(row_idx, col_idx, cell_radius);
+
+            const noise_value = pnoise2(x * NoiseScale, y * NoiseScale); //noise.perlin2(x * NoiseScale, y * NoiseScale);
+            grid.setCell({ row: row_idx, col: col_idx }, { height: noise_value, coords: new Point(row_idx, col_idx) });
+        }
+    }
+}
+
+function fillBasicKind(grid) {
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const cell = grid.cell({ row: row_idx, col: col_idx });
+            if (cell == undefined) continue;
+
+            if (cell.height < WaterLevel) {
+                cell.kind = KindWater;
+            } else if (cell.height > MountainLevel) {
+                cell.kind = KindMountain;
+            } else {
+                cell.kind = KindLand;
+            }
+        }
+    }
+}
+
+function detectCoasts(grid) {
+    let coastCells = [];
+
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const cell = grid.cell({ row: row_idx, col: col_idx });
+            if (cell == undefined) {
+                continue;
+            }
+
+            if (cell.kind == KindLand && cell.height < WaterLevel + 0.05) {
+                const has_water_neighbor = grid.getNeighbors({ row: row_idx, col: col_idx })
+                    .some(neighbor => grid.cell(neighbor).kind == KindWater);
+                if (has_water_neighbor) {
+                    coastCells.push(cell);
+                }
+            }
+        }
+    }
+
+    console.log(`Found ${coastCells.length} coast cells`);
+    // TODO: find random starting points for coasts and expand them
+    coastCells.forEach(cell => {
+        cell.kind = KindCoast;
+    });
+}
+
+function generateRivers(grid) {
+    function collectSources(grid) {
+        let sources = [];
+        for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+            for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+                const cell = grid.cell({ row: row_idx, col: col_idx });
+                if (cell == undefined) {
+                    continue;
+                }
+
+                if (cell.kind != KindWater && cell.height >= 0.6) {
+                    sources.push(cell);
+                }
+            }
+        }
+        return sources;
+    }
+
+    const potentialSources = collectSources(grid);
+    console.log(`Found ${potentialSources.length} potential river sources`);
+
+    const requiredSourcesCount = 10;
+    const sources = [];
+    while (sources.length < requiredSourcesCount) {
+        const idx = randomInt(potentialSources.length - 1);
+        const source = potentialSources[idx];
+
+        source.dbgColor = "#ff0000";  // mark as source
+        sources.push(source);
+
+        potentialSources.splice(idx, 1);  // remove from potential sources
+    }
+
+    function collectEdges(point) {
+        const edges = [
+            { origin: point, side: SideNE },
+            { origin: point, side: SideE },
+            { origin: point, side: SideSE },
+            { origin: point, side: SideSW },
+            { origin: point, side: SideW },
+            { origin: point, side: SideNW }
+        ];
+        return edges;
+    }
+
+    function detectEdgeTargetPoint(grid, edge) {
+        let p1 = undefined;
+        let p2 = undefined;
+
+        // TODO: use getNeighbors() with fixed order
+        // TODO: change to NodeN, NodeNE, etc.
+        if (edge.origin.row % 2 == 0) {
+            // even row
+            switch (edge.side) {
+                case SideNE:
+                    p1 = { row: edge.origin.row - 1, col: edge.origin.col - 1, node: NodeSE };
+                    p2 = { row: edge.origin.row, col: edge.origin.col + 1, node: NodeNW };
+                    break;
+                case SideE:
+                    p1 = { row: edge.origin.row - 1, col: edge.origin.col, node: NodeS };
+                    p2 = { row: edge.origin.row + 1, col: edge.origin.col, node: NodeN };
+                    break;
+                case SideSE:
+                    p1 = { row: edge.origin.row, col: edge.origin.col + 1, node: NodeSW };
+                    p2 = { row: edge.origin.row + 1, col: edge.origin.col - 1, node: NodeNE };
+                    break;
+                case SideSW:
+                    p1 = { row: edge.origin.row + 1, col: edge.origin.col, node: NodeNW };
+                    p2 = { row: edge.origin.row, col: edge.origin.col - 1, node: NodeSE };
+                    break;
+                case SideW:
+                    p1 = { row: edge.origin.row + 1, col: edge.origin.col - 1, node: NodeN };
+                    p2 = { row: edge.origin.row - 1, col: edge.origin.col - 1, node: NodeS };
+                    break;
+                case SideNW:
+                    p1 = { row: edge.origin.row, col: edge.origin.col - 1, node: NodeNE };
+                    p2 = { row: edge.origin.row - 1, col: edge.origin.col, node: NodeSW };
+                    break;
+            }
+        } else {
+            // odd row
+            switch (edge.side) {
+                case SideNE:
+                    p1 = { row: edge.origin.row - 1, col: edge.origin.col, node: NodeSE };
+                    p2 = { row: edge.origin.row, col: edge.origin.col + 1, node: NodeNW };
+                    break;
+                case SideE:
+                    p1 = { row: edge.origin.row - 1, col: edge.origin.col + 1, node: NodeS };
+                    p2 = { row: edge.origin.row + 1, col: edge.origin.col + 1, node: NodeN };
+                    break;
+                case SideSE:
+                    p1 = { row: edge.origin.row, col: edge.origin.col + 1, node: NodeSW };
+                    p2 = { row: edge.origin.row + 1, col: edge.origin.col, node: NodeNE };
+                    break;
+                case SideSW:
+                    p1 = { row: edge.origin.row + 1, col: edge.origin.col + 1, node: NodeNW };
+                    p2 = { row: edge.origin.row, col: edge.origin.col - 1, node: NodeSE };
+                    break;
+                case SideW:
+                    p1 = { row: edge.origin.row + 1, col: edge.origin.col, node: NodeN };
+                    p2 = { row: edge.origin.row - 1, col: edge.origin.col, node: NodeS };
+                    break;
+                case SideNW:
+                    p1 = { row: edge.origin.row, col: edge.origin.col - 1, node: NodeNE };
+                    p2 = { row: edge.origin.row - 1, col: edge.origin.col + 1, node: NodeSW };
+                    break;
+            }
+        }
+
+        if (!grid.isInside(p1)) {
+            p1 = undefined;
+        }
+        if (!grid.isInside(p2)) {
+            p2 = undefined;
+        }
+
+        if (p1 == undefined && p2 == undefined) {
+            return undefined;   // edge doesn't lead anywhere (strange)
+        } else if (p1 == undefined) {
+            return p2;
+        } else if (p2 == undefined) {
+            return p1;
+        } else {
+            // edge leads to two cells, pick the one with lower height
+            const cell1 = grid.cell(p1);
+            const cell2 = grid.cell(p2);
+            if (cell1 == undefined || cell2 == undefined) {
+                return undefined;  // no cell? (strange)
+            }
+
+            if (cell1.height < cell2.height) {
+                return p1;
+            }
+            return p2;
+        }
+    }
+
+    function collectExpandCandidates(grid, point, node) {
+        let edges = [];
+
+        switch (node) {
+            case NodeN:
+                edges.push({ origin: point, side: SideNE });
+                edges.push({ origin: point, side: SideNW });
+                break;
+            case NodeNE:
+                edges.push({ origin: point, side: SideE });
+                edges.push({ origin: point, side: SideNE });
+                break;
+            case NodeSE:
+                edges.push({ origin: point, side: SideSE });
+                edges.push({ origin: point, side: SideE });
+                break;
+            case NodeS:
+                edges.push({ origin: point, side: SideSW });
+                edges.push({ origin: point, side: SideSE });
+                break;
+            case NodeSW:
+                edges.push({ origin: point, side: SideW });
+                edges.push({ origin: point, side: SideSW });
+                break;
+            case NodeNW:
+                edges.push({ origin: point, side: SideNW });
+                edges.push({ origin: point, side: SideW });
+                break;
+        }
+        return edges;
+    }
+
+    function generateRiver(grid, source) {
+        let river = [];  // list of edges
+
+        // pick the first edge randomly
+        const edges = collectEdges(source.coords);  // point + side
+        river.push(edges[randomInt(edges.length)]);
+
+        // expand the river via edges
+        var expandable = true;
+        while (expandable) {
+            // console.log('explanding')
+            let edge = river[river.length - 1];
+
+            let edgeTarget = detectEdgeTargetPoint(grid, edge);
+            if (edgeTarget == undefined) {
+                // no target, stop expanding
+                expandable = false;
+                continue;
+            }
+
+            const cellTarget = grid.cell(edgeTarget);
+            // console.log(`expanding edge: ${edge.side}, target: (${edgeTarget.row}, ${edgeTarget.col}), cell kind: ${cellTarget.kind}`);
+            if (cellTarget.kind == KindWater) {
+                // reached water, stop expanding
+                expandable = false;
+                continue;
+            }
+            //cellTarget.dbgColor = "#ff0000";  // TODO: debug, remove me
+
+            let edgeCandidates = collectExpandCandidates(grid, new Point(edgeTarget.row, edgeTarget.col), edgeTarget.node);
+            edgeCandidates = edgeCandidates
+                .map((edge) => ({ edge: edge, target: detectEdgeTargetPoint(grid, edge) }))
+                .filter((candidate) => candidate.target != undefined && grid.cell(candidate.target).height < cellTarget.height);
+
+            if (edgeCandidates.length == 0) {
+                // no candidates, stop expanding
+                expandable = false;
+                continue;
+            }
+
+            // choose a candidate with the lowest target cell
+            const bestCandidate = edgeCandidates[randomInt(edgeCandidates.length - 1)];
+            // const bestCandidate = edgeCandidates.reduce((acc, candidate) => {
+            //     if (acc == undefined) {
+            //         return candidate;
+            //     }
+            //     const best = acc;
+            //     if (grid.cell(candidate.target).height < grid.cell(best.target).height) {
+            //         return candidate;
+            //     }
+            //     return acc;
+            // }, undefined);
+
+            console.log(`expanding from (${cellTarget.coords.row}, ${cellTarget.coords.col} - ${cellTarget.height}) to (${bestCandidate.target.row}, ${bestCandidate.target.col} - ${grid.cell(bestCandidate.target).height})`);
+
+            //grid.cell(bestCandidate.target).dbgColor = "#ff0000";  // TODO: debug, remove me
+            river.push(bestCandidate.edge);
+
+            console.log(`river length: ${river.length}`);
+            if (river.length >= 100) {
+                expandable = false;
+            }
+        }
+
+        return river;
+    }
+
+    const rivers = sources.map(source => generateRiver(grid, source));
+    return rivers;
+}
+
+function generateMap_world(grid, cell_radius) {
+    generateHeightMap(grid, cell_radius);
+
+    fillBasicKind(grid);
+    detectCoasts(grid);
+
+    const rivers = generateRivers(grid);
+
+    return {
+        rivers: rivers
+    };
+}
+
+function generateAndRender() {
+    // randomize noise
+    noise.seed(Math.random());
+
+    perlin_noise_vis();
+
+    const canvas = document.getElementById("map-world");
+
+    const cell_radius = 3;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    let grid = new HexGrid(rows_count, cols_count);
+
+    // generate the map
+    const map = generateMap_world(grid, cell_radius);
+
+    // draw map
+    render(canvas, grid, map, cell_radius);
+}
+
+function getColor(cell) {
+    if (cell.dbgColor != undefined) {
+        return cell.dbgColor;  // use debug color if set
+    }
+
+    switch (cell.kind) {
+        case KindWater:
+            return ColorBlue;
+        case KindLand:
+            return ColorGreen;
+        case KindCoast:
+            return ColorSand;
+        case KindMountain:
+            return ColorDarkBrown;
+        default:
+            return "#ff0000"; // Red for unknown kind
+    }
+}
+
+function renderGrid(ctx, grid, cell_radius) {
+    for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
+        for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
+            const { x, y } = hexToCoords(row_idx, col_idx, cell_radius);
+
+            const cell = grid.cells[row_idx][col_idx];
+            if (cell != undefined) {
+                ctx.beginPath();
+                ctx.arc(x, y, cell_radius, 0, Math.PI * 2);
+                ctx.fillStyle = getColor(cell);
+                ctx.fill();
+            }
+        }
+    }
+}
+
+function renderRivers(ctx, rivers, grid, cell_radius) {
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#0000ff";  //ColorBlue;
+
+    const sin30 = 0.5;
+    const cos30 = Math.sqrt(3) / 2;
+
+    for (let river of rivers) {
+        for (let edge of river) {
+            let p1 = undefined;
+            let p2 = undefined;
+
+            switch (edge.side) {
+                case SideNE:
+                    p1 = [0, -1];
+                    p2 = [cos30, -sin30];
+                    break;
+                case SideE:
+                    p1 = [cos30, -sin30];
+                    p2 = [cos30, sin30];
+                    break;
+                case SideSE:
+                    p1 = [cos30, sin30];
+                    p2 = [0, 1];
+                    break;
+                case SideSW:
+                    p1 = [0, 1];
+                    p2 = [-cos30, sin30];
+                    break;
+                case SideW:
+                    p1 = [-cos30, sin30];
+                    p2 = [-cos30, -sin30];
+                    break;
+                case SideNW:
+                    p1 = [-cos30, -sin30];
+                    p2 = [0, -1];
+                    break;
+            }
+
+            let { x, y } = hexToCoords(edge.origin.row, edge.origin.col, cell_radius);
+            const x1 = x + p1[0] * cell_radius;
+            const y1 = y + p1[1] * cell_radius;
+            const x2 = x + p2[0] * cell_radius;
+            const y2 = y + p2[1] * cell_radius;
+
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+    }
+}
+
+function render(canvas, grid, map, cell_radius) {
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    renderGrid(ctx, grid, cell_radius);
+    renderRivers(ctx, map.rivers, grid, cell_radius);
+}
+
+document.getElementById("map-world").addEventListener('click', generateAndRender);
+generateAndRender();
+
+</script>
+</div>
