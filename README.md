@@ -29,6 +29,13 @@ find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Addre
 - python 3.9+
 - `pre-commit install` to enable pre-commit hooks locally
 
+### hugo installation
+
+**Win:** download `hugo_extended_***_windows-amd64.zip` from [hugo releases](https://github.com/gohugoio/hugo/releases),
+unpack and add to `$PATH`.
+
+**Theme:** it's a submodule, so `git fetch` and `git checkout <LATEST_HASH>`.
+
 ## Windows terminal
 
 - `Shift + Alt + '-'` split window horizontally
