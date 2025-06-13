@@ -18,23 +18,10 @@
 {{- end }}
 {{- end }}
 
-
+{{- with (partial "card_tags.html" .) -}}
+{{- $scratch.Add "meta" (slice .) }}
+{{- end -}}
 
 {{- with ($scratch.Get "meta") }}
 {{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
 {{- end -}}
-<style>
-.post-tags li span {
-    background: var(--code-bg);
-    border-radius: 999px;
-    padding: 0.0em 0.7em;
-    font-size: 12px;
-    display: inline-block;
-}
-</style>
-<ul class="post-tags">
-{{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
-{{- range ($.GetTerms $tags) }}
-<li><span>{{ .LinkTitle }}</span></li>
-{{- end }}
-</ul>

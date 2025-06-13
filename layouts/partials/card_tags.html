@@ -1,0 +1,9 @@
+{{- /* List of tags on a post card in the list */ -}}
+{{- $tags := .Language.Params.Taxonomies.tag | default "tags" -}}
+{{- if $tags -}}
+<span class="card-tags">
+{{- range ($.GetTerms $tags) }}
+<span>{{ .LinkTitle }}</span>
+{{- end -}}
+</span>
+{{- end -}}
