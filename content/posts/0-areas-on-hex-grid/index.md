@@ -1,8 +1,7 @@
 ---
 title: Areas on hexagon grid
 summary: FloodFill and Voronoi exploration
-# description: "Short description"  # will be shown in the post as subtitle
-date: '2025-06-13T17:27:03+01:00'
+date: 2025-06-13T17:27:03+01:00
 draft: true  # draft mode by default
 tags: [procedural generation, hexgrid, floodfill, voronoi]
 styles:
