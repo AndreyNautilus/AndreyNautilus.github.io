@@ -1,0 +1,93 @@
+<div class="canvas-wrapper">
+<canvas id="map-floodfill-uniform" width="700" height="400"></canvas>
+<script type="module">
+
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function generateMap_floodfill_uniform(grid, colors) {
+    // Uniformly expanded areas:
+    // - iterate over areas sequentially
+    // - expand a point closest to the initial point of the area
+
+    // generate starting points
+    const initialPoints = randomDistantGridPoints(grid, colors.length);
+    initialPoints.forEach((p, idx) => { grid.setCell(p, colors[idx]); });
+    const areas = initialPoints.map((p, idx) => ({
+        initialPoint: p,
+        expandQueue: grid.getNeighbors(p),
+        value: colors[idx],
+    }));
+
+    // apply flood fill equally on all areas
+    let area_idx = 0;
+    while (areas.length > 0) {
+        // pick an area and advance the counter
+        area_idx = (area_idx + 1) % areas.length;
+        const area = areas[area_idx];
+
+        // clean the queue from points that are already filled
+        area.expandQueue = area.expandQueue.filter((p) => grid.cell(p) == undefined);
+        if (area.expandQueue.length == 0) {
+            // no more points to expand => exclude the area
+            // TODO: this will skip one item in iteration, but that should be fine
+            areas.splice(area_idx, 1);
+            continue;
+        }
+
+        // pick a point closest to the initial point
+        const [point, dist] = area.expandQueue.reduce((acc, p) => {
+            const dist = distanceSq(p, area.initialPoint);
+            if (acc == undefined || dist < acc[1]) {
+                return [p, dist];
+            }
+            return acc;
+        }, undefined);
+        // remove the point from the queue
+        area.expandQueue.splice(area.expandQueue.indexOf(point), 1);
+
+        // set the cell value in the grid
+        grid.setCell(point, area.value);
+
+        // add neighbors to the queue
+        const emptyNeighbors = collectEmptyNeighbors(grid, point);
+        emptyNeighbors.forEach((p) => {
+            if (!area.expandQueue.some((q) => pointsEqual(q, p))) {
+                area.expandQueue.push(p);
+            }
+        });
+    }
+
+    return initialPoints;
+}
+
+function generateAndRenderMap_floodfill_uniform() {
+    const canvas = document.getElementById("map-floodfill-uniform");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = generateMap_floodfill_uniform(grid, Colors);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-floodfill-uniform").addEventListener('click', generateAndRenderMap_floodfill_uniform);
+generateAndRenderMap_floodfill_uniform();
+
+</script>
+</div>
