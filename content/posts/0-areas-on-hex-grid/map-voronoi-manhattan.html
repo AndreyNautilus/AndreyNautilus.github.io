@@ -30,7 +30,7 @@ function generateAndRenderMap_voronoi_manhattan() {
     const initialPoints = fillGridViaVoronoi(grid, Colors, distanceManhattan);
 
     // draw map
-    renderGrid(canvas, grid, initialPoints, [], cell_radius);
+    renderGrid(canvas, grid, initialPoints, cell_radius);
 }
 
 document.getElementById("map-voronoi-manhattan").addEventListener('click', generateAndRenderMap_voronoi_manhattan);

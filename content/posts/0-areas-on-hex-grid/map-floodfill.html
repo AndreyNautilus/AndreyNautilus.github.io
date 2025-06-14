@@ -12,17 +12,17 @@ const Colors = [
     ColorGrey,
 ]
 
-function generateMap_floodfill(grid, number_of_areas) {
+function generateMap_floodfill(grid, colors) {
     // Fully random generation:
     // - pick random area to expand
     // - expand it to random neighbor
 
     // generate starting points
-    const initialPoints = randomDistantGridPoints(grid, number_of_areas);
-    initialPoints.forEach((p, idx) => { grid.setCell(p, Colors[idx]); });
+    const initialPoints = randomDistantGridPoints(grid, colors.length);
+    initialPoints.forEach((p, idx) => { grid.setCell(p, colors[idx]); });
     const areas = initialPoints.map((p, idx) => ({
         expandQueue: grid.getNeighbors(p),
-        value: Colors[idx]
+        value: colors[idx]
     }));
 
     // apply flood fill
@@ -53,11 +53,10 @@ function generateMap_floodfill(grid, number_of_areas) {
         grid.setCell(point, area.value);
 
         // add neighbors to the queue
-        const neighbors = grid.getNeighbors(point);
-        neighbors.forEach((point) => {
-            if (grid.cell(point) == undefined) {
-                // add only unfilled neighbors
-                area.expandQueue.push(point);
+        const emptyNeighbors = collectEmptyNeighbors(grid, point);
+        emptyNeighbors.forEach((p) => {
+            if (!area.expandQueue.some((q) => pointsEqual(q, p))) {
+                area.expandQueue.push(p);
             }
         });
     }
@@ -77,10 +76,10 @@ function generateAndRenderMap_floodfill() {
     const grid = new HexGrid(rows_count, cols_count);
 
     // generate random map
-    const initialPoints = generateMap_floodfill(grid, Colors.length);
+    const initialPoints = generateMap_floodfill(grid, Colors);
 
     // draw map
-    renderGrid(canvas, grid, initialPoints, [], cell_radius);
+    renderGrid(canvas, grid, initialPoints, cell_radius);
 }
 
 document.getElementById("map-floodfill").addEventListener('click', generateAndRenderMap_floodfill);

@@ -37,7 +37,7 @@ class HexGrid {
     constructor(rows_count, cols_count) {
         this.cols_count = cols_count;
         this.rows_count = rows_count;
-        //this.cells = new Array(this.rows_count).map(() => []);
+
         this.cells = [];
         for (let row_idx = 0; row_idx < this.rows_count; ++row_idx) {
             this.cells.push([]);
@@ -91,14 +91,10 @@ class HexGrid {
             return (0 <= p_row) && (p_row < this.rows_count) && (0 <= p_col) && (p_col < this.cols_count);
         }).map(([p_row, p_col]) => new Point(p_row, p_col));
     }
-
-    getCandidates(point) {
-        return getEmptyNeighbors(this, point);
-    }
 };
 
 
-function getEmptyNeighbors(grid, point) {
+function collectEmptyNeighbors(grid, point) {
     const neighbors = grid.getNeighbors(point);
     return neighbors.filter((p) => grid.cell(p) == undefined);
 }
@@ -119,7 +115,6 @@ function randomDistantGridPoints(grid, count, max_candidates = 10) {
     // Generate `count` distinct random points.
     //   For every point generate a few candidates and pick the one
     //   with the maximized minimum distance to the already generated points.
-
     const result = [];
     for (let i = 0; i < count; ++i) {
         if (result.length == 0) {

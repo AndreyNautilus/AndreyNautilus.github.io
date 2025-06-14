@@ -31,7 +31,7 @@ function pointToCoords(row, col, cell_radius) {
     return {x, y};
 }
 
-function renderGrid(canvas, grid, initialPoints, colors, cell_radius) {
+function renderGrid(canvas, grid, initialPoints, cell_radius) {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 

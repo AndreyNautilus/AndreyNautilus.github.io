@@ -26,7 +26,7 @@ function generateAndRenderMap_voronoi() {
     const initialPoints = fillGridViaVoronoi(grid, Colors);
 
     // draw map
-    renderGrid(canvas, grid, initialPoints, [], cell_radius);
+    renderGrid(canvas, grid, initialPoints, cell_radius);
 }
 
 document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
