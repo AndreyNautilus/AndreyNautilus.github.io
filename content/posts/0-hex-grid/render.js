@@ -9,19 +9,11 @@ const ColorGrey = "#7f8c8d";  // grey
 
 const colors = [
     ColorDarkRose,
-    //"#e74c3c",
-    //"#9b59b6",
     ColorPurple,
     ColorBlue,
-    //"#3498db",
     ColorLightGreen,
-    //"#16a085",
     ColorGreen,
-    //"#2ecc71",
-    //"#f1c40f",
     ColorOrange,
-    //"#e67e22",
-    //"#d35400",  // dark orange
     ColorGrey,
 ]
 
@@ -30,37 +22,43 @@ const ColorBlueIdx = colors.indexOf(ColorBlue);
 const ColorGreenIdx = colors.indexOf(ColorGreen);
 const ColorGreyIdx = colors.indexOf(ColorGrey);
 
-function renderGrid(canvas, grid, initialPoints, colors, cell_radius) {
+function pointToCoords(row, col, cell_radius) {
     const cell_diameter = 2 * cell_radius;
 
+    const x = cell_radius + cell_radius * (row % 2) + col * cell_diameter;
+    const y = cell_radius + row * cell_diameter;
+
+    return {x, y};
+}
+
+function renderGrid(canvas, grid, initialPoints, colors, cell_radius) {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let row_idx = 0; row_idx < grid.rows_count; ++row_idx) {
         for (let col_idx = 0; col_idx < grid.cols_count; ++col_idx) {
-            const x = cell_radius + cell_radius * (row_idx % 2) + col_idx * cell_diameter;
-            const y = cell_radius + row_idx * cell_diameter;
+            const {x ,y} = pointToCoords(row_idx, col_idx, cell_radius);
 
-            const color_idx = grid.cells[row_idx][col_idx];
-            if (color_idx != undefined) {
+            const color = grid.cells[row_idx][col_idx];
+            if (color != undefined) {
                 ctx.beginPath();
                 ctx.arc(x, y, cell_radius, 0, Math.PI * 2);
-                ctx.fillStyle = colors[color_idx];
+                ctx.fillStyle = color;
                 ctx.fill();
             }
         }
     }
 
     initialPoints.forEach(p => {
-        const x = cell_radius + cell_radius * (p.row % 2) + p.col * cell_diameter;
-        const y = cell_radius + p.row * cell_diameter;
+        const {x, y} = pointToCoords(p.row, p.col, cell_radius);
 
         ctx.beginPath();
         ctx.arc(x, y, cell_radius, 0, Math.PI * 2);
-        ctx.fillStyle = "#ff0000";  // red
-        // ctx.strokeStyle = "#ff0000";  // black
-        ctx.fill();
-        // ctx.stroke();
+        // ctx.fillStyle = "#ff0000";  // red
+        ctx.strokeStyle = "#ff0000";  // red
+        ctx.lineWidth = 3;
+        // ctx.fill();
+        ctx.stroke();
 
     });
 }

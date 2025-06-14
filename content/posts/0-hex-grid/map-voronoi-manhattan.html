@@ -1,5 +1,5 @@
 <div class="canvas-wrapper">
-<canvas id="map-voronoi" width="700" height="400"></canvas>
+<canvas id="map-voronoi-manhattan" width="700" height="400"></canvas>
 <script type="module">
 const Colors = [
     ColorDarkRose,
@@ -11,8 +11,12 @@ const Colors = [
     ColorGrey,
 ]
 
-function generateAndRenderMap_voronoi() {
-    const canvas = document.getElementById("map-voronoi");
+function distanceManhattan(p1, p2) {
+    return Math.abs(p1.row - p2.row) + Math.abs(p1.col - p2.col);
+}
+
+function generateAndRenderMap_voronoi_manhattan() {
+    const canvas = document.getElementById("map-voronoi-manhattan");
 
     const cell_radius = 5;
     const cell_diameter = 2 * cell_radius;
@@ -23,14 +27,14 @@ function generateAndRenderMap_voronoi() {
     const grid = new HexGrid(rows_count, cols_count);
 
     // generate random map
-    const initialPoints = fillGridViaVoronoi(grid, Colors);
+    const initialPoints = fillGridViaVoronoi(grid, Colors, distanceManhattan);
 
     // draw map
     renderGrid(canvas, grid, initialPoints, [], cell_radius);
 }
 
-document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
-generateAndRenderMap_voronoi();
+document.getElementById("map-voronoi-manhattan").addEventListener('click', generateAndRenderMap_voronoi_manhattan);
+generateAndRenderMap_voronoi_manhattan();
 
 </script>
 </div>

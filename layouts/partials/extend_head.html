@@ -50,10 +50,23 @@
 {{- $scripts := $.Params.scripts -}}
 {{- if $scripts -}}
   {{- range $scripts -}}
-    <!-- <script src="{{ . | absURL }}"></script> -->
     {{- $resPattern := add "*" (.) }}
     {{- with $.Page.Resources.GetMatch $resPattern }}
       <script src="{{ .RelPermalink }}"></script>
+    {{- else }}
+      {{- errorf "Failed to find %s" (.) }}
+    {{- end }}
+  {{- end -}}
+{{- end -}}
+<!-- /Add custom JS scripts -->
+
+<!-- Add custom CSS styles -->
+{{- $styles := $.Params.styles -}}
+{{- if $styles -}}
+  {{- range $styles -}}
+    {{- $resPattern := add "*" (.) }}
+    {{- with $.Page.Resources.GetMatch $resPattern }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" as="style">
     {{- else }}
       {{- errorf "Failed to find %s" (.) }}
     {{- end }}
