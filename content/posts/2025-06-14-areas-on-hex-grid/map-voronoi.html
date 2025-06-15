@@ -1,0 +1,36 @@
+<div class="canvas-wrapper">
+<canvas id="map-voronoi" width="700" height="400"></canvas>
+<script type="module">
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function generateAndRenderMap_voronoi() {
+    const canvas = document.getElementById("map-voronoi");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = fillGridViaVoronoi(grid, Colors);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
+generateAndRenderMap_voronoi();
+
+</script>
+</div>
