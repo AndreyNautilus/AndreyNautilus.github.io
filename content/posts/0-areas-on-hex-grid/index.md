@@ -16,7 +16,7 @@ Let's assume we have a hex-based grid and we want to fill this grid with random,
 but naturally looking areas, like biomes or countries.
 In this post I will explore and visualize some approaches.
 
-_Side note:_ why hex-based grid? Because it gives smooth natually-looking areas compared to
+_Side note:_ why hex-based grid? Because it gives smooth naturally-looking areas compared to
 square or rectangle grids for example.
 
 ## Flood fill
@@ -76,7 +76,7 @@ Here's how it looks with "standard" approach:
 
 {{< load_resource "map-voronoi.html" >}}
 
-Looks geometric, definitely not natual. But still may be useful.
+Looks geometric, definitely not natural. But still may be useful.
 
 ### Manhattan distance
 
