@@ -1,8 +1,7 @@
 ---
 title: Areas on hexagon grid
 summary: FloodFill and Voronoi exploration
-date: 2025-06-13T17:27:03+01:00
-draft: true  # draft mode by default
+date: 2025-06-14T17:27:03+01:00
 tags: [procedural generation, hexgrid, floodfill, voronoi]
 styles:
   - canvas-wrapper.css
