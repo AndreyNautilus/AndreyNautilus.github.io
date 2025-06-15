@@ -1,0 +1,271 @@
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Areas on hexagon grid | Andrey Nautilus blog</title><meta name=keywords content="procedural generation,hexgrid,floodfill,voronoi"><meta name=description content="FloodFill and Voronoi exploration"><meta name=author content><link rel=canonical href=https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/><link crossorigin=anonymous href=/assets/css/stylesheet.8fe10233a706bc87f2e08b3cf97b8bd4c0a80f10675a143675d59212121037c0.css integrity="sha256-j+ECM6cGvIfy4Is8+XuL1MCoDxBnWhQ2ddWSEhIQN8A=" rel="preload stylesheet" as=style><link rel=icon href=https://andreynautilus.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://andreynautilus.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://andreynautilus.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://andreynautilus.github.io/apple-touch-icon.png><link rel=mask-icon href=https://andreynautilus.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=text/javascript>(function(e,t,n,s,o,i,a){e[o]=e[o]||function(){(e[o].a=e[o].a||[]).push(arguments)},e[o].l=1*new Date;for(var r=0;r<document.scripts.length;r++)if(document.scripts[r].src===s)return;i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym"),ym(99367858,"init",{clickmap:!0,trackLinks:!0,accurateTrackBounce:!0})</script><noscript><div><img src=https://mc.yandex.ru/watch/99367858 style=position:absolute;left:-9999px alt></div></noscript><script async src="https://www.googletagmanager.com/gtag/js?id=G-S584PB390B"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-S584PB390B")</script><style>.card-tags{font-size:12px}.card-tags span{background:var(--code-bg);border-radius:999px;padding:0 .7em;display:inline-block}</style><script src=/posts/2025-06-14-areas-on-hex-grid/hex-grid.js></script><script src=/posts/2025-06-14-areas-on-hex-grid/grid-voronoi.js></script><script src=/posts/2025-06-14-areas-on-hex-grid/render.js></script><link rel=stylesheet href=/posts/2025-06-14-areas-on-hex-grid/canvas-wrapper.css as=style><meta property="og:url" content="https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/"><meta property="og:site_name" content="Andrey Nautilus blog"><meta property="og:title" content="Areas on hexagon grid"><meta property="og:description" content="FloodFill and Voronoi exploration"><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-06-14T17:27:03+01:00"><meta property="article:modified_time" content="2025-06-14T17:27:03+01:00"><meta property="article:tag" content="procedural generation"><meta property="article:tag" content="hexgrid"><meta property="article:tag" content="floodfill"><meta property="article:tag" content="voronoi"><meta name=twitter:card content="summary"><meta name=twitter:title content="Areas on hexagon grid"><meta name=twitter:description content="FloodFill and Voronoi exploration"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"posts","item":"https://andreynautilus.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Areas on hexagon grid","item":"https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Areas on hexagon grid","name":"Areas on hexagon grid","description":"FloodFill and Voronoi exploration","keywords":["procedural generation","hexgrid","floodfill","voronoi"],"articleBody":"Let’s assume we have a hex-based grid and we want to fill this grid with random, but naturally looking areas, like biomes or countries. In this post I will explore and visualize some approaches.\nSide note: why hex-based grid? Because it gives smooth naturally-looking areas compared to square or rectangle grids for example.\nFlood fill This is the simplest approach which comes to mind first. The idea is:\ninitialize areas by picking some random points; iterate over areas and expand them to neighboring points (apply flood-fill algorithm); Depending on the order of iteration over areas and how we pick a point to expand, we’ll get different results.\nFully random On each step we pick a random area and expand it to random point:\nThis gives nicely looking results, with ripped edges. But due to fully random nature, one area can expand way more than others and produce weirdly-looking protrusions.\nIterate over areas and expand to nearest point This is the opposite approach that reduces randomness:\ncircularly iterate over all areas (to give every area equal chance to grow); expand each area to the point nearest to the initial point; This gives roundish look. But due to heavy restrictions on how to expand the areas, we can get long protrusions which ruin the entire picture. The easiest way to remove them is to re-generate the layout.\nCombined? It seems that combination of iterative and fully random floodfill will give us a good result, but how can we combine them? The expantion of areas should be random to avoid round shapes. Looping over areas is actually the same as picking random area, because random number generator should give roughly equal amount of every index.\nPossible improvements:\nadd weights to areas to tweak RNG; add weights to expansion points; or implement an analyzer of the produced result and re-generate the layout if the quality is too low; “Voronoi” principle Another approach is to use Voronoi diagrams: every point belongs to the area which initial point is the closest.\nThe generic solution for Voronoi diagrams on a plane is quite complex, but for grids it’s quite simple: iterate over all points of the grid, compute distances to all initial points and pick the minimum.\nHere’s how it looks with “standard” approach:\nLooks geometric, definitely not natural. But still may be useful.\nManhattan distance A way to make it look less geometric is to use a different distance function, for example ManHattan distance. This gives way more stylish result:\nDiagonal borders match the hexagon grid nicely.\nInitial points selection Typically, initial points should be defined by underlying logic of the map/grid, but for this post I pick random points.\nOne approach is to take fully random non-overlapping points. This may result in points located close to each other, which may lead to weird generation results: small areas or long protrusions.\nA better approach is to use “best candidate” algorithm:\nfor each point generate N candidates; select the candidate that maximazes the minimum distance to already generated points; This will give points which are distant from each other.\nReferences Overview of hex grids: orientation, coordinates, etc. I took the idea of ManHattan distance for Voronoi diagram from this article on Habr. ","wordCount":"535","inLanguage":"en","datePublished":"2025-06-14T17:27:03+01:00","dateModified":"2025-06-14T17:27:03+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/"},"publisher":{"@type":"Organization","name":"Andrey Nautilus blog","logo":{"@type":"ImageObject","url":"https://andreynautilus.github.io/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://andreynautilus.github.io/ accesskey=h title="Andrey Nautilus blog (Alt + H)"><img src=https://andreynautilus.github.io/apple-touch-icon.png alt aria-label=logo height=35>Andrey Nautilus blog</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://andreynautilus.github.io/links/ title=links><span>links</span></a></li><li><a href=https://andreynautilus.github.io/tags/ title=tags><span>tags</span></a></li><li><a href=https://andreynautilus.github.io/search/ title="search (Alt + /)" accesskey=/><span>search</span></a></li><li><a href=https://github.com/AndreyNautilus/AndreyNautilus.github.io title=src><span>src</span>&nbsp;
+<svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://andreynautilus.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://andreynautilus.github.io/posts/>posts</a></div><h1 class="post-title entry-hint-parent">Areas on hexagon grid</h1><div class=post-meta><span title='2025-06-14 17:27:03 +0100 +0100'>June 14, 2025</span>&nbsp;·&nbsp;3 min</div></header><div class=post-content><p>Let&rsquo;s assume we have a hex-based grid and we want to fill this grid with random,
+but naturally looking areas, like biomes or countries.
+In this post I will explore and visualize some approaches.</p><p><em>Side note:</em> why hex-based grid? Because it gives smooth naturally-looking areas compared to
+square or rectangle grids for example.</p><h2 id=flood-fill>Flood fill<a hidden class=anchor aria-hidden=true href=#flood-fill>#</a></h2><p>This is the simplest approach which comes to mind first. The idea is:</p><ul><li>initialize <em>areas</em> by picking some random points;</li><li>iterate over <em>areas</em> and expand them to neighboring points (apply flood-fill algorithm);</li></ul><p>Depending on the order of iteration over areas and how we pick a point to expand,
+we&rsquo;ll get different results.</p><h3 id=fully-random>Fully random<a hidden class=anchor aria-hidden=true href=#fully-random>#</a></h3><p>On each step we pick <em>a random area</em> and expand it to <em>random point</em>:</p><div class=canvas-wrapper><canvas id=map-floodfill width=700 height=400></canvas>
+<script type=module>
+
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function generateMap_floodfill(grid, colors) {
+    // Fully random generation:
+    // - pick random area to expand
+    // - expand it to random neighbor
+
+    // generate starting points
+    const initialPoints = randomDistantGridPoints(grid, colors.length);
+    initialPoints.forEach((p, idx) => { grid.setCell(p, colors[idx]); });
+    const areas = initialPoints.map((p, idx) => ({
+        expandQueue: grid.getNeighbors(p),
+        value: colors[idx]
+    }));
+
+    // apply flood fill
+    while (areas.length > 0) {
+        // pick an area
+        const area_idx = randomInt(areas.length);
+        const area = areas[area_idx];
+
+        // pop a random point to expand
+        let point = undefined;
+        while (point == undefined && area.expandQueue.length > 0) {
+            const point_idx = randomInt(area.expandQueue.length);
+            const candidate = area.expandQueue[point_idx];
+            area.expandQueue.splice(point_idx, 1);
+
+            if (grid.cell(candidate) == undefined) {
+                point = candidate;
+            }
+        }
+
+        if (point == undefined) {
+            // no more points to expand => exclude the area
+            areas.splice(area_idx, 1);
+            continue;
+        }
+
+        // set the cell value in the grid
+        grid.setCell(point, area.value);
+
+        // add neighbors to the queue
+        const emptyNeighbors = collectEmptyNeighbors(grid, point);
+        emptyNeighbors.forEach((p) => {
+            if (!area.expandQueue.some((q) => pointsEqual(q, p))) {
+                area.expandQueue.push(p);
+            }
+        });
+    }
+
+    return initialPoints;
+}
+
+function generateAndRenderMap_floodfill() {
+    const canvas = document.getElementById("map-floodfill");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = generateMap_floodfill(grid, Colors);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-floodfill").addEventListener('click', generateAndRenderMap_floodfill);
+generateAndRenderMap_floodfill();
+
+</script></div><p>This gives nicely looking results, with ripped edges. But due to fully random nature,
+one area can expand way more than others and produce weirdly-looking protrusions.</p><h3 id=iterate-over-areas-and-expand-to-nearest-point>Iterate over areas and expand to nearest point<a hidden class=anchor aria-hidden=true href=#iterate-over-areas-and-expand-to-nearest-point>#</a></h3><p>This is the opposite approach that reduces randomness:</p><ul><li>circularly iterate over all areas (to give every area equal chance to grow);</li><li>expand each area to the point nearest to the initial point;</li></ul><div class=canvas-wrapper><canvas id=map-floodfill-uniform width=700 height=400></canvas>
+<script type=module>
+
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function generateMap_floodfill_uniform(grid, colors) {
+    // Uniformly expanded areas:
+    // - iterate over areas sequentially
+    // - expand a point closest to the initial point of the area
+
+    // generate starting points
+    const initialPoints = randomDistantGridPoints(grid, colors.length);
+    initialPoints.forEach((p, idx) => { grid.setCell(p, colors[idx]); });
+    const areas = initialPoints.map((p, idx) => ({
+        initialPoint: p,
+        expandQueue: grid.getNeighbors(p),
+        value: colors[idx],
+    }));
+
+    // apply flood fill equally on all areas
+    let area_idx = 0;
+    while (areas.length > 0) {
+        // pick an area and advance the counter
+        area_idx = (area_idx + 1) % areas.length;
+        const area = areas[area_idx];
+
+        // clean the queue from points that are already filled
+        area.expandQueue = area.expandQueue.filter((p) => grid.cell(p) == undefined);
+        if (area.expandQueue.length == 0) {
+            // no more points to expand => exclude the area
+            // TODO: this will skip one item in iteration, but that should be fine
+            areas.splice(area_idx, 1);
+            continue;
+        }
+
+        // pick a point closest to the initial point
+        const [point, dist] = area.expandQueue.reduce((acc, p) => {
+            const dist = distanceSq(p, area.initialPoint);
+            if (acc == undefined || dist < acc[1]) {
+                return [p, dist];
+            }
+            return acc;
+        }, undefined);
+        // remove the point from the queue
+        area.expandQueue.splice(area.expandQueue.indexOf(point), 1);
+
+        // set the cell value in the grid
+        grid.setCell(point, area.value);
+
+        // add neighbors to the queue
+        const emptyNeighbors = collectEmptyNeighbors(grid, point);
+        emptyNeighbors.forEach((p) => {
+            if (!area.expandQueue.some((q) => pointsEqual(q, p))) {
+                area.expandQueue.push(p);
+            }
+        });
+    }
+
+    return initialPoints;
+}
+
+function generateAndRenderMap_floodfill_uniform() {
+    const canvas = document.getElementById("map-floodfill-uniform");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = generateMap_floodfill_uniform(grid, Colors);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-floodfill-uniform").addEventListener('click', generateAndRenderMap_floodfill_uniform);
+generateAndRenderMap_floodfill_uniform();
+
+</script></div><p>This gives roundish look. But due to heavy restrictions on how to expand the areas,
+we can get long protrusions which ruin the entire picture. The easiest way to remove them
+is to re-generate the layout.</p><h3 id=combined>Combined?<a hidden class=anchor aria-hidden=true href=#combined>#</a></h3><p>It seems that combination of <em>iterative</em> and <em>fully random</em> floodfill will give us a good result,
+but how can we combine them? The expantion of areas should be random to avoid round shapes.
+Looping over areas is actually the same as picking random area, because random number generator
+should give roughly equal amount of every index.</p><p>Possible improvements:</p><ul><li>add weights to areas to tweak RNG;</li><li>add weights to expansion points;</li><li>or implement an analyzer of the produced result and re-generate the layout if the quality is too low;</li></ul><h2 id=voronoi-principle>&ldquo;Voronoi&rdquo; principle<a hidden class=anchor aria-hidden=true href=#voronoi-principle>#</a></h2><p>Another approach is to use <a href=https://en.wikipedia.org/wiki/Voronoi_diagram>Voronoi diagrams</a>:
+every point belongs to the area which initial point is the closest.</p><p>The generic solution for Voronoi diagrams on a plane is quite complex, but for grids
+it&rsquo;s quite simple: iterate over all points of the grid, compute distances to all initial points and pick the minimum.</p><p>Here&rsquo;s how it looks with &ldquo;standard&rdquo; approach:</p><div class=canvas-wrapper><canvas id=map-voronoi width=700 height=400></canvas>
+<script type=module>
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function generateAndRenderMap_voronoi() {
+    const canvas = document.getElementById("map-voronoi");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = fillGridViaVoronoi(grid, Colors);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-voronoi").addEventListener('click', generateAndRenderMap_voronoi);
+generateAndRenderMap_voronoi();
+
+</script></div><p>Looks geometric, definitely not natural. But still may be useful.</p><h3 id=manhattan-distance>Manhattan distance<a hidden class=anchor aria-hidden=true href=#manhattan-distance>#</a></h3><p>A way to make it look less geometric is to use a different <em>distance function</em>,
+for example <a href=https://en.wikipedia.org/wiki/Taxicab_geometry>ManHattan distance</a>.
+This gives way more stylish result:</p><div class=canvas-wrapper><canvas id=map-voronoi-manhattan width=700 height=400></canvas>
+<script type=module>
+const Colors = [
+    ColorDarkRose,
+    ColorPurple,
+    ColorBlue,
+    ColorLightGreen,
+    ColorGreen,
+    ColorOrange,
+    ColorGrey,
+]
+
+function distanceManhattan(p1, p2) {
+    return Math.abs(p1.row - p2.row) + Math.abs(p1.col - p2.col);
+}
+
+function generateAndRenderMap_voronoi_manhattan() {
+    const canvas = document.getElementById("map-voronoi-manhattan");
+
+    const cell_radius = 5;
+    const cell_diameter = 2 * cell_radius;
+
+    // construct grid
+    const cols_count = Math.floor((canvas.width - cell_radius) / cell_diameter);
+    const rows_count = Math.floor(canvas.height / cell_diameter);
+    const grid = new HexGrid(rows_count, cols_count);
+
+    // generate random map
+    const initialPoints = fillGridViaVoronoi(grid, Colors, distanceManhattan);
+
+    // draw map
+    renderGrid(canvas, grid, initialPoints, cell_radius);
+}
+
+document.getElementById("map-voronoi-manhattan").addEventListener('click', generateAndRenderMap_voronoi_manhattan);
+generateAndRenderMap_voronoi_manhattan();
+
+</script></div><p>Diagonal borders match the hexagon grid nicely.</p><h2 id=initial-points-selection>Initial points selection<a hidden class=anchor aria-hidden=true href=#initial-points-selection>#</a></h2><p>Typically, initial points should be defined by underlying logic of the map/grid,
+but for this post I pick random points.</p><p>One approach is to take fully random non-overlapping points. This may result in points
+located close to each other, which may lead to weird generation results: small areas or
+long protrusions.</p><p>A better approach is to use &ldquo;best candidate&rdquo; algorithm:</p><ul><li>for each point generate N candidates;</li><li>select the candidate that maximazes the minimum distance to already generated points;</li></ul><p>This will give points which are distant from each other.</p><h2 id=references>References<a hidden class=anchor aria-hidden=true href=#references>#</a></h2><ul><li><a href=https://www.redblobgames.com/grids/hexagons/>Overview of hex grids</a>: orientation, coordinates, etc.</li><li>I took the idea of ManHattan distance for Voronoi diagram from <a href=https://habr.com/ru/articles/794572/>this article on Habr</a>.</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://andreynautilus.github.io/tags/procedural-generation/>procedural generation</a></li><li><a href=https://andreynautilus.github.io/tags/hexgrid/>hexgrid</a></li><li><a href=https://andreynautilus.github.io/tags/floodfill/>floodfill</a></li><li><a href=https://andreynautilus.github.io/tags/voronoi/>voronoi</a></li></ul><nav class=paginav><a class=next href=https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/><span class=title>Next »</span><br><span>Covariant types in C++ virtual methods</span></a></nav></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://andreynautilus.github.io/>Andrey Nautilus blog</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

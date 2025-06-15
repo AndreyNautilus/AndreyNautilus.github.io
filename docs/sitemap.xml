@@ -3,18 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://andreynautilus.github.io/</loc>
-    <lastmod>2025-05-01T22:47:09+02:00</lastmod>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/floodfill/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/hexgrid/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/procedural-generation/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/voronoi/</loc>
+    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/c&#43;&#43;/</loc>
     <lastmod>2025-05-01T22:47:09+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</loc>
-    <lastmod>2025-05-01T22:47:09+02:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/posts/</loc>
-    <lastmod>2025-05-01T22:47:09+02:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/</loc>
     <lastmod>2025-05-01T22:47:09+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2025-04-24-mysterious-signed-operand/</loc>
@@ -37,9 +52,6 @@
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2024-12-24-gitignore-global/</loc>
     <lastmod>2024-12-24T19:02:34+01:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/procedural-generation/</loc>
-    <lastmod>2024-07-29T18:54:08+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2024-07-29-random-points-in-circle/</loc>
     <lastmod>2024-07-29T18:54:08+02:00</lastmod>

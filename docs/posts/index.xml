@@ -6,8 +6,15 @@
     <description>Recent content in posts on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.147.8</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 01 May 2025 22:47:09 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 14 Jun 2025 17:27:03 +0100</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Areas on hexagon grid</title>
+      <link>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</link>
+      <pubDate>Sat, 14 Jun 2025 17:27:03 +0100</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</guid>
+      <description>FloodFill and Voronoi exploration</description>
+    </item>
     <item>
       <title>Covariant types in C&#43;&#43; virtual methods</title>
       <link>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</link>

@@ -1,0 +1,15 @@
+.canvas-wrapper {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  padding-top: 57.1429%; /* 400 / 700 = 0.5714 → 57.1429% */
+}
+
+.canvas-wrapper canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}

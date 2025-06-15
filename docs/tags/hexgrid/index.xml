@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>hexgrid on Andrey Nautilus blog</title>
+    <link>https://andreynautilus.github.io/tags/hexgrid/</link>
+    <description>Recent content in hexgrid on Andrey Nautilus blog</description>
+    <generator>Hugo -- 0.147.8</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 14 Jun 2025 17:27:03 +0100</lastBuildDate>
+    <atom:link href="https://andreynautilus.github.io/tags/hexgrid/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Areas on hexagon grid</title>
+      <link>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</link>
+      <pubDate>Sat, 14 Jun 2025 17:27:03 +0100</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</guid>
+      <description>FloodFill and Voronoi exploration</description>
+    </item>
+  </channel>
+</rss>
