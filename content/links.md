@@ -23,6 +23,7 @@ ShowReadingTime: false
 - [Layer-Based Procedural Generation for Infinite Worlds](https://www.youtube.com/watch?v=GJWuVwZO98s) - youtube
 - [A simple procedural animation technique](https://www.youtube.com/watch?v=qlfh_rv6khY) - youtube
 - [Dungeon generation (more advanced random room placement)](https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm)
+- [Wave function collapse](https://github.com/mxgmn/WaveFunctionCollapse) algorithm ([post](../posts/0-wave-function-collapse))
 
 ## Other
 
