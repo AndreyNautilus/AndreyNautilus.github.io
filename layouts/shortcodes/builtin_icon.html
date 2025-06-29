@@ -1,0 +1,9 @@
+{{- /*  Insert a built-in icon from the theme into a string  */ -}}
+{{- with .Get 0 }}
+  {{ $ctx := dict "name" ($.Get 0) }}
+  <span class="inline-icon">
+    {{ partial "svg.html" $ctx }}
+  </span>
+{{- else }}
+  {{- errorf "The %q shortcode requires an argument: see %s" $.Name $.Position }}
+{{- end }}
