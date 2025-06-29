@@ -29,27 +29,15 @@
 </script>
 <!-- /Google tag (gtag.js) -->
 
-<!-- Style for tags on the post card in the list (see card_tags.html) -->
-<style>
-.card-tags {
-  font-size: 12px;
-}
+<!-- Global styles required for partials/shortcodes -->
+{{ with resources.Get "css/global/card_tags.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" as="style">
+{{ end }}
 
-.card-tags span {
-  background: var(--code-bg);
-  border-radius: 999px;
-  padding: 0.0em 0.7em;
-
-  display: inline-block;
-}
-
-.inline-icon svg {
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-}
-</style>
-<!-- /Style for tags on the post card in the list -->
+{{ with resources.Get "css/global/builtin_icon.css" | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" as="style">
+{{ end }}
+<!-- /Global styles -->
 
 <!-- Add custom JS scripts -->
 <!-- Inspired by https://discourse.gohugo.io/t/how-to-load-some-selected-js-scripts-on-selected-pages-only/33665 -->
