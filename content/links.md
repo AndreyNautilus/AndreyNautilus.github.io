@@ -17,6 +17,11 @@ ShowReadingTime: false
   [diablo 1 dungeon generation](https://www.boristhebrave.com/2019/07/14/dungeon-generation-in-diablo-1/),
   [unexplored dungeon generation](https://www.boristhebrave.com/2021/04/10/dungeon-generation-in-unexplored/),
   etc.
+- [Red Blob Games](https://www.redblobgames.com/) - blog about procedural generation:
+  [map generation from noise](https://www.redblobgames.com/maps/terrain-from-noise/) and
+  [from polygons](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/),
+  [random polyline between 2 points](https://www.redblobgames.com/maps/noisy-edges/) and
+  lots of useful links.
 - [Overview of Maze generation algorithms](https://professor-l.github.io/mazes/)
 - [Poisson disk sampling](https://bost.ocks.org/mike/algorithms/) and [Bridson’s algorithm](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm) - ([post](../posts/2024-07-21-evenly-random-points-on-plane))
 - [Random point in a circle with uniform distribution](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/) - ([post](../posts/2024-07-29-random-points-in-circle))
