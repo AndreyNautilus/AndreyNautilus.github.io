@@ -13,11 +13,11 @@ ShowReadingTime: false
 
 ## Procedural generation
 
-- https://www.boristhebrave.com/ - blog about procedural generation:
-  [diablo 1 dungeon generation](https://www.boristhebrave.com/2019/07/14/dungeon-generation-in-diablo-1/),
-  [unexplored dungeon generation](https://www.boristhebrave.com/2021/04/10/dungeon-generation-in-unexplored/),
+- https://www.boristhebrave.com/ :
+  [Diablo 1 dungeon generation](https://www.boristhebrave.com/2019/07/14/dungeon-generation-in-diablo-1/),
+  [unExplored dungeon generation](https://www.boristhebrave.com/2021/04/10/dungeon-generation-in-unexplored/),
   etc.
-- [Red Blob Games](https://www.redblobgames.com/) - blog about procedural generation:
+- https://www.redblobgames.com/ :
   [map generation from noise](https://www.redblobgames.com/maps/terrain-from-noise/) and
   [from polygons](http://www-cs-students.stanford.edu/~amitp/game-programming/polygon-map-generation/),
   [random polyline between 2 points](https://www.redblobgames.com/maps/noisy-edges/) and
@@ -25,7 +25,7 @@ ShowReadingTime: false
 - [Overview of Maze generation algorithms](https://professor-l.github.io/mazes/)
 - [Poisson disk sampling](https://bost.ocks.org/mike/algorithms/) and [Bridson’s algorithm](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm) - ([post](../posts/2024-07-21-evenly-random-points-on-plane))
 - [Random point in a circle with uniform distribution](https://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/) - ([post](../posts/2024-07-29-random-points-in-circle))
-- {{< builtin_icon "youtube" >}}[Layer-Based Procedural Generation for Infinite Worlds](https://www.youtube.com/watch?v=GJWuVwZO98s)
+- {{< builtin_icon "youtube" >}}[Layer-Based Procedural Generation for Infinite Star Systems](https://www.youtube.com/watch?v=GJWuVwZO98s)
 - {{< builtin_icon "youtube" >}}[A simple procedural animation technique](https://www.youtube.com/watch?v=qlfh_rv6khY)
 - [Dungeon generation (more advanced random room placement)](https://www.gamedeveloper.com/programming/procedural-dungeon-generation-algorithm)
 - {{< builtin_icon "github" >}}[Wave function collapse](https://github.com/mxgmn/WaveFunctionCollapse) algorithm
