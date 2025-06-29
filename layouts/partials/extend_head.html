@@ -30,16 +30,18 @@
 <!-- /Google tag (gtag.js) -->
 
 <!-- Global styles required for partials/shortcodes -->
-{{ with resources.Get "css/global/card_tags.css" | resources.Minify | resources.Fingerprint }}
-<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" as="style">
-{{ end }}
-
-{{ with resources.Get "css/global/builtin_icon.css" | resources.Minify | resources.Fingerprint }}
-<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" as="style">
+{{ $global_styles := slice "card_tags.css" "builtin_icon.css" }}
+{{ range $global_styles }}
+  {{ with resources.Get (printf "css/global/%s" .) }}
+    {{ $style := . | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" as="style">
+  {{ else }}
+    {{ errorf "Failed to find global style %s" . }}
+  {{ end }}
 {{ end }}
 <!-- /Global styles -->
 
-<!-- Add custom JS scripts -->
+<!-- Add Page JS scripts from frontmatter -->
 <!-- Inspired by https://discourse.gohugo.io/t/how-to-load-some-selected-js-scripts-on-selected-pages-only/33665 -->
 {{- $scripts := $.Params.scripts -}}
 {{- if $scripts -}}
@@ -52,9 +54,9 @@
     {{- end }}
   {{- end -}}
 {{- end -}}
-<!-- /Add custom JS scripts -->
+<!-- /Add Page JS scripts -->
 
-<!-- Add custom CSS styles -->
+<!-- Add Page CSS styles from frontmatter -->
 {{- $styles := $.Params.styles -}}
 {{- if $styles -}}
   {{- range $styles -}}
@@ -66,4 +68,4 @@
     {{- end }}
   {{- end -}}
 {{- end -}}
-<!-- /Add custom JS scripts -->
+<!-- /Add Page CSS styles -->
