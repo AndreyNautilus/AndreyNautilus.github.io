@@ -13,7 +13,7 @@ aliases:
 We need to generate random, _evenly distributed_ points on a plane.
 Possible use-cases:
 
-- generate trees in a forest in a game world;
+- place objects in a game world (trees in a forest, grass and rocks in a field, etc);
 - generate points for [Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram)
   (with areas of similar size);
 
@@ -23,9 +23,27 @@ Such distribution doesn't look _natural_.
 
 {{< load_resource "uniform_distribution.html" >}}
 
-Various types of grids with gaps can give even distribution, but the picture will not look _random_.
-There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
-doesn't look _natural_ either.
+## Jittered grid
+
+Grids give even distribution, but the picture will not look _random_.
+We can add a small displacement to every point and that will give a much better _randomized_ picture.
+
+{{< load_resource "grid_distribution.html" >}}
+
+We can choose the max displacement as slightly less than half of distance between 2 diagonal neibouring points.
+This will ensure that each point will stay relatively close to the original position, but still shiftted enough
+to form _random_ picture.
+
+Pros:
+
+- points are distributed fairy evenly: no major gaps and no major clusters;
+
+Cons:
+
+- some points can still be too close to each other (forming small clusters);
+- some points may fall of the canvas due to shift (the shift can be re-generated increasing the risk of clusters)
+
+## Poisson disk distribution
 
 A solution to this problem is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
 points are placed randomly, but not too close and not too far away from each other.
@@ -76,4 +94,5 @@ Side notes:
 
 ## Links
 
+- https://www.redblobgames.com/x/1830-jittered-grid/
 - https://www.jasondavies.com/poisson-disc/

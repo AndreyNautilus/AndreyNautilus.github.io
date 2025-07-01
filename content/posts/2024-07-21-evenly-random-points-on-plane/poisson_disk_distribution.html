@@ -13,17 +13,12 @@
   </p>
 </div>
 <script type="module">
-function renderSVG_PoissonDiskDistribution() {
-  const svgns = 'http://www.w3.org/2000/svg';
+import { createSvgPoints } from './render.js';
 
-  let svg = document.getElementById('poisson_disk_dist');
+function renderSVG_PoissonDiskDistribution() {
+  const svg = document.getElementById('poisson_disk_dist');
 
   const radius = 10;
-
-  // clear existing points
-  while (svg.firstChild) {
-    svg.removeChild(svg.firstChild);
-  }
 
   const points = generatePointsByPoissonDiskDistribution(
     svg.getAttribute('width'),
@@ -31,14 +26,7 @@ function renderSVG_PoissonDiskDistribution() {
     radius);
   document.getElementById('poisson_disk_dist_num_points').innerText = `${points.length}`;
 
-  for (let [x, y] of points) {
-    let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', x);
-    circle.setAttribute('cy', y);
-    circle.setAttribute('r', 2);
-    circle.setAttribute('style', 'fill: var(--primary)');
-    svg.appendChild(circle);
-  }
+  createSvgPoints(svg, points);
 }
 
 // Inspired by https://gist.github.com/mbostock/19168c663618b7f07158
