@@ -13,36 +13,24 @@
   </p>
 </div>
 <script type="module">
+import { createSvgPoints } from './render.js';
 
 const numPoints = 1700;
 document.getElementById('uniform_distribution_num_points').innerText = `${numPoints}`;
 
 function renderSVG_UniformDistribution() {
-  const svgns = 'http://www.w3.org/2000/svg';
-  let svg = document.getElementById('uniform_distribution');
-
-  // clear existing points
-  while (svg.firstChild) {
-    svg.removeChild(svg.firstChild);
-  }
+  const svg = document.getElementById('uniform_distribution');
 
   const points = generatePointsByUniformDistribution(
     svg.getAttribute('width'),
     svg.getAttribute('height'),
     numPoints);
 
-  for (let [x, y] of points) {
-    let circle = document.createElementNS(svgns, 'circle');
-    circle.setAttribute('cx', x);
-    circle.setAttribute('cy', y);
-    circle.setAttribute('r', 2);
-    circle.setAttribute('style', 'fill: var(--primary)');
-    svg.appendChild(circle);
-  }
+  createSvgPoints(svg, points);
 }
 
 function generatePointsByUniformDistribution(width, height, amount) {
-  let result = [];
+  const result = [];
   for (let i = 0; i < amount; i++) {
     result.push([Math.random() * width, Math.random() * height]);
   }

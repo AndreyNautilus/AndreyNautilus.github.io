@@ -13,9 +13,9 @@ aliases:
 We need to generate random, _evenly distributed_ points on a plane.
 Possible use-cases:
 
-- generate trees in a forest in a game world;
+- place objects in a game world (trees in a forest, grass and rocks in a field, etc);
 - generate points for [Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram)
-  (with areas of similar size);
+  (to get areas of similar size);
 
 The simplest approach - to use uniformly distributed points with `(random(), random())` - doesn't work,
 because there will be areas with high density of points and areas with no points at all.
@@ -23,12 +23,31 @@ Such distribution doesn't look _natural_.
 
 {{< load_resource "uniform_distribution.html" >}}
 
-Various types of grids with gaps can give even distribution, but the picture will not look _random_.
-There will always be a pattern, sometimes more visible, sometimes less, but still visible. This
-doesn't look _natural_ either.
+## Jittered grid
 
-A solution to this problem is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
-points are placed randomly, but not too close and not too far away from each other.
+Grids give even distribution, but the picture will not look _random_.
+We can add a small displacement to every point and that will give a much better _randomized_ picture.
+
+{{< load_resource "grid_distribution.html" >}}
+
+The max displacement should be slightly less than half of distance between 2 diagonal neibouring points.
+This will ensure that each point will stay relatively close to the original position, but still shiftted enough
+to form _random_ picture.
+
+Pros:
+
+- points are distributed fairy evenly: no major gaps and no major clusters;
+- each point can be referenced by the original grid point (via an index or coordinates);
+
+Cons:
+
+- some points can still be too close to each other (forming small clusters);
+- some points may fall of the canvas due to shift (the shift can be re-generated increasing the risk of clusters)
+
+## Poisson disk distribution
+
+Another solution is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
+points are placed randomly, maintaining the minimum distance and not too far away from each other.
 
 {{< load_resource "poisson_disk_distribution.html" >}}
 
@@ -36,7 +55,7 @@ points are placed randomly, but not too close and not too far away from each oth
 Poisson disk distribution, and shows "best candidate" and [Bridson’s](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
 algorithms to build such distribution (with great examples and visualizations).
 
-## Bridson’s algorithm for Poisson disk sampling
+### Bridson’s algorithm for Poisson disk sampling
 
 Summary of [this page](https://sighack.com/post/poisson-disk-sampling-bridsons-algorithm).
 Bridson's algorithm allows us to generate random points with Poisson disk distribution.
@@ -74,6 +93,16 @@ Side notes:
 - the number of points is not known until the generation process is complete (it's "generate _some_
   points with specific condition" rather than "generate N points");
 
+## Other options
+
+There are other ways to generate evenly distributed random points
+(see [this blog post](https://www.redblobgames.com/x/1830-jittered-grid/)):
+
+- use noise;
+- Lloyd's relaxation: apply a few iterations of [Lloyd algorithm](https://en.wikipedia.org/wiki/Lloyd%27s_algorithm)
+  to move points away from each other;
+
 ## Links
 
+- https://www.redblobgames.com/x/1830-jittered-grid/
 - https://www.jasondavies.com/poisson-disc/
