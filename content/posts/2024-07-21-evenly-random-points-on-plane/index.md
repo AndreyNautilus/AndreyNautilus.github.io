@@ -37,7 +37,7 @@ to form _random_ picture.
 Pros:
 
 - points are distributed fairy evenly: no major gaps and no major clusters;
-- points can be referenced by the original point index/coordinates in a the grid;
+- each point can be referenced by the original grid point (via an index or coordinates);
 
 Cons:
 
@@ -46,7 +46,7 @@ Cons:
 
 ## Poisson disk distribution
 
-Abother solution is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
+Another solution is [Poisson disk sampling (or Poisson disk distribution)](https://en.wikipedia.org/wiki/Supersampling#Poisson_disk):
 points are placed randomly, maintaining the minimum distance and not too far away from each other.
 
 {{< load_resource "poisson_disk_distribution.html" >}}
@@ -95,7 +95,8 @@ Side notes:
 
 ## Other options
 
-There are other ways to generate such points (see [this blog post](https://www.redblobgames.com/x/1830-jittered-grid/)):
+There are other ways to generate evenly distributed random points
+(see [this blog post](https://www.redblobgames.com/x/1830-jittered-grid/)):
 
 - use noise;
 - Lloyd's relaxation: apply a few iterations of [Lloyd algorithm](https://en.wikipedia.org/wiki/Lloyd%27s_algorithm)
