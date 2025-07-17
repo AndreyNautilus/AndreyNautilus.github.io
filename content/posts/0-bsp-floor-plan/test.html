@@ -1,0 +1,64 @@
+<div class="canvas-wrapper">
+<canvas id="floor_layout" width="700" height="400"></canvas>
+<script type="module">
+
+
+
+function generateFloorPlan() {
+    // const canvas = document.getElementById("floor_layout");
+    // const ctx = canvas.getContext("2d");
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // // Define the BSP tree structure
+    // class Node {
+    //     constructor(x, y, width, height) {
+    //         this.x = x;
+    //         this.y = y;
+    //         this.width = width;
+    //         this.height = height;
+    //         this.left = null;
+    //         this.right = null;
+    //     }
+
+    //     split() {
+    //         if (this.left || this.right) return; // Already split
+
+    //         const splitVertically = Math.random() < 0.5;
+    //         if (splitVertically) {
+    //             const splitX = this.x + Math.floor(Math.random() * (this.width - 50));
+    //             this.left = new Node(this.x, this.y, splitX - this.x, this.height);
+    //             this.right = new Node(splitX, this.y, this.x + this.width - splitX, this.height);
+    //         } else {
+    //             const splitY = this.y + Math.floor(Math.random() * (this.height - 50));
+    //             this.left = new Node(this.x, this.y, this.width, splitY - this.y);
+    //             this.right = new Node(this.x, splitY, this.width, this.y + this.height - splitY);
+    //         }
+    //     }
+
+    //     draw(ctx) {
+    //         ctx.strokeRect(this.x, this.y, this.width, this.height);
+    //         if (this.left) {
+    //             this.left.draw(ctx);
+    //             this.right.draw(ctx);
+    //         }
+    //     }
+    // }
+
+    // // Create the root node and recursively split it
+    // const rootNode = new Node(0, 0, canvas.width, canvas.height);
+    // function createBSP(node) {
+    //     node.split();
+    //     // if (Math.random() < 0.7 && node.width > 50 && node.height > 50) {
+    //     //     node.split();
+    //     //     createBSP(node.left);
+    //     //     createBSP(node.right);
+    //     // }
+    // }
+
+    // createBSP(rootNode);
+    // rootNode.draw(ctx);
+}
+
+document.getElementById("floor_layout").addEventListener('click', generateFloorPlan);
+generateFloorPlan();
+</script>
