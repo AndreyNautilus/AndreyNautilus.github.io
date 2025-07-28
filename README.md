@@ -9,7 +9,7 @@
 [![Static Badge](https://img.shields.io/badge/Google_Analytics-757575?logo=googleanalytics)](https://analytics.google.com/)
 
 Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod theme](https://github.com/adityatelange/hugo-PaperMod) (as submodule).
-[GitHub Pages](https://docs.github.com/en/pages) are deployed from `deploy` [branch](https://github.com/AndreyNautilus/AndreyNautilus.github.io/tree/deploy).
+[GitHub Pages](https://docs.github.com/en/pages) are [deployed](https://github.com/AndreyNautilus/AndreyNautilus.github.io/deployments) from `deploy` [branch](https://github.com/AndreyNautilus/AndreyNautilus.github.io/tree/deploy).
 
 ## Local commands
 
@@ -19,7 +19,7 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 (where `AAA.BBB.CCC.DDD` is your local IP address). To get local IP address: `ipconfig` (on Windows),
 find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Address.
 
-`hugo server --buildDrafts` - run the server (including _draft_ content)
+`hugo server --cleanDestinationDir --gc --buildDrafts` - run the server (including _draft_ content) cleaning target folder upfront.
 
 `hugo new content posts/my-post.md` - create a new post
 
@@ -27,7 +27,7 @@ find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Addre
 
 - hugo (see `hugo_version.txt` for the version)
 - python 3.9+
-- `pre-commit install` to enable pre-commit hooks locally
+- `pre-commit install` to enable [pre-commit](https://pre-commit.com/) hooks locally
 
 ### hugo installation/upgrade
 
