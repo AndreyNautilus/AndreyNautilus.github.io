@@ -19,7 +19,7 @@ Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod
 (where `AAA.BBB.CCC.DDD` is your local IP address). To get local IP address: `ipconfig` (on Windows),
 find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Address.
 
-`hugo server --buildDrafts` - run the server (including _draft_ content)
+`hugo server --cleanDestinationDir --gc --buildDrafts` - run the server (including _draft_ content) cleaning target folder upfront.
 
 `hugo new content posts/my-post.md` - create a new post
 
@@ -27,7 +27,7 @@ find the correct adapter (Wi-Fi, Ethernet or something else) and take IPv4 Addre
 
 - hugo (see `hugo_version.txt` for the version)
 - python 3.9+
-- `pre-commit install` to enable pre-commit hooks locally
+- `pre-commit install` to enable [pre-commit](https://pre-commit.com/) hooks locally
 
 ### hugo installation/upgrade
 
