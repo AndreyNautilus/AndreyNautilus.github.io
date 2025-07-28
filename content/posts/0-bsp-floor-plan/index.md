@@ -15,4 +15,3 @@ styles:
 
 - https://cxong.github.io/2021/02/bsp-lock-and-key
 - https://www.squidi.net/three/entry.php?id=4
-- https://js.cytoscape.org/ - JS lib for graph visualization
