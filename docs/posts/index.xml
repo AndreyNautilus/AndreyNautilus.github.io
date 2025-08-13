@@ -18,7 +18,7 @@
     <item>
       <title>Covariant types in C&#43;&#43; virtual methods</title>
       <link>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</link>
-      <pubDate>Thu, 01 May 2025 22:47:09 +0200</pubDate>
+      <pubDate>Thu, 01 May 2025 22:47:08 +0200</pubDate>
       <guid>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</guid>
       <description>Return types of methods-overrides may be different</description>
     </item>

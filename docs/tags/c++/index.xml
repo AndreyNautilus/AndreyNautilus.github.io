@@ -6,12 +6,12 @@
     <description>Recent content in C&#43;&#43; on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.147.8</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 01 May 2025 22:47:09 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 01 May 2025 22:47:08 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Covariant types in C&#43;&#43; virtual methods</title>
       <link>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</link>
-      <pubDate>Thu, 01 May 2025 22:47:09 +0200</pubDate>
+      <pubDate>Thu, 01 May 2025 22:47:08 +0200</pubDate>
       <guid>https://andreynautilus.github.io/posts/2025-05-01-covariant-return-types/</guid>
       <description>Return types of methods-overrides may be different</description>
     </item>
