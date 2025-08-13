@@ -9,7 +9,7 @@
 [![Static Badge](https://img.shields.io/badge/Google_Analytics-757575?logo=googleanalytics)](https://analytics.google.com/)
 
 Powered by [Hugo](https://gohugo.io/getting-started/quick-start/) with [PaperMod theme](https://github.com/adityatelange/hugo-PaperMod) (as submodule).
-[GitHub Pages](https://docs.github.com/en/pages) are [deployed](https://github.com/AndreyNautilus/AndreyNautilus.github.io/deployments) from `deploy` [branch](https://github.com/AndreyNautilus/AndreyNautilus.github.io/tree/deploy).
+[GitHub Pages](https://docs.github.com/en/pages) are [deployed](https://github.com/AndreyNautilus/AndreyNautilus.github.io/deployments) from `deploy` [branch](https://github.com/AndreyNautilus/AndreyNautilus.github.io/tree/deploy). ["Deployer for blog" app](https://github.com/apps/deployer-for-blog) updates `deploy` branch from `main`.
 
 ## Local commands
 
