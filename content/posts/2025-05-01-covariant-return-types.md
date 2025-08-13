@@ -2,7 +2,7 @@
 title: Covariant types in C++ virtual methods
 summary: Return types of methods-overrides may be different  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
-date: 2025-05-01T22:47:09+02:00
+date: 2025-05-01T22:47:08+02:00
 
 tags: [C++]
 ---
