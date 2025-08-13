@@ -5,3 +5,5 @@ instead of "deploy from workflow artifact", because:
 - branch shows the exact source that will be published (easier to troubleshoot);
 - branch stores history in git (easier to rollback if needed);
 - workflow artifacts can expire, while branch cannot;
+
+11
