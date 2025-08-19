@@ -3,7 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://andreynautilus.github.io/</loc>
-    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/github-actions/</loc>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/</loc>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/2025-08-19-github-workflow_dispatch-from-branch/</loc>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/</loc>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/workflow_dispatch/</loc>
+    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/posts/2025-06-14-areas-on-hex-grid/</loc>
     <lastmod>2025-06-14T17:27:03+01:00</lastmod>
@@ -14,13 +29,7 @@
     <loc>https://andreynautilus.github.io/tags/hexgrid/</loc>
     <lastmod>2025-06-14T17:27:03+01:00</lastmod>
   </url><url>
-    <loc>https://andreynautilus.github.io/posts/</loc>
-    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
-  </url><url>
     <loc>https://andreynautilus.github.io/tags/procedural-generation/</loc>
-    <lastmod>2025-06-14T17:27:03+01:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/</loc>
     <lastmod>2025-06-14T17:27:03+01:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/voronoi/</loc>
