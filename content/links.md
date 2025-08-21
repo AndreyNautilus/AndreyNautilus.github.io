@@ -10,6 +10,8 @@ ShowReadingTime: false
 - https://crontab.guru/ - cron explainer
 - https://github.com/refined-github/refined-github - browser extension to greatly enrich GitHub UI
 - https://ohshitgit.com/ - git cheatsheet for "shit happened" cases
+- Bash scripting docs: [conditions](https://www.gnu.org/software/bash/manual/bash.html#Bash-Conditional-Expressions) and
+  [vars expansion](https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion-1)
 
 ## Procedural generation
 
