@@ -1,9 +1,7 @@
 ---
 title: Keep 'git blame' clean
 summary: Use .git-blame-ignore-revs file  # will be shown on a post card on the main page
-# description: "Short description"  # will be shown in the post as subtitle
 date: '2025-08-23T19:44:29+02:00'
-draft: true  # draft mode by default
 
 tags: [git, gitconfig]
 ---
