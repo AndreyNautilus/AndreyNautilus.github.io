@@ -6,8 +6,22 @@
     <description>Recent content in tags on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.147.8</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 19 Aug 2025 21:38:24 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 23 Aug 2025 19:44:29 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>git</title>
+      <link>https://andreynautilus.github.io/tags/git/</link>
+      <pubDate>Sat, 23 Aug 2025 19:44:29 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/tags/git/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>gitconfig</title>
+      <link>https://andreynautilus.github.io/tags/gitconfig/</link>
+      <pubDate>Sat, 23 Aug 2025 19:44:29 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/tags/gitconfig/</guid>
+      <description></description>
+    </item>
     <item>
       <title>github actions</title>
       <link>https://andreynautilus.github.io/tags/github-actions/</link>
@@ -62,20 +76,6 @@
       <link>https://andreynautilus.github.io/tags/xcode/</link>
       <pubDate>Sat, 28 Dec 2024 16:00:11 +0100</pubDate>
       <guid>https://andreynautilus.github.io/tags/xcode/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>git</title>
-      <link>https://andreynautilus.github.io/tags/git/</link>
-      <pubDate>Tue, 24 Dec 2024 19:02:34 +0100</pubDate>
-      <guid>https://andreynautilus.github.io/tags/git/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>gitconfig</title>
-      <link>https://andreynautilus.github.io/tags/gitconfig/</link>
-      <pubDate>Tue, 24 Dec 2024 19:02:34 +0100</pubDate>
-      <guid>https://andreynautilus.github.io/tags/gitconfig/</guid>
       <description></description>
     </item>
     <item>

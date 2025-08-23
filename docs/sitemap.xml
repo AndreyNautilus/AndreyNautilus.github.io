@@ -3,18 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://andreynautilus.github.io/</loc>
-    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/git/</loc>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/gitconfig/</loc>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/2025-08-23-git-blame-ignore/</loc>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/posts/</loc>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
+  </url><url>
+    <loc>https://andreynautilus.github.io/tags/</loc>
+    <lastmod>2025-08-23T19:44:29+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/github-actions/</loc>
     <lastmod>2025-08-19T21:38:24+02:00</lastmod>
   </url><url>
-    <loc>https://andreynautilus.github.io/posts/</loc>
-    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
-  </url><url>
     <loc>https://andreynautilus.github.io/posts/2025-08-19-github-workflow_dispatch-from-branch/</loc>
-    <lastmod>2025-08-19T21:38:24+02:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/</loc>
     <lastmod>2025-08-19T21:38:24+02:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/workflow_dispatch/</loc>
@@ -49,12 +58,6 @@
   </url><url>
     <loc>https://andreynautilus.github.io/tags/xcode/</loc>
     <lastmod>2024-12-28T16:00:11+01:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/git/</loc>
-    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
-  </url><url>
-    <loc>https://andreynautilus.github.io/tags/gitconfig/</loc>
-    <lastmod>2024-12-24T19:02:34+01:00</lastmod>
   </url><url>
     <loc>https://andreynautilus.github.io/tags/gitignore/</loc>
     <lastmod>2024-12-24T19:02:34+01:00</lastmod>
