@@ -12,8 +12,8 @@ TocOpen: true   # open table of content by default
 tags: [C++, shared library, cmake]
 ---
 
-Imagine we're making a C++ library. We need to deliver this library to a client,
-and the agreement is to deliver it as _shared library_ for linux. How to do this?
+Imagine we're developing a C++ library. We need to deliver this library to a client,
+and the agreement is to deliver it as a _shared library_ for linux. How to do this?
 
 Let's define the setup and assumptions:
 
@@ -24,26 +24,125 @@ Let's define the setup and assumptions:
 - the target platform may be so different from the development platform,
   that the produced library doesn't run and requires an emulator.
 
-Sample code for this page can be found [here](<>).
-
-The setup includes:
+The setup for our example project includes:
 
 - `libfoo` is the library we need to deliver;
 - `app` is our internal developer app, that uses `libfoo`;
 
+The code of example project can be found [here](<>).
+
 ## Build configuration
 
-**Debug** - for development. No optimizations, debug symbols included.
+`cmake` has a concept of [Build Configurations](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#build-configurations)
+which controls what options are passed to the compiler.
+There are [4 default configurations](https://stackoverflow.com/questions/48754619/what-are-cmake-build-type-debug-release-relwithdebinfo-and-minsizerel/59314670#59314670) -
+`Debug`, `Release`, `RelWithDebInfo` and `MinSizeRel` -
+and `CMAKE_BUILD_TYPE` [variable](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)
+is configures this.
 
-**Release** -
+- **Debug** - for development use only. No optimizations, debug symbols included.
+- **Release** - produces final deliverable binary. Optimized for speed, no debug info included.
+- **RelWithDebInfo** - same as Release, but includes debug info. Debug info significantly increases
+  the size of the binary, but also allows to analyze crash dumps.
+- **MinSizeRel** - similar to Release, but optimized for binary size rather than speed.
 
-**RelWithDebInfo** -
+We can consider shipping a library without debug info - built with Release or MinSizeRel configuration -
+if we don't expect to receive and analyze crash dumps from our clients.
+If we do need to investigate crashes, we need debug symbols, but we also need optimizations,
+so RelWithDebInfo is our only option. But we don't want to ship debug symbols to customers.
+
+The solution is to put debug info in a separate file.
+
+### Strip the binary
+
+`file` [command](https://man7.org/linux/man-pages/man1/file.1.html) or
+`readelf` [tool](https://www.man7.org/linux/man-pages/man1/readelf.1.html)
+from `binutils` [package](https://www.gnu.org/software/binutils/) can show if a binary contains debug info.
+Let's build the library in RelWithDebInfo [mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON ..
+cmake --build .  # build succeeds
+```
+
+and inspect it:
+
+```bash
+$ file libfoo.so
+libfoo.so: ELF 64-bit LSB shared object, ..., with debug_info, not stripped
+$ readelf --sections libfoo.so | grep debug
+...
+  [28] .debug_aranges    PROGBITS         0000000000000000  000030b5
+  [29] .debug_info       PROGBITS         0000000000000000  00003145
+...
+```
+
+`file` prints `with debug_info`, and `readelf --sections` shows debug sections, which means
+the library contains debug symbols. If we would use `-DCMAKE_BUILD_TYPE=Release`, there would be
+no debug sections in `readelf` and `file` wouldn't show `with debug_info`.
+
+`objcopy` [tool](https://man7.org/linux/man-pages/man1/objcopy.1.html) from `binutils` can
+copy debug info into a separate file:
+
+```bash
+objcopy --only-keep-debug libfoo.so libfoo.so.debug
+objcopy --strip-debug --add-gnu-debuglink=libfoo.so.debug libfoo.so
+```
+
+`cmake` usually provides `CMAKE_OBJCOPY` [variable](https://cmake.org/cmake/help/latest/module/CPack.html#variable:CPACK_OBJCOPY_EXECUTABLE)
+that points to `objcopy` executable. We can use it to add a custom command to our `cmake` target
+and extract debug info during the build.
+
+If we rebuild the library with `LIBFOO_STRIP=ON`:
+
+```bash
+# `LIBFOO_STRIP` is a custom option in the example project
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DLIBFOO_STRIP=ON ..
+cmake --build .  # build succeeds
+```
+
+and inspect the produced binary:
+
+```bash
+$ file libfoo.so
+libfoo.so: ELF 64-bit LSB shared object, ..., not stripped
+$ readelf --sections libfoo.so | grep debug
+  [28] .gnu_debuglink    PROGBITS         0000000000000000  000030b8
+```
+
+`readelf` shows `.gnu_debuglink` section only which is a link to a file containing debug info
+(caused by `--add-gnu-debuglink` option in the example project). `file` doesn't show `with debug_info`,
+but still shows `not stripped` - this means that our binary still contains additional unneeded info -
+`.symtab` section. It can be removed if `objcopy` is invoked with `--strip-unneeded` parameter instead of `--strip-debug`.
+
+`cmake --install` has `--strip` [option](https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-install-strip)
+which performs such aggressive atripping during installation. If we use it after the build:
+
+```bash
+# `LIBFOO_STRIP` is a custom option in the example project
+cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DLIBFOO_STRIP=ON ..
+cmake --build .  # build succeeds
+ctest
+cmake --install . --prefix=../out --strip
+```
+
+and inspect the _built_ and _installed_ binaries, we'll see that _installed_ binary is finally stripped:
+
+```bash
+$ file libfoo.so
+libfoo.so: ELF 64-bit LSB shared object, ..., not stripped
+$ file ../out/lib/libfoo.so
+../out/lib/libfoo.so: ELF 64-bit LSB shared object, ..., stripped
+```
+
+We need to save files with debug info (`libfoo.so.debug`) for every shipped binary, then we will be able
+to analyze crashdumps that customers may send to us.
 
 ## Visibility of exported symbols
 
 Shared libraries provide functionality via _exported dynamic symbols_.
 If we build `libfoo` as shared
-in [Release mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
+in Release [mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
 
 ```bash
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
@@ -233,8 +332,6 @@ we'll see that only annotated symbols are exported.
 - if different clients need to have access to different set of symbols,
   this approach requires bulky fine-tuning (for example, split API into categories and export
   different categories for different customers);
-
-## Strip the binary
 
 ## Dependencies
 
