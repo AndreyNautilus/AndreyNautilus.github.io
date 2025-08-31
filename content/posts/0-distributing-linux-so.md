@@ -7,6 +7,8 @@ date: '2025-08-23T19:33:30+02:00'
 # check for TBD before publishing
 draft: true  # draft mode by default
 
+ShowToc: true   # show table of content
+TocOpen: true   # open table of content by default
 tags: [C++, shared library, cmake]
 ---
 
@@ -29,7 +31,7 @@ The setup includes:
 - `libfoo` is the library we need to deliver;
 - `app` is our internal developer app, that uses `libfoo`;
 
-# Build
+## Build configuration
 
 **Debug** - for development. No optimizations, debug symbols included.
 
@@ -37,14 +39,14 @@ The setup includes:
 
 **RelWithDebInfo** -
 
-# Visibility of exported symbols
+## Visibility of exported symbols
 
 Shared libraries provide functionality via _exported dynamic symbols_.
-If we build `libfoo`
-in [Release mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html) as shared:
+If we build `libfoo` as shared
+in [Release mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
 
 ```bash
-cmake -DCMAKE_BUILD_TYPE=Release -DLIBFOO_SHARED=ON ..
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON ..
 cmake --build .  # build succeeds
 ctest  # tests run successfully
 ```
@@ -92,25 +94,91 @@ Looking at this list, there are 2 observations that raise questions:
 1. there are way too many symbols in the list including our internal symbols
    (`libfoo::internal::foo_internal`)
    and symbols from library dependencies (`std::ostream::flush()`). This happens because
-   by default all symbols are visible and exported from dynamic libraries. Users of the library can
-   try to use these symbols which is undesirable.
+   by default all statically linked symbols are visible and exported from dynamic libraries.
+   Users of the library can try to use these symbols which is undesirable.
    We need to limit symbols visibility to keep the library API clean.
 
-Let's inspect `nm` [output](https://man7.org/linux/man-pages/man1/nm.1.html).
-Symbols with address as prefix are "real" symbols exported from the library.
+Let's [inspect](https://man7.org/linux/man-pages/man1/nm.1.html#DESCRIPTION) `nm` output in more details.
+Symbols with address in the first column are "real" symbols exported from the library.
 Users that link against our library can use these symbols (call the functions) freely.
 The second column is the _type_ of the symbol. What's importatnt for now:
 
 - `U` means "undefined symbol" - the symbol comes from a dependency (note `@GLIBCXX_3.4` suffix);
-- `T` means "in text section" - the symbol is exported from the library;
+- `T` means _global_ symbol "in .text section" - exported from the library.
+- `t` also means the symbol is "in .text section", but it's _local_ and not exported.
+  `nm --dynamic` doesn't show them;
 - `w`/`W` means "week symbol" - TBD;
 
 Our goal is to have all symbols forming public API of our library marked as `T`,
 and no other symbols should be marked `T`.
 
-## Pass "version script" file to the linker
+### Pass "version script" file to linker
 
-## Explicitly annotate exported symbols
+Widely used linkers (like GNU `ld` and `gold` or LLVM `lld`) support
+[_version script_ files](https://man7.org/conf/lca2006/shared_libraries/slide18c.html)
+via `--version-script` parameter. Version script files can be used to define visibility of symbols.
+An example of such file to export symbols from `libfoo::` namespace only can look like this:
+
+```
+{
+    global:
+        _ZN6libfoo*;
+    local:
+        *;
+};
+```
+
+This file uses _mangled_ symbol names, so you need know them upfront (by running `nm` for example).
+
+To pass a version file to the linker we need to add `-Wl,--version-script=FILENAME` linker option
+(or add this flag to `LINK_FLAGS` [property](https://cmake.org/cmake/help/latest/prop_tgt/LINK_FLAGS.html)
+of the cmake target).
+Let's build the library and inspect exported symbols:
+
+```bash
+# `LIBFOO_USE_VERSION_SCRIPT` is a custom option in the example project
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_USE_VERSION_SCRIPT=ON ..
+cmake --build .
+nm --dynamic --demangle libfoo.so
+...
+                 U _Unwind_Resume@GCC_3.0
+00000000000012c0 T libfoo::foo()
+00000000000013d0 T libfoo::foo2()
+0000000000001450 T libfoo::internal::foo_internal[abi:cxx11]()
+                 U std::ctype<char>::_M_widen_init() const@GLIBCXX_3.4.11
+...
+```
+
+We see that only symbols from `libfoo::` namespace(s) are exported. But internal symbols
+from `libfoo::internal::` namespace are also exported, which we want to avoid.
+
+And here comes the problem: it's not possible to refine the filter by adding `libfoo::internal::*`
+in the `local` section:
+
+```
+{
+    global:
+        _ZN6libfoo*;
+    local:
+        _ZN6libfoo8internal*;  # won't work :(
+        *;
+};
+```
+
+If a symbol matches any wild-star pattern in `global` section, this symbol
+[will not be checked](https://maskray.me/blog/2020-11-26-all-about-symbol-versioning#version-script)
+against patterns in `local` section.
+
+One potential to overcome this limitation is to list all symbols we want to export explicitly,
+but that's a tedious work. A script to fetch symbols from `nm` output can be handy,
+but requires additional effort.
+
+**Pros**: no code changes required. Configuration lives in a separate file
+which can be dynamically created or adjusted.
+
+**Cons**: limitation for visibility of nested namespaces.
+
+### Explicitly annotate exported symbols
 
 A better way is to tell linker to hide all symbols by default and explicitly annotate symbols
 we want to export. Use `-fvisibility=hidden` linker flag (or set `CXX_VISIBILITY_PRESET`
@@ -144,6 +212,7 @@ PUBLIC_API void foo();
 If we now build the library and inspect exported symbols:
 
 ```bash
+# `LIBFOO_API_VISIBILITY` is a custom option in the example project
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_API_VISIBILITY=ON ..
 cmake --build .
 nm --dynamic --demangle libfoo.so
@@ -154,10 +223,9 @@ nm --dynamic --demangle libfoo.so
 ...
 ```
 
-We'll see that only annotated symbols are exported.
+we'll see that only annotated symbols are exported.
 
-**Pros**: the best approach to control API visibility, all exported symbols are explicitly
-annotated. It's a conscious decision and low risk of mistakes.
+**Pros**: all exported symbols are explicitly annotated. It's a conscious decision and low risk of mistakes.
 
 **Cons**:
 
@@ -166,9 +234,9 @@ annotated. It's a conscious decision and low risk of mistakes.
   this approach requires bulky fine-tuning (for example, split API into categories and export
   different categories for different customers);
 
-# Strip the binary
+## Strip the binary
 
-# Dependencies
+## Dependencies
 
 ```bash
 $ readelf -d build/libfoo.so
