@@ -2,11 +2,8 @@
 title: Build linux shared libraries for distribution
 summary: Build the library, strip debug info and manage symbols visibility
 # description: "Short description"  # will be shown in the post as subtitle
-date: '2025-08-23T19:33:30+02:00'
-
-# check for TBD/TODO before publishing
-# TODO: expose learning-playground/shared-linux-so
-draft: true  # draft mode by default
+date: '2025-09-02T19:33:30+02:00'
+draft: false  # draft mode by default
 
 ShowToc: true   # show table of content
 TocOpen: true   # open table of content by default
