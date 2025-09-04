@@ -1,6 +1,6 @@
 ---
 title: Build linux shared libraries for distribution
-summary: Build the library, strip debug info and manage symbols visibility
+summary: Build the library, strip debug info, manage symbols visibility, etc.
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2025-09-02T19:33:30+02:00'
 draft: false  # draft mode by default
@@ -15,19 +15,18 @@ and the agreement is to deliver it as a _shared library_ for linux. How to do th
 
 Let's define the setup and assumptions:
 
-- we use a fixed C++ standard, for example C++17;
 - we develop on linux system using well-known compiler, like gcc or clang;
 - we use cmake as build system (backed by make or ninja);
 - we know how to build for the target platform (for example the client provides the toolchain);
-- the target platform may be so different from the development platform,
-  that the produced library doesn't run and requires an emulator.
+- the target platform may be different from the development platform,
+  and the produced library may not run and requires an emulator.
 
 The setup for our example project includes:
 
 - `libfoo` is the library we need to deliver;
 - `app` is our internal developer app, that uses `libfoo`;
 
-The code of example project can be found [here](<>).
+The code of example project can be found [here](https://github.com/AndreyNautilus/learning-playground/tree/main/linux-shared-lib).
 
 ## Build configuration
 
@@ -36,18 +35,19 @@ which controls what options are passed to the compiler.
 There are [4 default configurations](https://stackoverflow.com/questions/48754619/what-are-cmake-build-type-debug-release-relwithdebinfo-and-minsizerel/59314670#59314670) -
 `Debug`, `Release`, `RelWithDebInfo` and `MinSizeRel` -
 and `CMAKE_BUILD_TYPE` [variable](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)
-is configures this.
+configures this.
 
-- **Debug** - for development use only. No optimizations, debug symbols included.
-- **Release** - produces final deliverable binary. Optimized for speed, no debug info included.
+- **Debug** - for development use only. No optimizations, debug info included.
+- **Release** - produces the final deliverable binary. Optimized for speed, no debug info included.
 - **RelWithDebInfo** - same as Release, but includes debug info. Debug info significantly increases
-  the size of the binary, but also allows to analyze crash dumps.
-- **MinSizeRel** - similar to Release, but optimized for binary size rather than speed.
+  the size of the binary, but allows to analyze crash dumps.
+- **MinSizeRel** - similar to Release, but optimized for size of the binary rather than execution speed.
 
-We can consider shipping a library without debug info - built with Release or MinSizeRel configuration -
-if we don't expect to receive and analyze crash dumps from our clients.
+We can consider shipping the library without debug info - **Release** or **MinSizeRel** configuration -
+if we don't expect to receive and analyze crash dumps from the clients.
 If we do need to investigate crashes, we need debug symbols, but we also need optimizations,
-so RelWithDebInfo is our only option. But we don't want to ship debug symbols to customers.
+so **RelWithDebInfo** is our only option. But we don't want to ship a library polluted with
+debug info.
 
 The solution is to put debug info in a separate file.
 
@@ -56,7 +56,7 @@ The solution is to put debug info in a separate file.
 `file` [command](https://man7.org/linux/man-pages/man1/file.1.html) or
 `readelf` [tool](https://www.man7.org/linux/man-pages/man1/readelf.1.html)
 from `binutils` [package](https://www.gnu.org/software/binutils/) can show if a binary contains debug info.
-Let's build the library in RelWithDebInfo [mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
+Let's build the library in **RelWithDebInfo** [mode](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html):
 
 ```bash
 cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON ..
@@ -114,7 +114,7 @@ but still shows `not stripped` - this means that our binary still contains addit
 `.symtab` section. It can be removed if `objcopy` is invoked with `--strip-unneeded` parameter instead of `--strip-debug`.
 
 `cmake --install` has `--strip` [option](https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-install-strip)
-which performs such aggressive atripping during installation. If we use it after the build:
+which performs such aggressive stripping during installation. If we use it after the build:
 
 ```bash
 # `LIBFOO_STRIP` is a custom option in the example project
@@ -124,7 +124,7 @@ ctest
 cmake --install . --prefix=../out --strip
 ```
 
-and inspect the _built_ and _installed_ binaries, we'll see that _installed_ binary is finally stripped:
+and inspect the _produced_ and _installed_ binaries, we'll see that the _installed_ binary is finally stripped:
 
 ```bash
 $ file libfoo.so
@@ -133,7 +133,7 @@ $ file ../out/lib/libfoo.so
 ../out/lib/libfoo.so: ELF 64-bit LSB shared object, ..., stripped
 ```
 
-We need to save files with debug info (`libfoo.so.debug`) for every shipped binary, then we will be able
+We need to save the file with debug info (`libfoo.so.debug`) for every shipped binary, then we will be able
 to analyze crashdumps that customers may send to us.
 
 ## Visibility of exported symbols
@@ -187,32 +187,33 @@ Looking at this list, there are 2 observations that raise questions:
    ...
    ```
    Another option is `c++filt` [tool](https://man7.org/linux/man-pages/man1/c++filt.1.html)
-   from `binutils`: `nm --dynamic libfoo.so | c++filt`.
+   from `binutils`: `nm --dynamic libfoo.so | c++filt` will give similar output.
 1. there are way too many symbols in the list including our internal symbols
    (`libfoo::internal::foo_internal`)
    and symbols from library dependencies (`std::ostream::flush()`). This happens because
    by default all statically linked symbols are visible and exported from dynamic libraries.
    Users of the library can try to use these symbols which is undesirable.
-   We need to limit symbols visibility to keep the library API clean.
+   We need to limit symbols visibility to keep the public library API clean.
 
 Let's [inspect](https://man7.org/linux/man-pages/man1/nm.1.html#DESCRIPTION) `nm` output in more details.
 Symbols with address in the first column are "real" symbols exported from the library.
 Users that link against our library can use these symbols (call the functions) freely.
-The second column is the _type_ of the symbol. What's importatnt for now:
+The second column is the _type_ of the symbol. What's important for now:
 
-- `U` means "undefined symbol" - the symbol comes from a dependency (note `@GLIBCXX_3.4` suffix);
+- `U` means "undefined symbol" - the symbol is required, and must be provided at runtime via
+  dependencies (note `@GLIBCXX_3.4` suffix for example).
 - `T` means _global_ symbol "in .text section" - exported from the library.
 - `t` also means a symbol "in .text section", but it's _local_ and not exported.
-  `nm --dynamic` doesn't show them;
-- `w`/`W` means "week symbol".
-  When linking the final application, the linker will pick a non-week symbol over week symbols,
-  and pick any week symbol if no non-week symbols exist. Typically, week symbols are
+  `nm --dynamic` doesn't show them.
+- `w`/`W` means "weak symbol".
+  When linking the final application, the linker will pick a non-weak symbol over weak symbols,
+  and pick any weak symbol if no non-weak symbols exist. Typically, weak symbols are
   default constructors/destructors and templates instantiations.
   They don't violate [ODR rule](https://en.wikipedia.org/wiki/One_Definition_Rule),
   and the linker will eliminate duplicates.
 
-Our goal is to have all symbols forming public API of our library marked as `T`,
-and no other symbols should be marked `T`.
+Our goal is to have all symbols forming public API of our library to be exported (in dynamic section),
+and no other internal symbols should exported.
 
 ### Pass "version script" file to linker
 
@@ -230,9 +231,9 @@ An example of such file to export symbols from `libfoo::` namespace only can loo
 };
 ```
 
-This file uses _mangled_ symbol names, so you need know them upfront (by running `nm` for example).
+This file uses _mangled_ symbol names, so we need know them upfront (by running `nm` for example).
 
-To pass a version file to the linker we need to add `-Wl,--version-script=FILENAME` linker option
+To pass a version script file to the linker we need to add `-Wl,--version-script=FILENAME` linker option
 (or add this flag to `LINK_FLAGS` [property](https://cmake.org/cmake/help/latest/prop_tgt/LINK_FLAGS.html)
 of the cmake target).
 Let's build the library and inspect exported symbols:
@@ -241,6 +242,7 @@ Let's build the library and inspect exported symbols:
 # `LIBFOO_USE_VERSION_SCRIPT` is a custom option in the example project
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_USE_VERSION_SCRIPT=ON ..
 cmake --build .
+ctest
 nm --dynamic --demangle libfoo.so
 ...
                  U _Unwind_Resume@GCC_3.0
@@ -271,7 +273,7 @@ If a symbol matches any wild-star pattern in `global` section, this symbol
 [will not be checked](https://maskray.me/blog/2020-11-26-all-about-symbol-versioning#version-script)
 against patterns in `local` section.
 
-One potential to overcome this limitation is to list all symbols we want to export explicitly,
+One potential way to overcome this limitation is to list all symbols we want to export explicitly,
 but that's a tedious work. A script to fetch symbols from `nm` output can be handy,
 but requires additional effort.
 
@@ -283,14 +285,14 @@ which can be dynamically created or adjusted.
 ### Explicitly annotate exported symbols
 
 A better way is to tell linker to hide all symbols by default and explicitly annotate symbols
-we want to export. Use `-fvisibility=hidden` linker flag (or set `CXX_VISIBILITY_PRESET`
+we want to export. Use `-fvisibility=hidden` linker flag (or set `CXX_VISIBILITY_PRESET hidden`
 [cmake property](https://cmake.org/cmake/help/latest/prop_tgt/LANG_VISIBILITY_PRESET.html)) to make
 all symbols hidden by default.
 
 `__attribute__((visibility("default")))` annotation
 (for [GCC](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-visibility-function-attribute)
 and [clang](https://clang.llvm.org/docs/LTOVisibility.html))
-marks symbols for exporting. We can use a macro to avoid typing it every time:
+marks symbols for exporting. We can define a macro to avoid typing it every time:
 
 ```c
 #define PUBLIC_API __attribute__((visibility("default")))
@@ -298,7 +300,7 @@ PUBLIC_API void foo();
 ```
 
 It's a common practice to annotate symbols in public header files, but these headers are also
-usually shipped to a customer, and the customer doesn't need this annotation in their code.
+usually shipped to customers, and customers don't need this annotation in their code.
 This macro needs to be defined to nothing when used outside of our build system.
 `cmake` automatically provides `<target>_EXPORTS`
 [compiler definition](https://cmake.org/cmake/help/latest/prop_tgt/DEFINE_SYMBOL.html)
@@ -319,6 +321,7 @@ If we now build the library and inspect exported symbols:
 # `LIBFOO_API_VISIBILITY` is a custom option in the example project
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_API_VISIBILITY=ON ..
 cmake --build .
+ctest
 nm --dynamic --demangle libfoo.so
 ...
                  U _Unwind_Resume@GCC_3.0
@@ -329,17 +332,25 @@ nm --dynamic --demangle libfoo.so
 
 we'll see that only annotated symbols are exported.
 
-Don't forget to include public headers that define exported symbols into compilable files (`*.cpp/cxx/cc`).
+Don't forget to `#include` public headers that define exported symbols into compilable files (cpp/cxx/cc).
 If a header file is never included in any translation unit, it's not processed and effectively ignored.
 
 **Pros**: all exported symbols are explicitly annotated. It's a conscious decision and low risk of mistakes.
 
 **Cons**:
 
-- public headers are "polluted" with `PUBLIC_API` macro, which is meaningless for the client;
+- public headers are "polluted" with `PUBLIC_API` macro, which is meaningless for clients;
 - if different clients need to have access to different set of symbols,
   this approach requires bulky fine-tuning (for example, split API into categories and export
   different categories for different customers);
+
+### Exported symbols and testing
+
+Hidden symbols are not visible for the users of the library. Tests (unit tests, components test, etc) are
+also users of the library, they cannot access hidden symbols.
+
+Shared libraries need well-written interface tests to verify the produced binary.
+The rest of the testing can be performed on a dedicated build that doesn't hide symbols.
 
 ## Dependencies
 
@@ -368,8 +379,8 @@ $ readelf --dynamic libfoo.so
 
 Alternatively we can use `ldd` [tool](https://man7.org/linux/man-pages/man1/ldd.1.html)
 to print all (including transitive) shared dependencies.
-On the other hand, `ldd` is a runtime tool: it actually invokes the dynamic linker to find dependencies,
-so it might not always work (for example if we're cross-compiling for armv8 architecture).
+`ldd` is a runtime tool: it actually invokes the dynamic linker to find dependencies,
+so it might not always work (for example if the library is cross-compiled for another architecture).
 
 ```bash
 $ ldd libfoo.so
@@ -381,26 +392,53 @@ $ ldd libfoo.so
         /lib64/ld-linux-x86-64.so.2 (0x00007734bbeca000)
 ```
 
-If our library depends on another _our_ library, we have to ship this dependency along with the library itself,
-or we can link that dependency statically into our deliverable.
-If we ship multiple dynamic libraries that depend on each other,
-we need to properly configure `RPATH`/`RUNPATH`,
-so the dynamic linker of the final app can find them.
+If our library depends on another _our_ library, we have to ship this dependency along with the library itself.
+A better way is _statically_ link dependencies into the final shared library,
+that will simplify management a lot, but in some cases it's not possible or allowed.
+
+**Note**: I'm talking about _first-party_ dependencies (dependencies that we as developers produce).
+_System_ dependencies should not be statically linked or packaged with the deliverables.
+_Third-party_ dependencies (like `openssl`) can follow both approaches and they should be discussed on
+case-by-case basis with customers.
+
+When `cmake --build` produces a library it embeds full paths to dependencies as `RUNPATH` records:
+
+```bash
+readelf --dynamic ...so
+...
+ 0x0000000000000001 (NEEDED)             Shared library: [libbar.so]
+ 0x000000000000001d (RUNPATH)            Library runpath: [/home/andrey/projects/learning-playground/linux-shared-lib/build/libbar:]
+...
+```
+
+which allows any executable in the project (tests or apps) to run without additional configuration,
+but that's not portable.
+`cmake --install` strips these records and leaves just `NEEDED` record for each library:
+
+```bash
+readelf --dynamic installed/...so
+...
+ 0x0000000000000001 (NEEDED)             Shared library: [libbar.so]
+```
+
+This moves the responsibility to provide runtime search paths to the final application.
+The clients application may be something custom which is shipped along with its dependencies,
+or can be an application that expects dependencies to be in specific locations within
+the application bundle (like Android APK for example).
+In such cases let the client deal with search paths.
 
 **Note**: there's a very good talk
 ["how shared libraries are found"](https://www.youtube.com/watch?v=Ik3gR65oVsM) that explains
-`RPATH`/`RUNPATH` handling.
-
-General tip: try to to avoid dynamic dependencies between your shared libraries.
+`RPATH`/`RUNPATH` handling at compile time and runtime.
 
 ## ABI versioning via SONAME
 
-`readelf --dynamic` shows `SONAME` record, which contains value similar to the filename of the shared library.
-This value will be embedded into the client application as dynamic dependency, when the app is linked
+`readelf --dynamic` shows `SONAME` record, which contains a value similar to the filename of the shared library.
+This value will be embedded into the client application as dynamic dependency when the app is linked
 against our library. Even though the app uses `libfoo.so` during build,
 at runtime the app will look for a file with name taken from `SONAME` record of `libfoo.so`.
 
-This mechanism is used to allow updates of libraries without rebuilding client applications.
+This mechanism allows updates of libraries without rebuilding client applications.
 Libraries that use ABI version management are usually shipped with symlinks, for example:
 
 ```bash
@@ -409,15 +447,15 @@ libfoo.so.1 -> libfoo.so.1.0.0  # symlink
 libfoo.so.1.0.0  # actual library file
 ```
 
-and `SONAME` record of this library contains `libfoo.so.1`.
-When an app is linked against `libfoo.so`, the app will at runtime look for a file `libfoo.so.1`
-(value of `SONAME` record). This allows the user of the app to update `libfoo` to version `1.0.1` or `1.1.0`
+and `SONAME` record of the library contains `libfoo.so.1`.
+When an app is linked against `libfoo.so`, at runtime this app will look for `libfoo.so.1` file
+(value of `SONAME` record). This allows users to update `libfoo` to version `1.0.1` or `1.1.0`
 and the app will continue to work (as long as the update process updates symlinks:
 `libfoo.so.1 -> libfoo.so.1.0.1`).
-The user can even install multiple major versions of the same library (`1.1.0` and `2.0.0`) and
+Users can even install multiple major versions of the same library (`1.1.0` and `2.0.0`) and
 apps will be able to find the correct dependencies at runtime
-(an app that depends on `libfoo.so.1` will find `libfoo.so.1.1.0` and another app that depends on `libfoo.so.2`
-will find `libfoo.so.2.0.0`).
+(one app that depends on `libfoo.so.1` will pick `libfoo.so.1.1.0` while another app
+that depends on `libfoo.so.2` will pick `libfoo.so.2.0.0`).
 
 **Note**: it's the responsibility of the library authors to _actually_ maintain ABI compatibility.
 
@@ -441,7 +479,7 @@ $ readelf --dynamic libfoo.so | grep SONAME
  0x000000000000000e (SONAME)             Library soname: [libfoo.so.1]
 ```
 
-If an app is linked against `libfoo.so`, it will depend at runtime on `libfoo.so.`:
+If an app is linked against `libfoo.so`, it will depend at runtime on `libfoo.so.1`:
 
 ```bash
 $ readelf --dynamic ./app
@@ -458,10 +496,10 @@ this versioning can be safely ignored.
 
 ## Usage
 
-When clients want to use our library, they need to add the path to public headers of our library
-to their include path and link against `libfoo.so`.
+When clients want to use our library, they need to link against `libfoo.so` and
+add the path to public headers of our library to their include path.
 
-`cmake` provides [imported targets](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) for this purpose:
+`cmake` has a concept of [imported targets](https://cmake.org/cmake/help/latest/command/add_library.html#imported-libraries) for this purpose:
 
 ```cmake
 add_library(foo SHARED IMPORTED)
@@ -474,13 +512,80 @@ target_include_directories(foo INTERFACE path/to/libfoo/headers)
 
 `IMPORTED_SONAME` [property](https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_SONAME.html)
 must match `SONAME` record in `libfoo.so`.
-After that `foo` target can be used as any other target and can be linked against:
+After that `foo` target can be used as any other target:
 
 ```cmake
 target_link_libraries(app PRIVATE foo)
 ```
 
-A more detailed client cmake project setup is out of scope for this page.
+Let's build and install `libfoo`:
+
+```bash
+cd libfoo/build
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_API_VISIBILITY=ON -DLIBFOO_STRIP=ON ..
+cmake --build .  # build succeeds
+ctest  # tests run and succeed - the library is usable
+cmake --install . --prefix=../out --strip  # install libfoo into 'libfoo/out'
+```
+
+build the app:
+
+```bash
+cd app/build
+# `LIBFOO_BASE_DIR` is a custom option in the example project
+cmake -DCMAKE_BUILD_TYPE=Release -DLIBFOO_BASE_DIR=../libfoo/out ..
+cmake --build .
+./app  # runs and prints output
+```
+
+and inspect the executable:
+
+```bash
+$ readelf --dynamic app
+...
+ 0x0000000000000001 (NEEDED)             Shared library: [libfoo.so]
+ 0x000000000000001d (RUNPATH)            Library runpath: [/home/andrey/projects/learning-playground/linux-shared-lib/libfoo/out/lib:]
+...
+$ ldd app
+        linux-vdso.so.1 (0x00007ffe6416f000)
+        libfoo.so => /home/andrey/projects/learning-playground/linux-shared-lib/libfoo/out/lib/libfoo.so (0x0000771d1f915000)
+...
+```
+
+This is the executable in the `cmake` _build tree_, it contains `RUNPATH` to locate the exact library
+it was linked with.
+
+To make this application portable, it needs to be installed via `cmake --install`:
+
+```bash
+cmake --install . --prefix=../out --strip
+readelf --dynamic ../out/bin/app
+...
+ 0x0000000000000001 (NEEDED)             Shared library: [libfoo.so]
+ 0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+...
+```
+
+It has no `RPATH`/`RUNPATH` records by default. If we try to run the app, it will fail:
+
+```bash
+$ ../out/bin/app
+../out/bin/app: error while loading shared libraries: libfoo.so: cannot open shared object file: No such file or directory
+```
+
+And that's expected, because `libfoo.so` is not in any standard search path of the system.
+We need to either explicitly set relative `RPATH` for the application during the build and
+put our libraries there,
+or use `LD_LIBRARY_PATH` [environment variable](https://man7.org/linux/man-pages/man8/ld.so.8.html):
+
+```bash
+linux-shared-lib$ LD_LIBRARY_PATH=libfoo/out/lib/ ./app/out/bin/app
+Hello world!
+```
+
+cmake project for the client application can be configured to also copy shared libraries
+from dependencies, copy debug info files, and more, but that's out of scope for this page.
 
 ## References
 
