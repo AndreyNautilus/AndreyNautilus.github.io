@@ -17,14 +17,14 @@ Let's define the setup and assumptions:
 
 - we develop on linux system using well-known compiler, like gcc or clang;
 - we use cmake as build system (backed by make or ninja);
-- we know how to build for the target platform (for example the client provides the toolchain);
+- we know how to build for the target platform (for example the client provides a toolchain);
 - the target platform may be different from the development platform,
-  and the produced library may not run and requires an emulator.
+  and the produced library may require an emulator to run.
 
 The setup for our example project includes:
 
 - `libfoo` is the library we need to deliver;
-- `app` is our internal developer app, that uses `libfoo`;
+- `app` is our internal developer app that uses `libfoo`;
 
 The code of example project can be found [here](https://github.com/AndreyNautilus/learning-playground/tree/main/linux-shared-lib).
 
@@ -35,7 +35,7 @@ which controls what options are passed to the compiler.
 There are [4 default configurations](https://stackoverflow.com/questions/48754619/what-are-cmake-build-type-debug-release-relwithdebinfo-and-minsizerel/59314670#59314670) -
 `Debug`, `Release`, `RelWithDebInfo` and `MinSizeRel` -
 and `CMAKE_BUILD_TYPE` [variable](https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html)
-configures this.
+controls this.
 
 - **Debug** - for development use only. No optimizations, debug info included.
 - **Release** - produces the final deliverable binary. Optimized for speed, no debug info included.
@@ -111,7 +111,8 @@ $ readelf --sections libfoo.so | grep debug
 `readelf` shows `.gnu_debuglink` section only which is a link to a file containing debug info
 (caused by `--add-gnu-debuglink` option in the example project). `file` doesn't show `with debug_info`,
 but still shows `not stripped` - this means that our binary still contains additional unneeded info -
-`.symtab` section. It can be removed if `objcopy` is invoked with `--strip-unneeded` parameter instead of `--strip-debug`.
+for example `.symtab` section. Unneeded sections can be removed if `objcopy` is invoked
+with `--strip-unneeded` parameter instead of `--strip-debug`.
 
 `cmake --install` has `--strip` [option](https://cmake.org/cmake/help/latest/manual/cmake.1.html#cmdoption-cmake-install-strip)
 which performs such aggressive stripping during installation. If we use it after the build:
@@ -134,7 +135,7 @@ $ file ../out/lib/libfoo.so
 ```
 
 We need to save the file with debug info (`libfoo.so.debug`) for every shipped binary, then we will be able
-to analyze crashdumps that customers may send to us.
+to analyze crash dumps that customers may send to us.
 
 ## Visibility of exported symbols
 
@@ -203,8 +204,8 @@ The second column is the _type_ of the symbol. What's important for now:
 - `U` means "undefined symbol" - the symbol is required, and must be provided at runtime via
   dependencies (note `@GLIBCXX_3.4` suffix for example).
 - `T` means _global_ symbol "in .text section" - exported from the library.
-- `t` also means a symbol "in .text section", but it's _local_ and not exported.
-  `nm --dynamic` doesn't show them.
+- `t` also means a symbol "in .text section", but it's _local_ and not exported
+  (`nm --dynamic` doesn't show them).
 - `w`/`W` means "weak symbol".
   When linking the final application, the linker will pick a non-weak symbol over weak symbols,
   and pick any weak symbol if no non-weak symbols exist. Typically, weak symbols are
@@ -213,7 +214,7 @@ The second column is the _type_ of the symbol. What's important for now:
   and the linker will eliminate duplicates.
 
 Our goal is to have all symbols forming public API of our library to be exported (in dynamic section),
-and no other internal symbols should exported.
+and no other internal symbols should be exported.
 
 ### Pass "version script" file to linker
 
@@ -295,8 +296,8 @@ and [clang](https://clang.llvm.org/docs/LTOVisibility.html))
 marks symbols for exporting. We can define a macro to avoid typing it every time:
 
 ```c
-#define PUBLIC_API __attribute__((visibility("default")))
-PUBLIC_API void foo();
+#define PUBLIC_API_FOO __attribute__((visibility("default")))
+PUBLIC_API_FOO void foo();
 ```
 
 It's a common practice to annotate symbols in public header files, but these headers are also
@@ -308,11 +309,11 @@ when a library is built as shared, so we can use it:
 
 ```c
 #ifdef foo_EXPORTS
-#   define PUBLIC_API __attribute__((visibility("default")))
+#  define PUBLIC_API_FOO __attribute__((visibility("default")))
 #else
-#   define PUBLIC_API
+#  define PUBLIC_API_FOO
 #endif
-PUBLIC_API void foo();
+PUBLIC_API_FOO void foo();
 ```
 
 If we now build the library and inspect exported symbols:
@@ -332,14 +333,15 @@ nm --dynamic --demangle libfoo.so
 
 we'll see that only annotated symbols are exported.
 
-Don't forget to `#include` public headers that define exported symbols into compilable files (cpp/cxx/cc).
+**Note**: Don't forget to `#include` public headers that define exported symbols
+into compilable files (cpp/cxx/cc).
 If a header file is never included in any translation unit, it's not processed and effectively ignored.
 
 **Pros**: all exported symbols are explicitly annotated. It's a conscious decision and low risk of mistakes.
 
 **Cons**:
 
-- public headers are "polluted" with `PUBLIC_API` macro, which is meaningless for clients;
+- public headers are "polluted" with `PUBLIC_API_FOO` macro, which is meaningless for clients;
 - if different clients need to have access to different set of symbols,
   this approach requires bulky fine-tuning (for example, split API into categories and export
   different categories for different customers);
@@ -398,8 +400,8 @@ that will simplify management a lot, but in some cases it's not possible or allo
 
 **Note**: I'm talking about _first-party_ dependencies (dependencies that we as developers produce).
 _System_ dependencies should not be statically linked or packaged with the deliverables.
-_Third-party_ dependencies (like `openssl`) can follow both approaches and they should be discussed on
-case-by-case basis with customers.
+_Third-party_ dependencies (like `openssl`) can follow both approaches and they should be handled on
+case-by-case basis.
 
 When `cmake --build` produces a library it embeds full paths to dependencies as `RUNPATH` records:
 
@@ -413,7 +415,7 @@ readelf --dynamic ...so
 
 which allows any executable in the project (tests or apps) to run without additional configuration,
 but that's not portable.
-`cmake --install` strips these records and leaves just `NEEDED` record for each library:
+`cmake --install` strips these records and leaves just `NEEDED` record for each dependency:
 
 ```bash
 readelf --dynamic installed/...so
@@ -422,21 +424,21 @@ readelf --dynamic installed/...so
 ```
 
 This moves the responsibility to provide runtime search paths to the final application.
-The clients application may be something custom which is shipped along with its dependencies,
+The clients application may be shipped along with its dependencies,
 or can be an application that expects dependencies to be in specific locations within
 the application bundle (like Android APK for example).
-In such cases let the client deal with search paths.
+In such cases better let the client deal with search paths.
 
 **Note**: there's a very good talk
-["how shared libraries are found"](https://www.youtube.com/watch?v=Ik3gR65oVsM) that explains
-`RPATH`/`RUNPATH` handling at compile time and runtime.
+["C++ Shared Libraries and Where To Find Them"](https://www.youtube.com/watch?v=Ik3gR65oVsM)
+that explains `RPATH`/`RUNPATH` handling at compile time and runtime.
 
 ## ABI versioning via SONAME
 
 `readelf --dynamic` shows `SONAME` record, which contains a value similar to the filename of the shared library.
 This value will be embedded into the client application as dynamic dependency when the app is linked
-against our library. Even though the app uses `libfoo.so` during build,
-at runtime the app will look for a file with name taken from `SONAME` record of `libfoo.so`.
+against our library. Even though the app links against `libfoo.so` during the build,
+at runtime the app will look for a file with the name taken from `SONAME` record of `libfoo.so`.
 
 This mechanism allows updates of libraries without rebuilding client applications.
 Libraries that use ABI version management are usually shipped with symlinks, for example:
@@ -451,9 +453,9 @@ and `SONAME` record of the library contains `libfoo.so.1`.
 When an app is linked against `libfoo.so`, at runtime this app will look for `libfoo.so.1` file
 (value of `SONAME` record). This allows users to update `libfoo` to version `1.0.1` or `1.1.0`
 and the app will continue to work (as long as the update process updates symlinks:
-`libfoo.so.1 -> libfoo.so.1.0.1`).
+`libfoo.so.1 -> libfoo.so.1.1.0`).
 Users can even install multiple major versions of the same library (`1.1.0` and `2.0.0`) and
-apps will be able to find the correct dependencies at runtime
+apps will be able to find the correct dependency at runtime
 (one app that depends on `libfoo.so.1` will pick `libfoo.so.1.1.0` while another app
 that depends on `libfoo.so.2` will pick `libfoo.so.2.0.0`).
 
@@ -491,7 +493,7 @@ $ readelf --dynamic ./app
 This might be useful if the shared library that we deliver may be updated on-the-fly,
 and client apps must continue to work.
 If the client app is used as a single package and library updates can't happen
-(for example if our library is packaged in an Android application),
+(for example if our library is packaged in an Android APK file),
 this versioning can be safely ignored.
 
 ## Usage
@@ -524,7 +526,7 @@ Let's build and install `libfoo`:
 cd libfoo/build
 cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DLIBFOO_API_VISIBILITY=ON -DLIBFOO_STRIP=ON ..
 cmake --build .  # build succeeds
-ctest  # tests run and succeed - the library is usable
+ctest  # tests run and pass - the library is usable
 cmake --install . --prefix=../out --strip  # install libfoo into 'libfoo/out'
 ```
 
