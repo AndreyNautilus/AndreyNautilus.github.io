@@ -6,8 +6,15 @@
     <description>Recent content in posts on Andrey Nautilus blog</description>
     <generator>Hugo -- 0.147.8</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 23 Aug 2025 19:44:29 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 02 Sep 2025 19:33:30 +0200</lastBuildDate>
     <atom:link href="https://andreynautilus.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Build linux shared libraries for distribution</title>
+      <link>https://andreynautilus.github.io/posts/2025-09-02-distributing-linux-so/</link>
+      <pubDate>Tue, 02 Sep 2025 19:33:30 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2025-09-02-distributing-linux-so/</guid>
+      <description>Build the library, strip debug info, manage symbols visibility, etc.</description>
+    </item>
     <item>
       <title>Keep &#39;git blame&#39; clean</title>
       <link>https://andreynautilus.github.io/posts/2025-08-23-git-blame-ignore/</link>
