@@ -3,7 +3,6 @@ title: 'YAML: anchors and multiline text'
 summary: "'>-' and '|' for multiline text; '&id' and '*id' for anchors"
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2025-09-06T22:37:49+02:00'
-draft: true  # draft mode by default
 
 tags: [yaml]
 ---
