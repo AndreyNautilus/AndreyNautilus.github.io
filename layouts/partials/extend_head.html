@@ -30,9 +30,9 @@
 <!-- /Google tag (gtag.js) -->
 
 <!-- Global styles required for partials/shortcodes -->
-{{ $global_styles := slice "card_tags.css" "builtin_icon.css" "columns.css" }}
+{{ $global_styles := resources.Match "css/global/*.css" }}
 {{ range $global_styles }}
-  {{ with resources.Get (printf "css/global/%s" .) }}
+  {{ with resources.Get . }}
     {{ $style := . | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}" as="style">
   {{ else }}
