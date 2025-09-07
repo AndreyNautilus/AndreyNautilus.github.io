@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>yaml on Andrey Nautilus blog</title>
+    <link>https://andreynautilus.github.io/tags/yaml/</link>
+    <description>Recent content in yaml on Andrey Nautilus blog</description>
+    <generator>Hugo -- 0.147.8</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 06 Sep 2025 22:37:49 +0200</lastBuildDate>
+    <atom:link href="https://andreynautilus.github.io/tags/yaml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>YAML: anchors and multiline text</title>
+      <link>https://andreynautilus.github.io/posts/2025-09-06-yaml-anchors-multiline-text/</link>
+      <pubDate>Sat, 06 Sep 2025 22:37:49 +0200</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2025-09-06-yaml-anchors-multiline-text/</guid>
+      <description>&amp;lsquo;&amp;gt;-&amp;rsquo; and &amp;lsquo;|&amp;rsquo; for multiline text; &amp;lsquo;&amp;amp;id&amp;rsquo; and &amp;lsquo;*id&amp;rsquo; for anchors</description>
+    </item>
+  </channel>
+</rss>
