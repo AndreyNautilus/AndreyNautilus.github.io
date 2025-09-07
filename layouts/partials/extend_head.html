@@ -30,7 +30,7 @@
 <!-- /Google tag (gtag.js) -->
 
 <!-- Global styles required for partials/shortcodes -->
-{{ $global_styles := slice "card_tags.css" "builtin_icon.css" }}
+{{ $global_styles := slice "card_tags.css" "builtin_icon.css" "columns.css" }}
 {{ range $global_styles }}
   {{ with resources.Get (printf "css/global/%s" .) }}
     {{ $style := . | resources.Minify | resources.Fingerprint }}
