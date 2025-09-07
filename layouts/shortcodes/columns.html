@@ -2,7 +2,7 @@
 {{- /*    https://geekdocs.de/shortcodes/columns/  */ -}}
 {{- /*    https://github.com/thegeeklab/hugo-geekdoc/blob/main/layouts/shortcodes/columns.html  */ -}}
 <div class="columns-container">
-  {{- range split .Inner "<--->" }}
+  {{- range split .Inner "NEW_COLUMN" }}
     <div class="columns-content">
       {{ . | $.Page.RenderString -}}
     </div>
