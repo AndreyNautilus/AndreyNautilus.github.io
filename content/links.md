@@ -12,6 +12,7 @@ ShowReadingTime: false
 - https://ohshitgit.com/ - git cheatsheet for "shit happened" cases
 - Bash scripting docs: [conditions](https://www.gnu.org/software/bash/manual/bash.html#Bash-Conditional-Expressions) and
   [vars expansion](https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion-1)
+- YAML [online parser](https://yaml-online-parser.appspot.com/) and [multiline strings](https://yaml-multiline.info/) - ([post](../posts/2025-09-06-yaml-anchors-multiline-text))
 
 ## Procedural generation
 
