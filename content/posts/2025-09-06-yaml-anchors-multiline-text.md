@@ -19,7 +19,7 @@ YAML since version 1.1 (2005) support [_block indicators_](https://yaml.org/spec
 to control how parser should handle multiline text.
 See [interactive demo](https://yaml-multiline.info/).
 
-Examples:
+[Examples](https://yaml-online-parser.appspot.com/?yaml=key-1%3A+%3E-%0A++very%0A++long%0A++text%0Akey-2%3A+%7C%0A++command1%0A++command2%0A++command3%0A&type=python):
 
 `>-` means "treat single newline symbols (`'\n'`) as spaces (`' '`), and remove all newlines at the end"
 (useful to put long description in a yaml key).
@@ -72,7 +72,7 @@ a way to annotate a node for future reuse.
 `&anchor` at the beginning of a node value declares an anchor, `*anchor` value is expanded as anchored node.
 Use [YAML online parser](https://yaml-online-parser.appspot.com/) for experimenting.
 
-Examples:
+[Example](https://yaml-online-parser.appspot.com/?yaml=first-key%3A%20%26config%0A%20%20key%3A%20value%0A%20%20list%3A%0A%20%20%20%20-%20item1%0A%20%20%20%20-%20item2%0Asecond-key%3A%20%2Aconfig&type=json):
 
 {{< columns >}}
 
@@ -147,7 +147,7 @@ If we need to extend a _mapping_, we can use "merge key" feature.
 It's an [optional feature proposed](https://yaml.org/type/merge.html) for YAML 1.1
 to merge multiple mappings defined by anchors into one node (`<<: *anchor`).
 
-Example:
+[Example](https://yaml-online-parser.appspot.com/?yaml=first-key%3A+%26config%0A++key%3A+value%0A++foo%3A+bar%0Asecond-key%3A+%26addon%0A++abc%3A+xyz%0Atarget-1%3A%0A++%3C%3C%3A+*config%0A++new-key%3A+new+value%0A++key%3A+another+value%0Atarget-2%3A%0A++%3C%3C%3A+%5B*config%2C+*addon%5D&type=json):
 
 {{< columns >}}
 
