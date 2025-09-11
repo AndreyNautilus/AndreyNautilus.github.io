@@ -596,3 +596,7 @@ from dependencies, copy debug info files, and more, but that's out of scope for 
 - [Stripped binaries (wiki)](<https://en.wikipedia.org/wiki/Strip_(Unix)>)
 - [{{< builtin_icon "youtube" >}} C++ Shared Libraries and Where To Find Them](https://www.youtube.com/watch?v=Ik3gR65oVsM)
 - [GNU Wiki: Visibility attribute](https://gcc.gnu.org/wiki/Visibility)
+- [Slides](https://man7.org/conf/lca2006/shared_libraries/index.html) for
+  "An introduction to building and using shared libraries" talk on Linux Conf 2006
+  (see [this slide](https://man7.org/conf/lca2006/shared_libraries/slide19a.html)
+  for symbol versioning via version script)
