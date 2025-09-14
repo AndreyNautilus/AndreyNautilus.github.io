@@ -53,3 +53,9 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: docs
           retention-days: 1
+      - name: Install htmltest
+        run: |
+          curl https://htmltest.wjdp.uk | bash
+      - name: Validate with htmltest
+        run: |
+          htmltest

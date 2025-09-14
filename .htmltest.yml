@@ -1,0 +1,16 @@
+# htmltest config, see: https://github.com/wjdp/htmltest
+
+DirectoryPath: docs  # must match 'publishDir' in hugo.yaml
+# Hugo's directory structure triggers this:
+IgnoreDirectoryMissingTrailingSlash: true
+IgnoreURLs:
+  # Don't check LinkedIn, it return http 999 for GET requests
+  - https://www.linkedin.com/in/andrey-potapov-1049b096/
+  # favicon links are broken now :(
+  - https://andreynautilus.github.io/favicon.ico
+  - https://andreynautilus.github.io/favicon-16x16.png
+  - https://andreynautilus.github.io/favicon-32x32.png
+  - https://andreynautilus.github.io/apple-touch-icon.png
+  - https://andreynautilus.github.io/safari-pinned-tab.svg
+IgnoreAltEmpty:
+  - https://andreynautilus.github.io/apple-touch-icon.png
