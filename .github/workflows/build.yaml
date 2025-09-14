@@ -53,3 +53,10 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: docs
           retention-days: 1
+      - name: Install htmltest
+        run: |
+          curl https://htmltest.wjdp.uk | bash
+          echo "$PWD/bin" >> "$GITHUB_PATH"
+      - name: Validate with htmltest
+        run: |
+          htmltest
