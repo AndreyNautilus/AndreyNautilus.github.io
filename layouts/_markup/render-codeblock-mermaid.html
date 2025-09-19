@@ -1,4 +1,5 @@
-<pre class="mermaid">
+{{- /* Save the original mermaid content in 'data-code', to use it during dark/light switch handling */ -}}
+<pre class="mermaid" data-code="{{ .Inner | htmlEscape }}">
   {{ .Inner | htmlEscape | safeHTML }}
 </pre>
 {{ .Page.Store.Set "hasMermaid" true }}

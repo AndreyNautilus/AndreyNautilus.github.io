@@ -1,6 +1,35 @@
+<!-- Render mermaid diagrams. Re-render when dark/light mode changes. -->
 {{ if .Store.Get "hasMermaid" }}
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true });
+  <script type="module" defer>
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    function getTheme() {
+      return document.body.classList.contains("dark") ? "dark" : "default";
+    }
+
+    mermaid.initialize({ startOnLoad: true, theme: getTheme() });
+
+    function htmlUnescape(str) {
+      const textarea = document.createElement('textarea');
+      textarea.innerHTML = str;
+      return textarea.value;
+    }
+
+    document.getElementById('theme-toggle')?.addEventListener('click', async () => {
+      // reset each diagram back to its raw source
+      document.querySelectorAll('.mermaid').forEach(el => {
+        const escaped = el.dataset.code || '';
+        const code = htmlUnescape(escaped); // decode before restoring
+        el.removeAttribute('data-processed');
+        el.textContent = code;
+      });
+
+      // re-init with the new theme
+      mermaid.initialize({ startOnLoad: false, theme: getTheme() });
+
+      // re-render
+      await mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+    });
   </script>
 {{ end }}
+<!-- /Render mermaid diagrams. -->
