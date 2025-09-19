@@ -193,6 +193,43 @@ Check your yaml framework for support. For example `PyYaml` and `ruaml.yaml` sup
 
 Merge key feature does not allow to merge lists.
 
+## Type of values
+
+YAML defines types for values: string, number or boolean - sometimes using non-intuitive rules.
+[For example](https://yaml-online-parser.appspot.com/?yaml=number1%3A+1%0Anumber2%3A+1.2%0Anumber3%3A+1.2.3%0Ano%3A+I%27m+false%0Aon%3A+I%27m+true&type=json),
+`1` and `1.2` are numbers, while `1.2.3` is a string; but `no` and `on` are booleans
+(`false` and `true` respectively)
+This is called ["The Norway problem"](https://www.bram.us/2022/01/11/yaml-the-norway-problem/):
+`NO` is [ISO country code 2 of Norway](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#NO);
+`on:` is used in GitHub Actions to [list triggers](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#on).
+
+{{< columns >}}
+
+```yaml
+# yaml
+number1: 1
+number2: 1.2
+number3: 1.2.3
+no: I'm false
+on: I'm true
+```
+
+NEW_COLUMN
+
+```json
+{
+  "number1": 1,
+  "number2": 1.2,
+  "number3": "1.2.3",
+  "false": "I'm false",
+  "true": "I'm true"
+}
+```
+
+{{< /columns >}}
+
+Wrapping values in quotes (`"1"`) will turn them into strings.
+
 ## References
 
 - [YAML specs](https://yaml.org/)
