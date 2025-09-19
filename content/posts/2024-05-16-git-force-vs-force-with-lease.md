@@ -49,30 +49,6 @@ from overriding others changes. In this case `git` assumes that's your intention
 
 ## Example
 
-```mermaid
-sequenceDiagram
-  actor G as Mr. Green
-  participant git as git remote
-  actor R as Mr. Red
-
-  Note over git: init
-
-  Note over R: create feature_branch
-  activate R
-  R ->> git : push feature_branch
-
-  git ->> + G : checkout feature_branch
-  G -->> G : commits
-  R -->> R : commits
-  G ->> - git : push feature_branch
-
-  R ->> R : rebase --autosquash
-
-  R -->> - git : push feature_branch --force
-
-  Note over git: BOOM!<br/>commits from Mr.Red will override<br/>commits from Mr. Green
-```
-
 Let's simulate this scenario locally, I'll use [fixup commits](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---fixupamendrewordltcommitgt) as example.
 `git` can use a local repository as remote (I'll use _bare_ repository for this).
 We're interested in commits, not the actual changes, so all commits will be empty
