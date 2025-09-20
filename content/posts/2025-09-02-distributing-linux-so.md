@@ -218,7 +218,7 @@ and no other internal symbols should be exported.
 
 ### Pass "version script" file to linker
 
-Widely used linkers (like GNU `ld` and `gold` or LLVM `lld`) support
+Widely used linkers (like GNU `ld`, `gold` and `mold` or LLVM `lld`) support
 [_version script_ files](https://man7.org/conf/lca2006/shared_libraries/slide18c.html)
 via `--version-script` parameter. Version script files can be used to define visibility of symbols.
 An example of such file to export symbols from `libfoo::` namespace only can look like this:
@@ -232,7 +232,23 @@ An example of such file to export symbols from `libfoo::` namespace only can loo
 };
 ```
 
-This file uses _mangled_ symbol names, so we need know them upfront (by running `nm` for example).
+This file uses _mangled_ symbol names by default, so we need know them upfront (by running `nm` for example).
+It's possible to [specify the programming language of symbols](https://sourceware.org/binutils/docs/ld/VERSION.html)
+explicitly via `extern "lang"` directive and offload the mangling to the link time:
+
+```
+{
+    global:
+        extern "C++" {
+            libfoo::*;
+        };
+    local:
+        *;
+};
+```
+
+**Note**: version script files can also be used to assign versions to symbols, so the dynamic linker
+can check the provided functionality of a library at runtime. But that's out of scope for this page.
 
 To pass a version script file to the linker we need to add `-Wl,--version-script=FILENAME` linker option
 (or add this flag to `LINK_FLAGS` [property](https://cmake.org/cmake/help/latest/prop_tgt/LINK_FLAGS.html)
@@ -263,7 +279,9 @@ in the `local` section:
 ```
 {
     global:
-        _ZN6libfoo*;
+        extern "C++" {
+            libfoo::*;
+        };
     local:
         _ZN6libfoo8internal*;  # won't work :(
         *;
@@ -274,8 +292,8 @@ If a symbol matches any wild-star pattern in `global` section, this symbol
 [will not be checked](https://maskray.me/blog/2020-11-26-all-about-symbol-versioning#version-script)
 against patterns in `local` section.
 
-One potential way to overcome this limitation is to list all symbols we want to export explicitly,
-but that's a tedious work. A script to fetch symbols from `nm` output can be handy,
+One potential way to overcome this limitation is to list all symbols we want to export explicitly
+without globbing, but that's tedious work. A script to fetch symbols from `nm` output can be handy,
 but requires additional effort.
 
 **Pros**: no code changes required. Configuration lives in a separate file
@@ -600,3 +618,4 @@ from dependencies, copy debug info files, and more, but that's out of scope for 
   "An introduction to building and using shared libraries" talk on Linux Conf 2006
   (see [this slide](https://man7.org/conf/lca2006/shared_libraries/slide19a.html)
   for symbol versioning via version script)
+- [How to write shared libraries](https://www.akkadia.org/drepper/dsohowto.pdf) - a paper by Ulrich Drepper
