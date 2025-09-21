@@ -193,12 +193,12 @@ Check your yaml framework for support. For example `PyYaml` and `ruaml.yaml` sup
 
 Merge key feature does not allow to merge lists.
 
-## Type of values
+## Type of values (the "Norway problem")
 
 YAML defines types for values: string, number or boolean - sometimes using non-intuitive rules.
 [For example](https://yaml-online-parser.appspot.com/?yaml=number1%3A+1%0Anumber2%3A+1.2%0Anumber3%3A+1.2.3%0Ano%3A+I%27m+false%0Aon%3A+I%27m+true&type=json),
 `1` and `1.2` are numbers, while `1.2.3` is a string; but `no` and `on` are booleans
-(`false` and `true` respectively)
+(`false` and `true` respectively).
 This is called ["The Norway problem"](https://www.bram.us/2022/01/11/yaml-the-norway-problem/):
 `NO` is [ISO country code 2 of Norway](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#NO);
 `on:` is used in GitHub Actions to [list triggers](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#on).
