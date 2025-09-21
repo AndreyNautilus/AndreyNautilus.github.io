@@ -1,0 +1,17 @@
+# htmltest config, see: https://github.com/wjdp/htmltest
+
+DirectoryPath: docs  # must match 'publishDir' in hugo.yaml
+ExternalTimeout: 30  # seconds
+# Hugo's directory structure triggers this:
+IgnoreDirectoryMissingTrailingSlash: true
+IgnoreURLs:
+  # Don't check LinkedIn, it return http 999 for GET requests
+  - https://www.linkedin.com/in/andrey-potapov-1049b096/
+  # I don't have favicons and "apple" icons at the moment :(
+  - https://andreynautilus\.github\.io/favicon(-\d+x\d+)?\.(ico|png)
+  - https://andreynautilus\.github\.io/apple-touch-icon\.png
+  - https://andreynautilus\.github\.io/safari-pinned-tab\.svg
+  # Links to gnu.org often time out, even though they work properly in browser
+  - https://www.gnu.org/.+
+IgnoreAltEmpty: true
+LogLevel: 1  # 'info' log level

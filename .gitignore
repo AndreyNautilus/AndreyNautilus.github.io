@@ -3,3 +3,4 @@ __pycache__
 
 .hugo_build.lock
 docs
+tmp
