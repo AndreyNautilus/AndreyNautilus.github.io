@@ -15,8 +15,8 @@ repos:
     hooks:
       - id: check-hooks-apply
 
-  - repo: https://github.com/psf/black.git
-    rev: 25.1.0
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 25.9.0
     hooks:
       - id: black
         name: Black (Python code formatter)
