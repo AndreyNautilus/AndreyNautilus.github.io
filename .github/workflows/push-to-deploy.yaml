@@ -39,7 +39,7 @@ jobs:
       - name: Clean current deployment
         run: git rm -rf docs
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: docs
