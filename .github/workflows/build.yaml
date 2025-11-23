@@ -59,11 +59,11 @@ jobs:
           path: docs
           retention-days: 1
       - name: Install htmltest
-        if: inputs.bypass-htmltest == 'false'
+        if: inputs.bypass-htmltest != 'true'
         run: |
           curl https://htmltest.wjdp.uk | bash
           echo "$PWD/bin" >> "$GITHUB_PATH"
       - name: Validate with htmltest
-        if: inputs.bypass-htmltest == 'false'
+        if: inputs.bypass-htmltest != 'true'
         run: |
           htmltest
