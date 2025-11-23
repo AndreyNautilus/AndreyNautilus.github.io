@@ -40,6 +40,7 @@ repos:
     hooks:
       - id: codespell
         name: Common misspellings
+        args: ['--exclude-file', 'content/hidden/posts/pathologic-walkthrough/index.md']
 
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.13.7
