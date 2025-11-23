@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /hidden/
+Sitemap: https://andreynautilus.github.io/sitemap.xml
