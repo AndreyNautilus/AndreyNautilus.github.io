@@ -33,7 +33,7 @@ jobs:
     outputs:
       commit: ${{ steps.commit.outputs.short_sha }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - name: Read hugo version
