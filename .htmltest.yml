@@ -14,4 +14,5 @@ IgnoreURLs:
   # Links to gnu.org often time out, even though they work properly in browser
   - https://www.gnu.org/.+
 IgnoreAltEmpty: true
+IgnoreAltMissing: true
 LogLevel: 1  # 'info' log level
