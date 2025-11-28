@@ -1,0 +1,27 @@
+figure.fig-wrap {
+    margin-bottom: 0;
+    text-align: center;
+}
+
+figure.fig-wrap img {
+    margin-bottom: 0
+}
+
+figure.fig-wrap figcaption {
+    margin-bottom: 8px;
+    max-width: 200px
+}
+
+figure.fig-wrap figcaption p {
+    margin-bottom: 0
+}
+
+.float-left {
+    float: left;
+    margin-right: 15px;
+}
+
+.float-right {
+    float: right;
+    margin-left: 15px;
+}
