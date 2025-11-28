@@ -1,19 +1,26 @@
-figure.float-left {
+.fig-wrap {
+    text-align: center;
+}
+
+.fig-wrap img {
+    margin-bottom: 0
+}
+
+.fig-wrap figcaption {
+    margin-bottom: 8px;
+    max-width: 200px
+}
+
+.fig-wrap figcaption p {
+    margin-bottom: 0
+}
+
+.float-left {
     float: left;
-    margin: 0 15px 15px 0; /* space around figure */
-    text-align: center;    /* center caption text */
+    margin-right: 15px;
 }
 
-figure.float-left figcaption {
-    max-width: 200px
-}
-
-figure.float-right {
+.float-right {
     float: right;
-    margin: 0 15px 15px 0; /* space around figure */
-    text-align: center;    /* center caption text */
-}
-
-figure.float-right figcaption {
-    max-width: 200px
+    margin-left: 15px;
 }
