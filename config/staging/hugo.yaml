@@ -1,1 +1,3 @@
 baseURL: "http://localhost/"
+
+publishDir: docs.staging
