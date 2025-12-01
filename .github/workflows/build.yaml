@@ -45,12 +45,19 @@ jobs:
         uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: ${{ steps.settings.outputs.hugo-version }}
-      - name: Build
-        run: hugo
-      - name: Output commit info
-        id: commit
+      - name: Build STAGING
+        run: hugo --environment=staging
+      - name: Install htmltest
+        if: inputs.bypass-htmltest != true
         run: |
-          echo "short_sha=$(git rev-list --max-count=1 --oneline HEAD)" >> "$GITHUB_OUTPUT"
+          curl https://htmltest.wjdp.uk | bash
+          echo "$PWD/bin" >> "$GITHUB_PATH"
+      - name: Validate staging with htmltest
+        if: inputs.bypass-htmltest != true
+        run: |
+          htmltest
+      - name: Build PRODUCTION
+        run: hugo --environment=staging
       - name: Upload artifact
         if: inputs.artifact-name != ''
         uses: actions/upload-artifact@v5
@@ -58,12 +65,7 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: docs
           retention-days: 1
-      - name: Install htmltest
-        if: inputs.bypass-htmltest != true
+      - name: Output commit info
+        id: commit
         run: |
-          curl https://htmltest.wjdp.uk | bash
-          echo "$PWD/bin" >> "$GITHUB_PATH"
-      - name: Validate with htmltest
-        if: inputs.bypass-htmltest != true
-        run: |
-          htmltest
+          echo "short_sha=$(git rev-list --max-count=1 --oneline HEAD)" >> "$GITHUB_OUTPUT"
