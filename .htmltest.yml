@@ -1,6 +1,6 @@
 # htmltest config, see: https://github.com/wjdp/htmltest
 
-DirectoryPath: docs  # must match 'publishDir' in hugo.yaml
+DirectoryPath: docs.staging  # must match 'publishDir' in config/staging/hugo.yaml
 ExternalTimeout: 30  # seconds
 # Hugo's directory structure triggers this:
 IgnoreDirectoryMissingTrailingSlash: true
