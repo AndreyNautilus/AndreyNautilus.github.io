@@ -46,7 +46,7 @@ jobs:
         with:
           hugo-version: ${{ steps.settings.outputs.hugo-version }}
       - name: Build STAGING
-        run: hugo --environment=staging
+        run: hugo --environment=staging --baseURL=$(pwd)
       - name: Install htmltest
         if: inputs.bypass-htmltest != true
         run: |
@@ -57,7 +57,7 @@ jobs:
         run: |
           htmltest
       - name: Build PRODUCTION
-        run: hugo --environment=staging
+        run: hugo --environment=production
       - name: Upload artifact
         if: inputs.artifact-name != ''
         uses: actions/upload-artifact@v5
