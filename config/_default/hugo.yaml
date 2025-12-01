@@ -1,4 +1,4 @@
-baseURL: "https://andreynautilus.github.io/"
+#baseURL: "https://andreynautilus.github.io/"
 title: Andrey Nautilus blog
 theme: PaperMod
 
@@ -9,7 +9,7 @@ titleCaseStyle: none  # do not capitalize titles
 
 # Configure for publishing on GitHub Pages
 cleanDestinationDir: true
-publishDir: docs
+publishDir: docs.out
 
 enableRobotsTXT: true
 buildDrafts: false

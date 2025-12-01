@@ -1,6 +1,6 @@
 # htmltest config, see: https://github.com/wjdp/htmltest
 
-DirectoryPath: docs  # must match 'publishDir' in hugo.yaml
+DirectoryPath: docs.staging  # must match 'publishDir' in config/staging/hugo.yaml
 ExternalTimeout: 30  # seconds
 # Hugo's directory structure triggers this:
 IgnoreDirectoryMissingTrailingSlash: true
@@ -11,11 +11,6 @@ IgnoreURLs:
   - https://andreynautilus\.github\.io/favicon(-\d+x\d+)?\.(ico|png)
   - https://andreynautilus\.github\.io/apple-touch-icon\.png
   - https://andreynautilus\.github\.io/safari-pinned-tab\.svg
-  # TODO: remove me
-  # Ignore all local links. When the website is built for check it contains
-  # real links with the domain, so the check happens against the publihsed site,
-  # not just built site. And newly added pages case the check to fail.
-  - https://andreynautilus\.github\.io/.*
   # Links to gnu.org often time out, even though they work properly in browser
   - https://www.gnu.org/.+
 IgnoreAltEmpty: true
