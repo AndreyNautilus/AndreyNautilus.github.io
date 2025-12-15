@@ -53,7 +53,7 @@ jobs:
           echo "short_sha=$(git rev-list --max-count=1 --oneline HEAD)" >> "$GITHUB_OUTPUT"
       - name: Upload artifact
         if: inputs.artifact-name != ''
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: ${{ inputs.artifact-name }}
           path: docs
