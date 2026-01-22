@@ -15,19 +15,19 @@ repos:
     hooks:
       - id: check-hooks-apply
 
-  - repo: https://github.com/psf/black.git
-    rev: 25.9.0
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: 26.1.0
     hooks:
       - id: black
         name: Black (Python code formatter)
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.22
+    rev: 1.0.0
     hooks:
       - id: mdformat
         # Optionally add plugins
@@ -43,7 +43,7 @@ repos:
         args: ['--exclude-file', 'content/hidden/posts/pathologic-walkthrough/index.md']
 
   - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.13.7
+    rev: v3.14.2
     hooks:
       - id: markdown-link-check
         args: ['--config', '.markdown-link-check.json', '-v']
