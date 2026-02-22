@@ -7,7 +7,7 @@ ignore:
 rules:
   document-start: disable  # personal
   line-length:
-    max: 100
+    max: 150
   new-lines: disable  # mix of win and unix endlines
   truthy:
     check-keys: false  # to allow Github 'on:' syntax
