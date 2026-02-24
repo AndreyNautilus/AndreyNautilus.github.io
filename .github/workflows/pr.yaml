@@ -1,0 +1,20 @@
+name: PR verification
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-html:
+    uses: ./.github/workflows/build-html.yaml
+    with:
+      artifact-name: docs
+
+  verify-html:
+    needs: build-html
+    uses: ./.github/workflows/verify-html.yaml
+    with:
+      artifact-name: ${{ needs.build.outputs.artifact-name }}

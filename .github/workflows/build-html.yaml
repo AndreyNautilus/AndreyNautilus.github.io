@@ -1,7 +1,6 @@
-name: Build
+name: Build HTML
 
 on:
-  pull_request:
   workflow_call:
     inputs:
       artifact-name:
@@ -9,11 +8,6 @@ on:
         required: false
         type: string
         default: ''
-      bypass-htmltest:
-        description: Bypass htmltest check
-        required: false
-        type: boolean
-        default: false
     outputs:
       artifact-name:
         description: Name of the artifact where the built website is uploaded
@@ -21,11 +15,6 @@ on:
       commit:
         description: Short SHA of the commit of the sources
         value: ${{ jobs.build.outputs.commit }}
-
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
@@ -58,12 +47,3 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: docs
           retention-days: 1
-      - name: Install htmltest
-        if: inputs.bypass-htmltest != true
-        run: |
-          curl https://htmltest.wjdp.uk | bash
-          echo "$PWD/bin" >> "$GITHUB_PATH"
-      - name: Validate with htmltest
-        if: inputs.bypass-htmltest != true
-        run: |
-          htmltest
