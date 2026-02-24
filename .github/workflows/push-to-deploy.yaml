@@ -20,10 +20,10 @@ jobs:
     needs: build-html
     uses: ./.github/workflows/verify-html.yaml
     with:
-      artifact-name: ${{ needs.build.outputs.artifact-name }}
+      artifact-name: ${{ needs.build-html.outputs.artifact-name }}
 
   push-to-deploy:
-    needs: build
+    needs: build-html
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -47,14 +47,14 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v7
         with:
-          name: ${{ needs.build.outputs.artifact-name }}
+          name: ${{ needs.build-html.outputs.artifact-name }}
           path: docs
       - name: Re-add and commit the main folder
         id: commit
         continue-on-error: true  # may fail if there's nothing to commit
         run: |
           git add docs
-          git commit -m "update ${{ needs.build.outputs.commit }}"
+          git commit -m "update ${{ needs.build-html.outputs.commit }}"
       - name: Push to deploy branch
         if: steps.commit.outcome == 'success'
         run: |
