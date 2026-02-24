@@ -21,6 +21,11 @@ repos:
       - id: black
         name: Black (Python code formatter)
 
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.11
+    hooks:
+      - id: actionlint
+
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.38.0
     hooks:
@@ -47,11 +52,6 @@ repos:
     hooks:
       - id: markdown-link-check
         args: ['--config', '.markdown-link-check.json', '-v']
-
-  - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.11
-    hooks:
-      - id: actionlint
 
   - repo: local
     hooks:
