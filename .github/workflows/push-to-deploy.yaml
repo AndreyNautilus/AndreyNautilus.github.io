@@ -7,21 +7,20 @@ on:
   schedule:
     - cron: "7 10 1 * *"  # at 10:07 on the first day of every month (i.e. monthly)
   workflow_dispatch:
-    inputs:
-      bypass-validation:
-        description: Bypass validation of the produced pages
-        required: false
-        type: boolean
-        default: false
 
 concurrency: ${{ github.workflow }}
 
 jobs:
-  build:
-    uses: ./.github/workflows/build.yaml
+  build-html:
+    uses: ./.github/workflows/build-html.yaml
     with:
       artifact-name: docs
-      bypass-htmltest: ${{ inputs.bypass-validation || false }}
+
+  verify-html:
+    needs: build-html
+    uses: ./.github/workflows/verify-html.yaml
+    with:
+      artifact-name: ${{ needs.build.outputs.artifact-name }}
 
   push-to-deploy:
     needs: build

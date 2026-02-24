@@ -1,0 +1,28 @@
+name: Verify HTML
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: Name of the artifact where the built website should be uploaded
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  htmltest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: docs
+      - name: Install htmltest
+        run: |
+          curl https://htmltest.wjdp.uk | bash
+          echo "$PWD/bin" >> "$GITHUB_PATH"
+      - name: Validate with htmltest
+        run: |
+          htmltest
