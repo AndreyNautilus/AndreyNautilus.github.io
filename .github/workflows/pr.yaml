@@ -17,4 +17,4 @@ jobs:
     needs: build-html
     uses: ./.github/workflows/verify-html.yaml
     with:
-      artifact-name: ${{ needs.build.outputs.artifact-name }}
+      artifact-name: ${{ needs.build-html.outputs.artifact-name }}
