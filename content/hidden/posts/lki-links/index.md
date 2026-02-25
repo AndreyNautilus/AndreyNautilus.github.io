@@ -18,5 +18,6 @@ sitemap:
 - Бета-тестеры - [юмористические рассказы, публиковавшиеся в журнале на протяжении многих лет](http://www.lki.ru/topic.php?id=Tales).
   Позже собраны на [разных сайтах](https://samlib.ru/m/moiseew_e_i/index_2.shtml) и скомпилированы в
   [отдельную книгу](https://royallib.com/book/avtor_neizvesten/beta_testeri___tsikl_rasskazov_prizraka.html).
+  {{< rawhtml >}}<a href=prizrak-beta-testers.fb2 download>Скачать книгу в fb2</a>{{< /rawhtml >}}
 - [Клуб игропутешествий](http://www.lki.ru/topic.php?id=Travel) - художественные видеотуры. Можно найти на
   [youtube](https://www.youtube.com/watch?v=AW-_a8f16jo&list=PLSHiSwFjXN19DWhTQbWUQcvX4wFYWlJHy).
