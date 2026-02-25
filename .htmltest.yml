@@ -12,11 +12,11 @@ IgnoreURLs:
   - https://andreynautilus\.github\.io/apple-touch-icon\.png
   - https://andreynautilus\.github\.io/safari-pinned-tab\.svg
   # TODO: remove me
-  # Ignore all local links. When the website is built for check it contains
-  # real links with the domain, so the check happens against the publihsed site,
-  # not just built site. And newly added pages case the check to fail.
+  # Ignore all local links. When the website is built for the check it contains
+  # real links with the domain, so the check happens against the published site,
+  # not the just-built site. And newly added pages cause the check to fail.
   - https://andreynautilus\.github\.io/.*
-  # Links to gnu.org often time out, even though they work properly in browser
+  # Links to gnu.org often time out, even though they work properly in browsers
   - https://www.gnu.org/.+
 IgnoreAltEmpty: true
 IgnoreAltMissing: true
