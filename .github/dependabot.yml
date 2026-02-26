@@ -5,3 +5,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+  - package-ecosystem: "gitsubmodule"
+    directory: "/themes/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "pip"
+    directory: /scripts/
+    schedule:
+      interval: "weekly"
