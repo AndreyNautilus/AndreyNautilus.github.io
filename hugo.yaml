@@ -28,7 +28,7 @@ outputs:
     - json
 
 params:
-  env: production  # to enable google analytics, opengraph, twitter-cards and schema.
+  env: development  # disable analytics by default (for local builds)
   title: Andrey Nautilus blog
   description: Andrey Nautilus blog
   keywords: [Blog, Portfolio, PaperMod]
