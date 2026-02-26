@@ -1,6 +1,8 @@
 {{- /*     Insert any custom code (web-analytics, resources, etc.) - it will appear in the <head></head> section of every page. */ -}}
 {{- /*     Can be overwritten by partial with the same name in the global layouts. */ -}}
 
+{{- /* Start of Production-only section */ -}}
+{{ if eq .Site.Params.env "production" }}
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -28,6 +30,8 @@
   gtag('config', 'G-S584PB390B');
 </script>
 <!-- /Google tag (gtag.js) -->
+{{ end }}
+{{- /* End of Production-only section */ -}}
 
 <!-- Global styles required for partials/shortcodes -->
 {{ $global_styles := resources.Match "css/global/*.css" }}
