@@ -16,8 +16,8 @@ I came across the following piece of C++ code:
     }
 ```
 
-and SonarQube scan emitted [a warning](https://rules.sonarsource.com/cpp/tag/bad-practice/RSPEC-874/)
-for this code:
+and SonarQube scan emitted "Bitwise operators should not be applied to signed operands"
+warning (rule `S874`) for this code:
 
 ```
     if (mask & ~value) {
