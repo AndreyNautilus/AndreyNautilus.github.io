@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: "weekly"
   - package-ecosystem: "gitsubmodule"
-    directory: "/themes/"
+    directory: "/"  # should point to the directory containing the .gitmodules file
     schedule:
       interval: "weekly"
   - package-ecosystem: "pip"
