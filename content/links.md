@@ -45,3 +45,4 @@ ShowReadingTime: false
 - [SQL Murder Mystery](https://mystery.knightlab.com/) - gamified SQL exercise. Use SQL queries to relate the clues and solve the puzzle.
 - {{< builtin_icon "youtube" >}}[C++ Shared Libraries and Where To Find Them](https://www.youtube.com/watch?v=Ik3gR65oVsM) - a talk from CppCon 2024
   that structures how to build and load shared libraries on linux/macos/windows.
+- [Google SRE books](https://sre.google/books/) - online books for SRE
