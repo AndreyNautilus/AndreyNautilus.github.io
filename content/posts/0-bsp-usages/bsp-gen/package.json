@@ -1,0 +1,13 @@
+{
+  "name": "bsp-floor-plan-js-module",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
