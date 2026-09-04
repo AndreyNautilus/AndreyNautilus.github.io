@@ -18,4 +18,7 @@ https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion-1
 
 trap
 
+https://man7.org/linux/man-pages/man1/trap.1p.html
+https://stackoverflow.com/questions/36335186/bash-exit-and-cleanup-on-error
+
 IFS= read
