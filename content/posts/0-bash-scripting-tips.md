@@ -22,6 +22,10 @@ According to the [docs](https://tldp.org/LDP/abs/html/io-redirection.html):
 - `CMD 2>/dev/null` - redirect **stderr** to `/dev/null`, keep **stdout** where it was;
 - `CMD 2>&1` - redirect **stderr** to **stdout** (effectively merging them);
 
+Using `tee` [tool](https://man7.org/linux/man-pages/man1/tee.1.html):
+
+- `CMD | tee -a log.txt` - redirect output to stdout/err *and* to `log.txt` file (by appending `-a`);
+
 ## Tips
 
 trap
