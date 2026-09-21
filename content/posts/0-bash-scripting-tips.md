@@ -14,6 +14,14 @@ https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion-1
 
 ## Loops
 
+## stdout/stderr redirection
+
+According to the [docs](https://tldp.org/LDP/abs/html/io-redirection.html):
+
+- `CMD 1>/dev/null` - redirect **stdout** to `/dev/null`, keep **stderr** where it was;
+- `CMD 2>/dev/null` - redirect **stderr** to `/dev/null`, keep **stdout** where it was;
+- `CMD 2>&1` - redirect **stderr** to **stdout** (effectively merging them);
+
 ## Tips
 
 trap
