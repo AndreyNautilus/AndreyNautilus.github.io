@@ -14,6 +14,8 @@ https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion-1
 
 ## Loops
 
+## If conditions
+
 ## stdout/stderr redirection
 
 According to the [docs](https://tldp.org/LDP/abs/html/io-redirection.html):
