@@ -1,6 +1,6 @@
 ---
 title: Set upstream branch automatically
-# summary: "Post summary"  # will be shown on a post card on the main page
+summary: Various usages of --set-upstream in git push  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
 date: '2026-11-12T00:26:11+01:00'
 draft: true  # draft mode by default
@@ -14,10 +14,10 @@ Pushing a new branch to a remote in git is easy:
 $ git push origin my-branch
 Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
 To .\origin\
- * [new branch]      my-branch -> my-branc
+ * [new branch]      my-branch -> my-branch
 ```
 
-But getting updates for it is a bit frustrating:
+but getting updates for it is a bit frustrating:
 
 ```
 $ git pull
@@ -66,7 +66,7 @@ git config --global alias.pushu 'push --set-upstream'
 And then `git pushu origin my-branch` (note: `push` vs `pushu`) will use this alias.
 You can come up with a better name for the alias.
 
-Same drawback: we need to remember to use this "custom" command/alias.
+If you're already using git aliases, this might be a good solution.
 
 ## Option 3: set `push.autoSetupRemote` in git config
 
@@ -84,9 +84,13 @@ which is an obvious con if you want to be explicit.
 
 Bash aliases, fish shell abbreviations, etc. Many developers already use them in day-to-day work.
 
-I use [abbreviations](https://fishshell.com/docs/current/cmds/abbr.html) in [fish shell](https://fishshell.com/).
-The allow to run a custom function to expand an alias:
+I use [abbreviations](https://fishshell.com/docs/current/cmds/abbr.html) in [fish shell](https://fishshell.com/),
+they even allow to run a custom function to expand the short name:
 
 ```
-
+function abbr_git_push_origin --description "git push origin CURRENT_BRANCH"
+    set CURRENT_BRANCH (git symbolic-ref --quiet --short HEAD 2>/dev/null)
+    echo "git push origin --set-upstream $CURRENT_BRANCH"
+end
+abbr -a gpo --function abbr_git_push_origin
 ```
