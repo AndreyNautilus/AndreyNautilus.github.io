@@ -2,7 +2,7 @@
 title: Set upstream branch automatically
 summary: Various usages of --set-upstream in git push  # will be shown on a post card on the main page
 # description: "Short description"  # will be shown in the post as subtitle
-date: '2026-11-12T00:26:11+01:00'
+date: '2026-11-22T00:26:11+01:00'
 draft: true  # draft mode by default
 
 tags: [git, gitconfig, fish]
