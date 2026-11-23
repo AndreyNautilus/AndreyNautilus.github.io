@@ -74,7 +74,7 @@ def main():
     #
     # Paths following the pattern must NOT be Draft.
     # Paths NOT following the pattern must be Draft.
-    MAIN_REGEX = r"202[45]-[0-9]{2}-[0-9]{2}[-_][a-z0-9]+([-_][a-z0-9]+)+"
+    MAIN_REGEX = r"202[4-9]-[0-9]{2}-[0-9]{2}[-_][a-z0-9]+([-_][a-z0-9]+)+"
 
     # page bundles
     bundle_dir_regex = re.compile(MAIN_REGEX)
