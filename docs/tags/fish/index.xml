@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>fish on Andrey Nautilus blog</title>
+    <link>https://andreynautilus.github.io/tags/fish/</link>
+    <description>Recent content in fish on Andrey Nautilus blog</description>
+    <generator>Hugo -- 0.147.8</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 22 Nov 2026 00:26:11 +0100</lastBuildDate>
+    <atom:link href="https://andreynautilus.github.io/tags/fish/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Set upstream branch automatically</title>
+      <link>https://andreynautilus.github.io/posts/2026-11-22-git-auto-set-upstream/</link>
+      <pubDate>Sun, 22 Nov 2026 00:26:11 +0100</pubDate>
+      <guid>https://andreynautilus.github.io/posts/2026-11-22-git-auto-set-upstream/</guid>
+      <description>Various usages of &amp;ndash;set-upstream in git push</description>
+    </item>
+  </channel>
+</rss>
